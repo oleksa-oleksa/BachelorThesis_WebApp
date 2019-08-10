@@ -1,0 +1,158 @@
+digraph G {
+        graph [ dpi = 300 ]
+        fontname = "Bitstream Vera Sans"
+        fontsize = 8
+
+        node [
+                fontname = "Bitstream Vera Sans"
+                fontsize = 8
+                shape = "record"
+        ]
+
+        edge [
+                fontname = "Bitstream Vera Sans"
+                fontsize = 8
+        ]
+
+        Client [
+                label = "{Client|
+                        + name : string\l
+                        + surname : string\l
+                        + date of birth : datetime\l
+                        + e-mail : string \l}"
+        ]
+
+        Server [
+                label = "{Server|
+                        + enrollmentno : int\l
+                        + degree programm : string\l
+                        + semester : int\l
+                        + status: StatusStudent\l
+                        + list of boards : [Board]\l 
+              
+                        |
+                        + borrow board : notsure\l
+                        + return board : notsure\l}"
+        ]
+
+        RFID Scanner [
+                label = "{RFID Scanner|
+                        + university : string\l
+                        + enrollmentno : int\l
+                        + status: StatusStudent\l
+                        + list of boards : [Board]\l 
+              
+                        |
+                        + borrow board : notsure\l
+                        + return board : notsure\l}"
+        ]
+
+        Admin [
+                label = "{Admin|
+                        |
+                        + add student(Student) : bool\l
+                        + activate student(Student) : bool\l
+                        + block student(Student) : bool\l
+                        + delete student(Student) : bool\l}"
+        ]
+        
+        StudentStatus [
+                label = "{Enum: StudentStatus|
+                        Inactive\l
+                        Active\l
+                        Blocked\l
+                        }"
+        ]
+
+        edge [
+                arrowhead = "onormal"
+        ]
+
+        Student -> Person
+        GuestStudent -> Person
+        Admin -> Person
+
+        edge [
+                arrowhead = "none"
+        ]
+        
+        Student -> StudentStatus
+        GuestStudent -> StudentStatus
+
+        Board [
+                label = "{Board|
+                        + boardNo : string\l
+                        + boardType: RaspberryPi\l
+                        + status: BoardStatus\l
+                        + borrowed: Person\l
+                        |}"
+        ]
+
+        RaspberryPi [
+                label = "{RaspberryPi|
+                        + model : string\l
+                        + RAM: int\l
+                        |}"
+        ]
+
+        BoardStatus [
+                label = "{Enum: BoardStatus|
+                        Avaliable\l
+                        Borrowed\l
+                        Out of order\l
+                        Lost\l
+                        Undefined\l
+                        }"
+        ]
+
+        edge [
+                arrowhead = "onormal"
+        ]
+
+        RaspberryPi -> Board
+
+        edge [
+                arrowhead = "none"
+        ]
+        Board -> BoardStatus
+
+        Database [
+                label = "{Database|
+                        |
+                        + create table(type) : bool\l
+                        + insert(type) : bool\l
+                        + search(request) : result\l
+                        + delete(record) : bool\l}"
+        ]
+
+        MFRC522 [
+                label = "{MFRC522 Library for ESP32|
+                        \l
+                        |
+                        \l}"
+        ]
+
+        RFID [
+                label = "{RFID|
+                        + scanner_id: MFRC522\l
+                        |
+                        + scan card() : cardID\l}"
+        ]
+
+        RFID_Tag [
+                label = "{RFID_Tag|
+                        + card_uid : string\l
+                        + card_sac : string\l
+                        + picc_type : string\l
+                        sector_block : string\l
+                        |
+                        }"
+        ]
+
+        edge [
+                arrowhead = "onormal"
+        ]
+
+        RFID -> MFRC522s
+
+}

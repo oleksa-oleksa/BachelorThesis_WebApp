@@ -1,0 +1,64 @@
+Person
+	+ name
+	+ surname
+	+ date of birth
+	+ gender
+	+ e-mail
+	+ adress
+	_________________
+	
+		Student
+			+ enrollmentno
+			+ degree programm
+			+ semester
+			+ status: StatusStudent
+			+ list of boards
+
+			+ borrow board
+			+ return board
+
+		GuestStudent
+			+ university
+			+ enrollmentno
+			+ status: StatusStudent
+			+ list of boards
+
+			+ borrow board
+			+ return board
+
+		Admin
+			+ add student
+			+ activate student
+			+ block student
+			+ delete student
+
+StatusStudent(Enum)
+	Inactive
+	Active
+	Blocked
+
+---------------------
+	
+Board
+	+ boardNo
+	+ boardType: RaspberryPi
+	+ status: StatusBoard
+	+ borrowed: Student || Guest || None
+
+RaspberryPi
+	+ model
+	+ RAM
+
+StatusBoard (Enum)
+	Avaliable
+	Borrowed
+	Out of order
+	Lost
+	Undefined
+
+RFID (MFRC-522)
+	+ isCardInside: false
+	+ isChoiseAllowed: false
+
+	+ scanCard 
+	
