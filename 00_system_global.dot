@@ -20,12 +20,11 @@ digraph G {
                         Read RFID Tag\l
                         Show information on LCD\l 
                         Connect to WiFi\l
-                        Send/Get/Parse JSON\l
+                        Send Get Parse JSON\l
                         Verify student\l
                         Verifyboard\l
                         Borrowrequest\l
-                        Return request\l
-                        }"
+                        Return request\l}"
         ]
 
         Server [
@@ -34,16 +33,15 @@ digraph G {
                         Registered boards\l
                         Log system\l
                         Admin interface\l
-                        autorise student\l
-                        autorise board\l
-                        borrow board\l
-                        return board\l}"
+                        Autorise student\l
+                        Autorise board\l
+                        Borrow board\l
+                        Return board\l}"
         ]
 
-        RFID Scanner [
-                label = "{RFID Scanner|
-                        |
-                        + scan card\l
+        RFID_Scanner [
+                label = "{RFID_Scanner|
+                        Scan card\l
                         }"
         ]
 
@@ -51,6 +49,9 @@ digraph G {
                 arrowhead = "onormal"
         ]
 
-        Student -> Person
-        GuestStudent -> Person
-        Admin -> Person
+        RFID_Scanner -> Client
+        Server -> Client
+        Client -> RFID_Scanner
+        Client -> Server
+
+}
