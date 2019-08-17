@@ -20,10 +20,10 @@ digraph G {
                         Read RFID Tag\l
                         Show information on LCD\l 
                         Connect to WiFi\l
-                        Send Get Parse JSON\l
+                        Send/Get/Parse JSON\l
                         Verify student\l
-                        Verifyboard\l
-                        Borrowrequest\l
+                        Verify board\l
+                        Borrow request\l
                         Return request\l}"
         ]
 
@@ -45,11 +45,18 @@ digraph G {
                         }"
         ]
 
+        LCD [
+                label = "{LCD|
+                        Show text information\l
+                        }"
+        ]
+
         edge [
                 arrowhead = "onormal"
         ]
 
         RFID_Scanner -> Client
+        LCD -> Client
         Server -> Client
         Client -> RFID_Scanner
         Client -> Server
