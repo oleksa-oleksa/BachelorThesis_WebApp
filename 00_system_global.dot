@@ -57,6 +57,7 @@ digraph G {
 
         RFID_Scanner -> Client
         LCD -> Client
+        Client -> LCD
         Server -> Client
         Client -> RFID_Scanner
         Client -> Server
