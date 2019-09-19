@@ -1,0 +1,25 @@
+Entities:
+	Student
+	Board: Lab-Board, Home-Board
+	Board tracking
+	Lab-Loan/Lab-return
+	Home-Loan/Home-return
+	Admin 
+
+
+Server:
+	Student
+	Board: Lab-Board, Home-Board
+	Log Entry
+	Control
+	Admin 
+
+
+Register-Client:
+	RFID
+	LCD
+	Wifi
+	JSON 
+
+Display-Client:
+	Browser (?)
