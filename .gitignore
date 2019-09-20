@@ -4,3 +4,5 @@ Add-Ons
 **/__pycache__
 Bachelor_Thesis_Database_RFID/*
 !Bachelor_Thesis_Database_RFID/*.pdf
+!Bachelor_Thesis_Database_RFID/*.tex
+
