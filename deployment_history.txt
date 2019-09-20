@@ -16,5 +16,4 @@ sudo apt-get install pcscd
 Wenn ich den Daemon von der Konsole starte, sehe ich wie er den Kartenleser erkennt. Wenn ich Karten hinhalte, werden im Log Output die ATRs angezeigt.
 
 sudo killall pcscd
-
 sudo pcscd -a -d -f
