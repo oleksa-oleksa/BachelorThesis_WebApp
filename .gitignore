@@ -2,7 +2,7 @@
 **/.DS_Store
 Add-Ons
 **/__pycache__
-*
-!*.pdf
-!*.tex
+Bachelor_Thesis_LaTEX/*
+!Bachelor_Thesis_LaTEX/*.pdf
+!Bachelor_Thesis_LaTEX/*.tex
 
