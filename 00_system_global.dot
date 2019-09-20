@@ -14,29 +14,33 @@ digraph G {
                 fontsize = 8
         ]
 
-        Client [
-                label = "{Client|
+        Register_Client [
+                label = "{Register_Client|
                         |
                         Read RFID Tag\l
-                        Show information on LCD\l 
                         Connect to WiFi\l
                         Send/Get/Parse JSON\l
                         Verify student\l
                         Verify board\l
-                        Borrow request\l
-                        Return request\l}"
+                        Lab Loan request\l
+                        Home Loan request\l
+                        Lab Return request\l
+                        Home Return request\l}"
         ]
 
         Server [
                 label = "{Server|
+                        Semester\l
                         Student profiles\l
                         Registered boards\l
                         Log system\l
                         Admin interface\l
                         Autorise student\l
                         Autorise board\l
-                        Borrow board\l
-                        Return board\l}"
+                        Lab Loan request\l
+                        Home Loan request\l
+                        Lab Return request\l
+                        Home Return request\l}"
         ]
 
         RFID_Scanner [
@@ -45,8 +49,8 @@ digraph G {
                         }"
         ]
 
-        LCD [
-                label = "{LCD|
+        Display_Client [
+                label = "{Display_Client|
                         Show text information\l
                         }"
         ]
@@ -55,11 +59,11 @@ digraph G {
                 arrowhead = "onormal"
         ]
 
-        RFID_Scanner -> Client
-        LCD -> Client
-        Client -> LCD
-        Server -> Client
-        Client -> RFID_Scanner
-        Client -> Server
+        RFID_Scanner -> Register_Client
+        Display_Client -> Register_Client
+        Register_Client -> Display_Client
+        Server -> Register_Client
+        Register_Client -> RFID_Scanner
+        Register_Client -> Server
 
 }

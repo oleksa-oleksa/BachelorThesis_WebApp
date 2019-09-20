@@ -2,3 +2,4 @@
 **/.DS_Store
 Add-Ons
 **/__pycache__
+!Bachelot_Thesis_Database_RFID/*.pdf
