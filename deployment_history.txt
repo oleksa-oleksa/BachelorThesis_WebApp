@@ -1,0 +1,20 @@
+Choose the hardware (done by superviser mostly)
+
+Choose language: Python for Raspberry Pi and Django web framework 
+
+Installation Raspbian: Graphic Interface 
+sudo apt-get install lxde-core xserver-xorg xinit
+
+===========
+
+Installation CyberJack RFID basis
+Vielen Dank für die Infos. Ich habe den cyberJack RFID basis erfolgreich am Raspberry Pi 3 B mit Raspbian Jessie Lite zum Laufen gebraucht. Es war lediglich nötig, den PC/SC Daemon zu installieren:
+
+sudo apt-get install pcscd
+
+
+Wenn ich den Daemon von der Konsole starte, sehe ich wie er den Kartenleser erkennt. Wenn ich Karten hinhalte, werden im Log Output die ATRs angezeigt.
+
+sudo killall pcscd
+
+sudo pcscd -a -d -f
