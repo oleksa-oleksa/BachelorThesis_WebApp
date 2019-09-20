@@ -1,4 +1,5 @@
 %% LLT: Turn off some annoying warnings...
+% !TeX spellcheck = en_GB 
 \RequirePackage{silence}
 \WarningFilter{titlesec}{Non standard sectioning command}
 \WarningFilter{scrreprt}{Usage of package}
@@ -79,26 +80,23 @@
 % **************************************************
 % Information and Commands for Reuse
 % **************************************************
-\newcommand{\thesisTitle}{\huge Bachelor Thesis}
+\newcommand{\thesisTitle}{\Huge Bachelor Thesis}
+\newcommand{\thesisTitleEng}{\huge Development of a database application for the "acaLoan-Raspi" project of the PSE laboratory}
+\newcommand{\thesisTitleDe}{\Large Entwicklung einer Datenbank-Applikation für das "acaLoan-Raspi"-Projekt des PSE-Labors}
 \newcommand{\thesisName}{Oleksandra Baga}
-\newcommand{\thesisSubject}{Praktikumsbericht zum Praktikum beim Eptecon GmbH}
-\newcommand{\thesisDate}{30.07.2018}
+\newcommand{\thesisDate}{15.02.2020}
 %\newcommand{\thesisVersion}{Final}
 
 \newcommand{\thesisFirstReviewer}{Prof. Dr. Christian Forler}
-\newcommand{\thesisFirstReviewerUniversity}{\protect{Beuth Hochschule für Technik Berlin}}
-\newcommand{\thesisFirstReviewerDepartment}{Fachbereich VI - Informatik und Medien}
-
-\newcommand{\thesisSecondReviewer}{Andreas Döpkens, M.A. M.Sc}
-\newcommand{\thesisSecondReviewerUniversity}{\protect{Beuth Hochschule für Technik Berlin}}
-\newcommand{\thesisSecondReviewerDepartment}{Labormitarbeiter, Pervasive Systems Engineering}
+\newcommand{\thesisFirstReviewerUniversity}{\protect{Beuth University of Applied Sciences Berlin}}
+\newcommand{\thesisFirstReviewerDepartment}{Department VI - Informatik und Medien}
 
 % **************************************************
 % Load and Configure Packages
 % **************************************************
 
-
-\usepackage[ngerman]{babel} % babel system, adjust the language of the content
+\usepackage[british,UKenglish,USenglish,english,american]{babel}
+%\usepackage[ngerman]{babel} % babel system, adjust the language of the content
 \usepackage[					% clean thesis style
 	figuresep=colon,%
 	sansserif=false,%
@@ -116,7 +114,6 @@
 
 \hypersetup{					% setup the hyperref-package options
 	pdftitle={\thesisTitle},	% 	- title (PDF meta)
-	pdfsubject={\thesisSubject},% 	- subject (PDF meta)
 	pdfauthor={\thesisName},	% 	- author (PDF meta)
 	plainpages=false,			% 	-
 	colorlinks=false,			% 	- colorize links?
@@ -134,11 +131,8 @@
 % --------------------------
 % rename document parts
 % --------------------------
-\renewcaptionname{ngerman}{\figurename}{Abb.}
-\renewcaptionname{ngerman}{\tablename}{Tab.}
-%\renewcaptionname{english}{\figurename}{Fig.}
-%\renewcaptionname{english}{\tablename}{Tab.}
-
+\renewcaptionname{english}{\figurename}{Pic.}
+\renewcaptionname{english}{\tablename}{Tab.}
 % --------------------------
 % Front matter
 % --------------------------
@@ -158,10 +152,13 @@
 \setcounter{page}{1}			% set page counter
 \pagestyle{maincontentstyle} 	% fancy header and footer
 
-\input{chapter1_einleitung}
-\input{chapter2_taetigkeitsbereiche}
-\input{chapter3_fazit}
-\input{chapter4_anlagen}
+\input{chapter1_introduction}
+\input{chapter2_technical_basis}
+\input{chapter3_design}
+\input{chapter4_Implementation}
+\input{chapter5_application}
+\input{chapter6_results_conclusion}
+\input{chapter7_appendix}
 
 \cleardoublepage
 
