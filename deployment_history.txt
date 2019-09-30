@@ -17,3 +17,8 @@ Wenn ich den Daemon von der Konsole starte, sehe ich wie er den Kartenleser erke
 
 sudo killall pcscd
 sudo pcscd -a -d -f
+
+
+https://github.com/fablab-ka/scardreader
+
+https://web.archive.org/web/20160618191629/http://enerds.eu/blog/reiner-cyberjack-rfid-basis.html
