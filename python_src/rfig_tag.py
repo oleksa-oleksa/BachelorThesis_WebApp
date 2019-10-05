@@ -1,0 +1,2 @@
+class RFIDTag:
+    pass
