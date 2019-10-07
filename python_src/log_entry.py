@@ -1,4 +1,4 @@
-class LoanJournal:
+class LogEntry:
     """
     Holds the record about the loan operation, student, board and time
     """
