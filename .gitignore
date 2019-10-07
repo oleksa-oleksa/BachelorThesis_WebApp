@@ -6,8 +6,8 @@ Bachelor_Thesis_LaTEX/*
 !Bachelor_Thesis_LaTEX/*.pdf
 !Bachelor_Thesis_LaTEX/*.tex
 img
-*.jpg
-*.png
+img/*.jpg
+img/*.png
 .idea
 settings.py
 wsgi.py
