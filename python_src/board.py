@@ -5,5 +5,7 @@ class Board:
     The boards numbered 0-10 should be used in the laboratory during the exercise lesson.
     The boards numbered 11-15 could be loaned by authorised student for home usage.
     """
-    pass
+    def __init__(self, board_no=0, board_rfid_tag=None, loan_type=None):
+        """Creates a new board with given parameters"""
+
 
