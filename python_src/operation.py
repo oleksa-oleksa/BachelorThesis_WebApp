@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Opeation(Enum):
+class Operation(Enum):
     """Represents different operations that could be done by student or admin"""
     labLoan = 1
     homeLoan = 2
