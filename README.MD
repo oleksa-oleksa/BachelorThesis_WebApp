@@ -5,6 +5,7 @@ Development of a database application for "Aca-Loan-Raspi"-project of PSE-Labara
 * Python 3.xx
 * Django Web Framework
 * SQLite
+* TBA
 
 Start: Spring 2020
 End: Summer 2020
