@@ -9,6 +9,9 @@ Choose language: Python for Raspberry Pi and Django web framework
 Installation Raspbian: Graphic Interface 
 sudo apt-get install lxde-core xserver-xorg xinit
 
+fix a bug with a Raspbian's pre-installed window manager that automatically closes
+sudo apt-get install --reinstall pcmanfm
+
 ===========
 
 Installation CyberJack RFID basis

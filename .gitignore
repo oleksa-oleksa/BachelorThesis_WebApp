@@ -5,6 +5,7 @@ Add-Ons
 Bachelor_Thesis_LaTEX/*
 !Bachelor_Thesis_LaTEX/*.pdf
 !Bachelor_Thesis_LaTEX/*.tex
+!Bachelor_Thesis_LaTEX/pi_screenshots/*.png
 img
 img/*.jpg
 img/*.png
