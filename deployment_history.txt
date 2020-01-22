@@ -1,4 +1,8 @@
-Choose the hardware (done by superviser mostly)
+Choose the hardware:
+Reiner CyberJack RFID basis for student card (MIFARE contactless smart cards)
+RFID-RC522 for RFID Tags on Raspberry Pi Boards
+Raspbery Pi Board
+Anker USB charger to avoid "under voltage" problem
 
 Choose language: Python for Raspberry Pi and Django web framework 
 
@@ -8,15 +12,9 @@ sudo apt-get install lxde-core xserver-xorg xinit
 ===========
 
 Installation CyberJack RFID basis
-Vielen Dank für die Infos. Ich habe den cyberJack RFID basis erfolgreich am Raspberry Pi 3 B mit Raspbian Jessie Lite zum Laufen gebraucht. Es war lediglich nötig, den PC/SC Daemon zu installieren:
+Ich habe den cyberJack RFID basis erfolgreich am Raspberry Pi 3 B mit Raspbian Jessie Lite zum Laufen gebraucht. Es war lediglich nötig, den PC/SC Daemon zu installieren:
 
 sudo apt-get install pcscd
-
-
-Wenn ich den Daemon von der Konsole starte, sehe ich wie er den Kartenleser erkennt. Wenn ich Karten hinhalte, werden im Log Output die ATRs angezeigt.
-
-sudo killall pcscd
-sudo pcscd -a -d -f
 
 
 https://github.com/fablab-ka/scardreader
