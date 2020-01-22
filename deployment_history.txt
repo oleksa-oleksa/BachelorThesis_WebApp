@@ -16,6 +16,12 @@ Ich habe den cyberJack RFID basis erfolgreich am Raspberry Pi 3 B mit Raspbian J
 
 sudo apt-get install pcscd
 
+Quellcode
+Finden Sie Ihre Distribution oben nicht aufgeführt, können wir dafür aktuell keine vorkompilierten Pakete anbieten. 
+Sie können den zugehörigen Quellcode aber selbst kompilieren.
+V 1.4.0 -->  ccid_1.4.0.tar.gz
+unpack: tar -xzf ccid_1.4.0.tar.gz 
+
 
 https://github.com/fablab-ka/scardreader
 
