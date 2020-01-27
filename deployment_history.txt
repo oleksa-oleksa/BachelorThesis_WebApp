@@ -51,9 +51,15 @@ Starting service and scanning the reader state:
 sudo pcscd
 pcsc_scan
 
+making screenshot on raspberry
+scrot -cd 5 screenshot.png
+
 Code inspiration:
 https://github.com/fablab-ka/scardreader
 
 Python packages:
 https://pyscard.sourceforge.io/
+sudo apt-get install gcc swig
+Installation guiude: https://github.com/LudovicRousseau/pyscard/blob/master/INSTALL.md
+
 http://python-pcsclite.sourceforge.net/doc/html/
