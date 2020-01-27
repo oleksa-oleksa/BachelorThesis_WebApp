@@ -17,6 +17,7 @@ sudo apt-get install --reinstall pcmanfm
 Installation CyberJack RFID basis
 Ich habe den cyberJack RFID basis erfolgreich am Raspberry Pi 3 B mit Raspbian Jessie Lite zum Laufen gebraucht. Es war lediglich nötig, den PC/SC Daemon zu installieren:
 
+https://de.wikipedia.org/wiki/Chipkartenleser (about PC/SC  fot thesis)
 sudo apt-get install pcscd
 sudo apt-get install libpcsclite-dev
 sudo apt-get install libusb-1.0-0-dev
@@ -45,11 +46,14 @@ https://oneguyoneblog.com/2015/09/16/acr122u-nfc-usb-reader-raspberry-pi/
 Warning for myself: it was enough to make only steps for previous reader. 
 No need to add vendorID and deviceID, this can be skipped in the thesis
 
+______________
+Starting service and scanning the reader state:
+sudo pcscd
+pcsc_scan
 
+Code inspiration:
 https://github.com/fablab-ka/scardreader
 
-https://web.archive.org/web/20160618191629/http://enerds.eu/blog/reiner-cyberjack-rfid-basis.html
-
+Python packages:
 https://pyscard.sourceforge.io/
-
 http://python-pcsclite.sourceforge.net/doc/html/
