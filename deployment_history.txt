@@ -35,6 +35,13 @@ lsusb, um Gerät VendorId und ProductID zu lesen (screenshot)
 edit file /usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/info.plist:
 write VendorId, productID and product name in corresponding parts of XML-file
 
+_______________
+Jan 27:
+RFID Reader can not read the Smart Cars and 2 types of RFID Tags that was ordered in order
+to mark the Raspberry Boards.
+Solutiuon: Change the hardware and use the ACR122U USB NFC Reader 
+Installation steps:
+https://oneguyoneblog.com/2015/09/16/acr122u-nfc-usb-reader-raspberry-pi/
 
 
 https://github.com/fablab-ka/scardreader
