@@ -42,6 +42,8 @@ to mark the Raspberry Boards.
 Solutiuon: Change the hardware and use the ACR122U USB NFC Reader 
 Installation steps:
 https://oneguyoneblog.com/2015/09/16/acr122u-nfc-usb-reader-raspberry-pi/
+Warning for myself: it was enough to make only steps for previous reader. 
+No need to add vendorID and deviceID, this can be skipped in the thesis
 
 
 https://github.com/fablab-ka/scardreader
