@@ -25,11 +25,14 @@ def print_readers_info(r):
 
 
 def check_reader(readers):
-	if READER in readers:
+	global READER
+	print("Again", readers)
+	if READER in list(readers):
 		print("Reader found: ", READER)
 		return readers.index(READER)
 	else:
-		print("Reader not found. Please connect ", READER")
+		print("Reader not found. Please connect", READER)
+		return(-1)
 
 def connect_card_reader():
 	"""
@@ -39,14 +42,22 @@ def connect_card_reader():
 	We can then send APDU commands to the card with the transmit() method.
 	"""
 	r = readers()
+	#print(type(r))
 	print_readers_info(r)
 	
-	# check if the proper reader exists in list of avaliable readers
-	
+	''' check if the proper reader exists in list of avaliable readers '''
+	idx = check_reader(r)
+	if idx >= 0:
+		connection = r[idx].createConnection()
+		print(READER, "connected by index:", idx)
+	else:
+		print("RFID connection error")
+		return()
 
 
 connect_card_reader()
 
+"""
 cardtype = AnyCardType()
 
 while(1):
@@ -67,3 +78,4 @@ while(1):
 		print("RASPBERY BOARD TAG DETECTED!")
 	else:
 		print("Warning. We don't know this card!")
+"""
