@@ -43,7 +43,7 @@ def connect_card_reader():
 	"""
 	r = readers()
 	for x in r:
-		print(tyoe(r))
+		print(type(r))
 	print_readers_info(r)
 	
 	''' check if the proper reader exists in list of avaliable readers '''
