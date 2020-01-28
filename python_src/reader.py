@@ -18,10 +18,13 @@ while(1):
 	cardservice.connection.connect()
 
 	detected_card = toHexString(cardservice.connection.getATR())
-	print(detected_card)
-	print(cardservice.connection.getReader())
+	#print(detected_card)
+	#print(ATR_STUDENT_CARD)
+	#print(cardservice.connection.getReader())
 
-	if detected_card == ATR_STUDENT_CARD:
+	if detected_card == ATR_STUDENT_CARD_HEX:
 		print("STUDENT CARD INSERTED!")
-	elif detected_card == ATR_RASPI_TAG:
+	elif detected_card == ATR_RASPI_TAG_HEX:
 		print("RASPBERY BOARD TAG DETECTED!")
+	else:
+		print("Warning. We don't know this card!")
