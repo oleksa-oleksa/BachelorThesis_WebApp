@@ -11,9 +11,17 @@ rfid = readers()
 print(rfid)
 
 cardtype = AnyCardType()
-cardrequest = CardRequest( timeout=10, cardType=cardtype )
-cardservice = cardrequest.waitforcard()
-cardservice.connection.connect()
 
-detected_card = toHexString(cardservice.connection.getATR())
-print(cardservice.connection.getReader())
+while(1):
+	cardrequest = CardRequest( timeout=10, cardType=cardtype )
+	cardservice = cardrequest.waitforcard()
+	cardservice.connection.connect()
+
+	detected_card = toHexString(cardservice.connection.getATR())
+	print(detected_card)
+	print(cardservice.connection.getReader())
+
+	if detected_card == ATR_STUDENT_CARD:
+		print("STUDENT CARD INSERTED!")
+	elif detected_card == ATR_RASPI_TAG:
+		print("RASPBERY BOARD TAG DETECTED!")
