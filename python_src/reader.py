@@ -42,7 +42,8 @@ def connect_card_reader():
 	We can then send APDU commands to the card with the transmit() method.
 	"""
 	r = readers()
-	#print(type(r))
+	for x in r:
+		print(tyoe(r))
 	print_readers_info(r)
 	
 	''' check if the proper reader exists in list of avaliable readers '''
