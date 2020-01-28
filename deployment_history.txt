@@ -47,6 +47,9 @@ Warning for myself: it was enough to make only steps for previous reader.
 No need to add vendorID and deviceID, this can be skipped in the thesis
 
 ______________
+Card presentation:
+https://cedric.cnam.fr/~bouzefra/cours/Cartes_Intro_Anglais.pdf
+
 Starting service and scanning the reader state:
 sudo pcscd
 pcsc_scan
