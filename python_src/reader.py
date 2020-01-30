@@ -18,36 +18,46 @@ def print_atr_info(atr):
 	
 
 def print_readers_info(r):
-	if r != None:
-		print("Connected readers:", r)
-	else:
+	if r is None:
 		print("No connected readers found.")
-
-
+		raise TypeError
+		
+	print("Found readers:", r)
+	
+	
 def connect_card_reader():
 	"""
 	The list of available readers is retrieved with the readers() function. 
 	and connect to the card with the connect() method of the connection. 
 	We can then send APDU commands to the card with the transmit() method.
 	"""
-	reader = readers()
-	print_readers_info(reader)
+	r = readers()
+	print_readers_info(r)
 	
 	"""
 	We create a connection with the first reader (index 0 for reader 1, 1 for reader 2, ...) 
 	with the r[0].createConnection() call
 	"""
-	connection = reader[0].createConnection()
+	connection = r[0].createConnection()
 	connection.connect()
-	for r in range(len(reader)):
-		print(READER == reader[r].readername())
-	
-	print(reader[0], "connected.")
 
+	
+	print(r[0], "connected.")
+
+
+def request_any_card(cardtype):
+	cardrequest = CardRequest( timeout=10, cardType=cardtype )
+	cardservice = cardrequest.waitforcard()
+	cardservice.connection.connect()
+
+	atr = ATR(cardservice.connection.getATR())
+	print_atr_info(atr)
+
+cardtype = AnyCardType()
 connect_card_reader()
+request_any_card(cardtype)
 
 """
-cardtype = AnyCardType()
 
 while(1):
 	cardrequest = CardRequest( timeout=10, cardType=cardtype )
