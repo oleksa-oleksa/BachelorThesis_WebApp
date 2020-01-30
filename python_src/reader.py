@@ -24,40 +24,25 @@ def print_readers_info(r):
 		print("No connected readers found.")
 
 
-def check_reader(readers):
-	global READER
-	for reader in readers:
-		print(reader.readers.)
-		if READER == reader:
-			print("Reader found: ", READER)
-	if READER in list(readers):
-		print("Reader found: ", READER)
-		return readers.index(READER)
-	else:
-		print("Reader not found. Please connect", READER)
-		return(-1)
-
 def connect_card_reader():
 	"""
 	The list of available readers is retrieved with the readers() function. 
-	We create a connection with the first reader (index 0 for reader 1, 1 for reader 2, ...) 
-	with the r[0].createConnection() call and connect to the card with the connect() method of the connection. 
+	and connect to the card with the connect() method of the connection. 
 	We can then send APDU commands to the card with the transmit() method.
 	"""
-	r = readers()
-	for x in r:
-		print(type(r))
-	print_readers_info(r)
+	reader = readers()
+	print_readers_info(reader)
 	
-	''' check if the proper reader exists in list of avaliable readers '''
-	idx = check_reader(r)
-	if idx >= 0:
-		connection = r[idx].createConnection()
-		print(READER, "connected by index:", idx)
-	else:
-		print("RFID connection error")
-		return()
-
+	"""
+	We create a connection with the first reader (index 0 for reader 1, 1 for reader 2, ...) 
+	with the r[0].createConnection() call
+	"""
+	connection = reader[0].createConnection()
+	connection.connect()
+	for r in range(len(reader)):
+		print(READER == reader[r].readername())
+	
+	print(reader[0], "connected.")
 
 connect_card_reader()
 
