@@ -45,17 +45,32 @@ def connect_card_reader():
 	print(r[0], "connected.")
 
 
+def get_cardtype(atr_hex):
+	if atr_hex == ATR_STUDENT_CARD_HEX:
+		print("STUDENT CARD INSERTED!")
+	elif atr_hex == ATR_RASPI_TAG_HEX:
+		print("RASPBERY BOARD TAG DETECTED!")
+	else:
+		print("Warning. We don't know this card!")
+
+
 def request_any_card(cardtype):
-	cardrequest = CardRequest( timeout=10, cardType=cardtype )
+	cardrequest = CardRequest(timeout=10, cardType=cardtype)
 	cardservice = cardrequest.waitforcard()
 	cardservice.connection.connect()
 
 	atr = ATR(cardservice.connection.getATR())
+	atr_hex = toHexString(cardservice.connection.getATR())
+	
 	print_atr_info(atr)
+	return atr_hex
+
 
 cardtype = AnyCardType()
 connect_card_reader()
-request_any_card(cardtype)
+while(1):
+	atr_hex = request_any_card(cardtype)
+current_card = get_cardtype(atr_hex)
 
 """
 
