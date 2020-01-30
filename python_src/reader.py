@@ -26,7 +26,10 @@ def print_readers_info(r):
 
 def check_reader(readers):
 	global READER
-	print("Again", readers)
+	for reader in readers:
+		print(reader.readers.)
+		if READER == reader:
+			print("Reader found: ", READER)
 	if READER in list(readers):
 		print("Reader found: ", READER)
 		return readers.index(READER)
