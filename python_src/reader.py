@@ -12,7 +12,9 @@ def print_atr_info(atr):
 	print('historical bytes: ', toHexString(atr.getHistoricalBytes()))
 	print('checksum: ', "0x%X" % atr.getChecksum())
 	print('checksum OK: ', atr.checksumOK)
+	# T = 0 is a byte oriented protocol
 	print('T0  supported: ', atr.isT0Supported())
+	# T = 1 is a block-of-bytes oriented protocol
 	print('T1  supported: ', atr.isT1Supported())
 	print('T15 supported: ', atr.isT15Supported())
 	
@@ -24,7 +26,8 @@ def print_readers_info(r):
 		
 	print("Found readers:", r)
 	
-	
+
+# not in use right now	
 def connect_card_reader():
 	"""
 	The list of available readers is retrieved with the readers() function. 
@@ -57,20 +60,22 @@ def get_cardtype(atr_hex):
 def request_any_card(cardtype):
 	cardrequest = CardRequest(timeout=10, cardType=cardtype)
 	cardservice = cardrequest.waitforcard()
+	
 	cardservice.connection.connect()
 
 	atr = ATR(cardservice.connection.getATR())
 	atr_hex = toHexString(cardservice.connection.getATR())
 	
-	print_atr_info(atr)
-	return atr_hex
+	#print_atr_info(atr)
+	return atr_hex, atr
 
 
 cardtype = AnyCardType()
-connect_card_reader()
+#connect_card_reader()
 while(1):
-	atr_hex = request_any_card(cardtype)
-current_card = get_cardtype(atr_hex)
+	atr_hex, atr = request_any_card(cardtype)
+	print(atr_hex)
+	current_card = get_cardtype(atr_hex)
 
 """
 
