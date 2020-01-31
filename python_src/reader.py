@@ -2,11 +2,26 @@ from smartcard.System import readers
 from smartcard.util import toHexString, toBytes
 from smartcard.ATR import ATR
 from smartcard.CardType import ATRCardType, AnyCardType
+from smartcard.CardMonitoring import CardMonitor, CardObserver
+
 
 from smartcard.CardRequest import CardRequest
 from atr_cardtype import *
 
 READER = "ACS ACR122U PICC Interface 00 00"
+
+class PrintObserver(CardObserver):
+    """A simple card observer that is notified
+    when cards are inserted/removed from the system and
+    prints the list of cards
+    """
+
+    def update(self, observable, actions):
+        (addedcards, removedcards) = actions
+        for card in addedcards:
+            print("+Inserted: ", toHexString(card.atr))
+        for card in removedcards:
+            print("-Removed: ", toHexString(card.atr))
 
 def print_atr_info(atr):
 	print('historical bytes: ', toHexString(atr.getHistoricalBytes()))
@@ -51,10 +66,14 @@ def connect_card_reader():
 def get_cardtype(atr_hex):
 	if atr_hex == ATR_STUDENT_CARD_HEX:
 		print("STUDENT CARD INSERTED!")
+		return StudentCard()
+		
 	elif atr_hex == ATR_RASPI_TAG_HEX:
 		print("RASPBERY BOARD TAG DETECTED!")
+		return RaspiTag()
+		
 	else:
-		print("Warning. We don't know this card!")
+		return None
 
 
 def request_any_card(cardtype):
@@ -71,11 +90,21 @@ def request_any_card(cardtype):
 
 
 cardtype = AnyCardType()
+
+cardmonitor = CardMonitor()
+cardobserver = PrintObserver()
+cardmonitor.addObserver(cardobserver)
+
 #connect_card_reader()
+
 while(1):
 	atr_hex, atr = request_any_card(cardtype)
-	print(atr_hex)
-	current_card = get_cardtype(atr_hex)
+	
+	# creates a new object of a detected card type
+	detected_card = get_cardtype(atr_hex)
+	if detected_card is None:
+		print("Please insert valid card.")
+	print("Detected card:", detected_card)
 
 """
 
