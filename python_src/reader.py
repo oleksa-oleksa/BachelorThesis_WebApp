@@ -9,19 +9,35 @@ from smartcard.CardRequest import CardRequest
 from atr_cardtype import *
 
 READER = "ACS ACR122U PICC Interface 00 00"
+	
+		
+def get_cardtype(atr):
+	if atr == ATR_STUDENT_CARD:
+		print("This is a student card")
+		return StudentCard()
+		
+	elif atr == ATR_RASPI_TAG:
+		print("This is a Raspi board")
+		return RaspiTag()
+		
+	else:
+		print("Hmm..")
+		return None
 
 class PrintObserver(CardObserver):
-    """A simple card observer that is notified
-    when cards are inserted/removed from the system and
-    prints the list of cards
-    """
-
-    def update(self, observable, actions):
-        (addedcards, removedcards) = actions
-        for card in addedcards:
-            print("+Inserted: ", toHexString(card.atr))
-        for card in removedcards:
-            print("-Removed: ", toHexString(card.atr))
+	"""A simple card observer that is notified
+	when cards are inserted/removed from the system and
+	prints the list of cards
+	"""
+    
+	def update(self, observable, actions):
+		(addedcards, removedcards) = actions
+		for card in addedcards:
+			atr = toHexString(card.atr)
+			print("+Inserted: ", atr)
+			get_cardtype(atr)
+		for card in removedcards:
+			print("-Removed: ", toHexString(card.atr))
 
 def print_atr_info(atr):
 	print('historical bytes: ', toHexString(atr.getHistoricalBytes()))
@@ -63,17 +79,6 @@ def connect_card_reader():
 	print(r[0], "connected.")
 
 
-def get_cardtype(atr_hex):
-	if atr_hex == ATR_STUDENT_CARD_HEX:
-		print("STUDENT CARD INSERTED!")
-		return StudentCard()
-		
-	elif atr_hex == ATR_RASPI_TAG_HEX:
-		print("RASPBERY BOARD TAG DETECTED!")
-		return RaspiTag()
-		
-	else:
-		return None
 
 
 def request_any_card(cardtype):
