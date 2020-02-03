@@ -12,22 +12,31 @@ READER = "ACS ACR122U PICC Interface 00 00"
 	
 		
 def get_cardtype(atr):
-	if atr == ATR_STUDENT_CARD:
+	if atr == ATR_STUDENT_CARD_HEX:
 		print("This is a student card")
 		return StudentCard()
 		
-	elif atr == ATR_RASPI_TAG:
+	elif atr == ATR_RASPI_TAG_HEX:
 		print("This is a Raspi board")
 		return RaspiTag()
 		
 	else:
-		print("Hmm..")
 		return None
 
-class PrintObserver(CardObserver):
-	"""A simple card observer that is notified
+
+
+def read_student_card(card):
+	pass
+	
+
+def read_raspitag(card):
+	pass
+		
+
+class DetectionObserver(CardObserver):
+	"""A card observer that is notified
 	when cards are inserted/removed from the system and
-	prints the list of cards
+	detects the type of the card based on ATR
 	"""
     
 	def update(self, observable, actions):
@@ -35,9 +44,21 @@ class PrintObserver(CardObserver):
 		for card in addedcards:
 			atr = toHexString(card.atr)
 			print("+Inserted: ", atr)
-			get_cardtype(atr)
+			detected_card = get_cardtype(atr)
+			print(type(detected_card))
+			if isinstance(detected_card, StudentCard):
+				read_student_card(detected_card)
+				
+			elif isinstance(detected_card, RaspiTag):
+				read_raspitag(detected_card)
+			
+			elif detected_card is None:
+				print("Insert valid student card or scan a Raspberry Board RFID Tag")
 		for card in removedcards:
-			print("-Removed: ", toHexString(card.atr))
+			atr = toHexString(card.atr)
+			print("-Removed: ", atr)
+			get_cardtype(atr)
+
 
 def print_atr_info(atr):
 	print('historical bytes: ', toHexString(atr.getHistoricalBytes()))
@@ -57,28 +78,6 @@ def print_readers_info(r):
 		
 	print("Found readers:", r)
 	
-
-# not in use right now	
-def connect_card_reader():
-	"""
-	The list of available readers is retrieved with the readers() function. 
-	and connect to the card with the connect() method of the connection. 
-	We can then send APDU commands to the card with the transmit() method.
-	"""
-	r = readers()
-	print_readers_info(r)
-	
-	"""
-	We create a connection with the first reader (index 0 for reader 1, 1 for reader 2, ...) 
-	with the r[0].createConnection() call
-	"""
-	connection = r[0].createConnection()
-	connection.connect()
-
-	
-	print(r[0], "connected.")
-
-
 
 
 def request_any_card(cardtype):
@@ -104,39 +103,12 @@ cardtype = AnyCardType()
 cardmonitor = CardMonitor()
 print_readers_info(readers())
 
-cardobserver = PrintObserver()
+cardobserver = DetectionObserver()
 
 cardmonitor.addObserver(cardobserver)
 
 
 while(1):
 	"""
-	atr_hex, atr = request_any_card(cardtype)
-	
-	# creates a new object of a detected card type
-	detected_card = get_cardtype(atr_hex)
-	if detected_card is None:
-		print("Please insert valid card.")
-	print("Detected card:", detected_card)
-
 	"""
-"""
-while(1):
-	cardrequest = CardRequest( timeout=10, cardType=cardtype )
-	cardservice = cardrequest.waitforcard()
-	cardservice.connection.connect()
-	
-	atr = ATR(cardservice.connection.getATR())
-	print_atr_info(atr)
-	detected_card = toHexString(cardservice.connection.getATR())
-	#print(detected_card)
-	#print(ATR_STUDENT_CARD)
-	#print(cardservice.connection.getReader())
 
-	if detected_card == ATR_STUDENT_CARD_HEX:
-		print("STUDENT CARD INSERTED!")
-	elif detected_card == ATR_RASPI_TAG_HEX:
-		print("RASPBERY BOARD TAG DETECTED!")
-	else:
-		print("Warning. We don't know this card!")
-"""
