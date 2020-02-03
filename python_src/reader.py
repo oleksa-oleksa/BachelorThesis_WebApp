@@ -89,15 +89,23 @@ def request_any_card(cardtype):
 	return atr_hex, atr
 
 
+
+"""
+MAIN PART OF THE SCRIPT 
+"""
+
 cardtype = AnyCardType()
 
 cardmonitor = CardMonitor()
+print_readers_info(readers())
+
 cardobserver = PrintObserver()
+
 cardmonitor.addObserver(cardobserver)
 
-#connect_card_reader()
 
 while(1):
+	"""
 	atr_hex, atr = request_any_card(cardtype)
 	
 	# creates a new object of a detected card type
@@ -106,8 +114,8 @@ while(1):
 		print("Please insert valid card.")
 	print("Detected card:", detected_card)
 
+	"""
 """
-
 while(1):
 	cardrequest = CardRequest( timeout=10, cardType=cardtype )
 	cardservice = cardrequest.waitforcard()
