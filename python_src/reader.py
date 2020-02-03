@@ -44,20 +44,30 @@ class DetectionObserver(CardObserver):
 		for card in addedcards:
 			atr = toHexString(card.atr)
 			print("+Inserted: ", atr)
-			detected_card = get_cardtype(atr)
-			print(type(detected_card))
-			if isinstance(detected_card, StudentCard):
-				read_student_card(detected_card)
+			added_card = get_cardtype(atr)
+			#print(type(detected_card))
+			if isinstance(added_card, StudentCard):
+				read_student_card(added_card)
 				
-			elif isinstance(detected_card, RaspiTag):
-				read_raspitag(detected_card)
+			elif isinstance(added_card, RaspiTag):
+				read_raspitag(added_card)
 			
-			elif detected_card is None:
+			elif inserted_card is None:
 				print("Insert valid student card or scan a Raspberry Board RFID Tag")
+				
 		for card in removedcards:
 			atr = toHexString(card.atr)
 			print("-Removed: ", atr)
-			get_cardtype(atr)
+			removed_card = get_cardtype(atr)
+			#print(type(detected_card))
+			if isinstance(removed_card, StudentCard):
+				read_student_card(removed_card)
+				
+			elif isinstance(removed_card, RaspiTag):
+				read_raspitag(removed_card)
+			
+			elif removed_card is None:
+				print("Goog bye stranger")
 
 
 def print_atr_info(atr):
