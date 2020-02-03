@@ -52,7 +52,7 @@ class DetectionObserver(CardObserver):
 			elif isinstance(added_card, RaspiTag):
 				read_raspitag(added_card)
 			
-			elif inserted_card is None:
+			elif added_card is None:
 				print("Insert valid student card or scan a Raspberry Board RFID Tag")
 				
 		for card in removedcards:
