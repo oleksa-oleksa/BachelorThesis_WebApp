@@ -11,13 +11,13 @@ from atr_cardtype import *
 READER = "ACS ACR122U PICC Interface 00 00"
 	
 		
-def get_cardtype(atr):
+def get_cardtype(atr, action):
 	if atr == ATR_STUDENT_CARD_HEX:
-		print("This is a student card")
+		print("Student card", action)
 		return StudentCard()
 		
 	elif atr == ATR_RASPI_TAG_HEX:
-		print("This is a Raspi board")
+		print("Raspi board", action)
 		return RaspiTag()
 		
 	else:
@@ -44,8 +44,7 @@ class DetectionObserver(CardObserver):
 		for card in addedcards:
 			atr = toHexString(card.atr)
 			print("+Inserted: ", atr)
-			added_card = get_cardtype(atr)
-			#print(type(detected_card))
+			added_card = get_cardtype(atr, "added")
 			if isinstance(added_card, StudentCard):
 				read_student_card(added_card)
 				
@@ -58,8 +57,7 @@ class DetectionObserver(CardObserver):
 		for card in removedcards:
 			atr = toHexString(card.atr)
 			print("-Removed: ", atr)
-			removed_card = get_cardtype(atr)
-			#print(type(detected_card))
+			removed_card = get_cardtype(atr, "removed")
 			if isinstance(removed_card, StudentCard):
 				read_student_card(removed_card)
 				
