@@ -19,8 +19,8 @@ from board import *
 ATR_STUDENT_CARD_HEX = "3B 81 80 01 80 80"
 ATR_RASPI_TAG_HEX = "3B 8F 80 01 80 4F 0C A0 00 00 03 06 03 00 01 00 00 00 00 6A"
 
-ATR_STUDENT_CARD = ATRCardType(toBytes(ATR_STUDENT_CARD_HEX))
-ATR_RASPI_TAG = ATR(toBytes(ATR_RASPI_TAG_HEX))
+ATR_STUDENT_CARD = ATR([0x3B, 0x81, 0x80, 0x01, 0x80, 0x80])
+ATR_RASPI_TAG = ATR([0x3B, 0x8F, 0x80, 0x01, 0x80, 0x4F, 0x0C, 0xA0, 0x00, 0x00, 0x03, 0x06, 0x03, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x6A])
 
 class StudentCard(CardType):
 	"""
@@ -28,7 +28,6 @@ class StudentCard(CardType):
 	"""
 	def init(self, student=None):
 		self.atr_hex = ATR_STUDENT_CARD_HEX
-		self.atr = ATR_STUDENT_CARD
 		self.student = student
 		
 	def matches(self, atr, reader=None): 
@@ -48,7 +47,6 @@ class RaspiTag(CardType):
 	"""
 	def init(self, board=None):
 		self.atr_hex = ATR_RASPI_TAG_HEX
-		self.atr = ATR_RASPI_TAG
 		self.board = board
 	
 
