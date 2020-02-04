@@ -12,6 +12,15 @@ from mifare_command_set import *
 READER = "ACS ACR122U PICC Interface 00 00"
 	
 		
+def trace_command(apdu):
+	print("sending " + toHexString(apdu))
+
+
+def trace_response( response, sw1, sw2 ):
+	if None==response: response=[]
+	print ("response: ", toHexString(response), " status words: ", "%x %x" % (sw1, sw2))
+
+
 def get_cardtype(atr, action):
 	if atr == ATR_STUDENT_CARD_HEX:
 		print("Student card", action)
@@ -27,11 +36,27 @@ def get_cardtype(atr, action):
 
 
 def read_student_card(card):
-	pass
+	apdu = SELECT+DF_TELECOM
+	
+	cardrequest = CardRequest(timeout=1, cardType=cardtype)
+	cardservice = cardrequest.waitforcard()
+	cardservice.connection.connect()
+	
+	trace_command(apdu)
+	response, sw1, sw2 = cardservice.connection.transmit(apdu)
+	trace_response(response, sw1, sw2)
 	
 
 def read_raspitag(card):
-	pass
+	apdu = SELECT+DF_TELECOM
+	
+	cardrequest = CardRequest(timeout=1, cardType=cardtype)
+	cardservice = cardrequest.waitforcard()
+	cardservice.connection.connect()
+	
+	trace_command(apdu)
+	response, sw1, sw2 = cardservice.connection.transmit(apdu)
+	trace_response(response, sw1, sw2)
 		
 
 class DetectionObserver(CardObserver):
