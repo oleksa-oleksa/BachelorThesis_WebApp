@@ -3,10 +3,11 @@ from smartcard.util import toHexString, toBytes
 from smartcard.ATR import ATR
 from smartcard.CardType import ATRCardType, AnyCardType
 from smartcard.CardMonitoring import CardMonitor, CardObserver
-
-
 from smartcard.CardRequest import CardRequest
+
 from atr_cardtype import *
+from mifare_command_set import *
+
 
 READER = "ACS ACR122U PICC Interface 00 00"
 	
