@@ -4,6 +4,9 @@ from smartcard.ATR import ATR
 from smartcard.CardType import ATRCardType, AnyCardType
 from smartcard.CardMonitoring import CardMonitor, CardObserver
 from smartcard.CardRequest import CardRequest
+from smartcard.scard import *
+import smartcard.util
+
 
 from atr_cardtype import *
 from mifare_command_set import *
@@ -12,13 +15,8 @@ from mifare_command_set import *
 READER = "ACS ACR122U PICC Interface 00 00"
 	
 
-def read_uid():
+def read_uid(cardtype):
 	"""
-	The steps required in reading the UID from a contactless card requires the following steps.
-	1. Get context handle (SCardEstablishContext)
-	2. Connect to the card on the reader (SCardConnect)
-	3. Send the Get Data Command using SCardTransmit. (See section 3.3.5.1.3 in Part 3 of the PC/SC specification for more details on this command. Link in References).
-	
 	So to read the UID we need to send a GET DATA command APDU using the SCardTransmit function. 
 	The GET DATA command APDU has the following format:
 	Command		Class	INS		P1			P2		Lc	DataIn	Le
@@ -29,17 +27,43 @@ def read_uid():
 	0x00	0x00	UID is returned
 	0x01	0x00	all historical bytes from the ATS of a ISO 14443 A card without CRC are returned
 	
-	"""
-	apdu = GET_UID
+	
 	
 	cardrequest = CardRequest(timeout=1, cardType=cardtype)
-	cardservice = cardrequest.waitforcard()
+	#cardservice = cardrequest.waitforcard()
 	cardservice.connection.connect()
-	
 	trace_command(apdu)
 	response, sw1, sw2 = cardservice.connection.transmit(apdu)
 	trace_response(response, sw1, sw2)
-	
+	"""
+	apdu = GET_UID
+	trace_command(apdu)
+	hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+
+	if hresult == SCARD_S_SUCCESS:
+
+		hresult, readers = SCardListReaders(hcontext, [])
+
+		if len(readers) > 0:
+
+			reader = readers[0]
+
+			hresult, hcard, dwActiveProtocol = SCardConnect(
+			hcontext,
+			reader,
+			SCARD_SHARE_SHARED,
+			SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
+
+			if hresult == 0:
+				hresult, response = SCardTransmit(hcard,dwActiveProtocol,apdu)
+
+				print(smartcard.util.toHexString(response))
+			else:
+				print("NO_CARD")
+		else:
+			print("NO_READER")
+	else:
+		print("FAILED")
 		
 def trace_command(apdu):
 	print("sending " + toHexString(apdu))
@@ -64,8 +88,8 @@ def get_cardtype(atr, action):
 
 
 
-def read_student_card(card):
-	read_uid()
+def read_student_card(cardtype):
+	read_uid(cardtype)
 	
 
 def read_raspitag(card):
