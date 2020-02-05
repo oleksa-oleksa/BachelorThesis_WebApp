@@ -9,7 +9,7 @@ import smartcard.util
 
 
 from atr_cardtype import *
-from mifare_command_set import *
+from scard_command_set import *
 
 
 READER = "ACS ACR122U PICC Interface 00 00"
@@ -62,9 +62,6 @@ def read_uid(cardtype):
 				sw2 = response[-1]
 				
 				trace_response(res, sw1, sw2)
-
-				print(uid)
-
 				print(smartcard.util.toHexString(response))
 			else:
 				print("NO_CARD")
@@ -100,18 +97,10 @@ def read_student_card(cardtype):
 	read_uid(cardtype)
 	
 
-def read_raspitag(card):
-	apdu = SELECT+DF_TELECOM
-	
-	cardrequest = CardRequest(timeout=1, cardType=cardtype)
-	cardservice = cardrequest.waitforcard()
-	cardservice.connection.connect()
-	
-	trace_command(apdu)
-	response, sw1, sw2 = cardservice.connection.transmit(apdu)
-	trace_response(response, sw1, sw2)
-		
+def read_raspitag(cardtype):
+	read_uid(cardtype)
 
+		
 class DetectionObserver(CardObserver):
 	"""A card observer that is notified
 	when cards are inserted/removed from the system and
