@@ -8,11 +8,11 @@ class Student:
     list_of_board can contain maximum two boards: one loaned to work in the laboratory during exercise lesson
     and one taken for home_loan.
     """
-    def __init__(self, student_rfid=None, first_name='',
+    def __init__(self, studentcard_uid=None, first_name='',
                  second_name='', enrollment_no='', hrz_no='',
                  group=None, is_home_loan_enabled=True, list_of_boards=[]):
         """Initialises a new student with given parameters"""
-        self.student_rfid = student_rfid
+        self.studentcard_uid = studentcard_uid
         self.first_name = first_name
         self.second_name = second_name
         self.enrollment_no = enrollment_no

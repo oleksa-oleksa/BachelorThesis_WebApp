@@ -63,6 +63,9 @@ def read_uid(cardtype):
 				
 				trace_response(res, sw1, sw2)
 				print(smartcard.util.toHexString(response))
+				
+				# Addind detected UID to the instance
+				cardtype.uid = toHexString(res)
 			else:
 				print("NO_CARD")
 		else:
@@ -95,6 +98,7 @@ def get_cardtype(atr, action):
 
 def read_student_card(cardtype):
 	read_uid(cardtype)
+	print("uid", cardtype.uid)
 	
 
 def read_raspitag(cardtype):
@@ -127,10 +131,10 @@ class DetectionObserver(CardObserver):
 			print("-Removed: ", atr)
 			removed_card = get_cardtype(atr, "removed")
 			if isinstance(removed_card, StudentCard):
-				read_student_card(removed_card)
+				pass
 				
 			elif isinstance(removed_card, RaspiTag):
-				read_raspitag(removed_card)
+				pass
 			
 			elif removed_card is None:
 				print("Goog bye stranger")
@@ -174,9 +178,8 @@ def request_any_card(cardtype):
 MAIN PART OF THE SCRIPT 
 """
 
-cardtype = AnyCardType()
-
 cardmonitor = CardMonitor()
+
 print_readers_info(readers())
 
 cardobserver = DetectionObserver()
