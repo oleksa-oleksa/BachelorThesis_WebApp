@@ -54,8 +54,16 @@ def read_uid(cardtype):
 			SCARD_SHARE_SHARED,
 			SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
 
-			if hresult == 0:
+			if hresult == SCARD_S_SUCCESS:
+
 				hresult, response = SCardTransmit(hcard,dwActiveProtocol,apdu)
+				res = response[0:-2]
+				sw1 = response[-2]
+				sw2 = response[-1]
+				
+				trace_response(res, sw1, sw2)
+
+				print(uid)
 
 				print(smartcard.util.toHexString(response))
 			else:
