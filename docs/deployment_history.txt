@@ -70,3 +70,4 @@ http://python-pcsclite.sourceforge.net/doc/html/
 BOOK
 https://books.google.de/books?id=jL0IBgAAQBAJ&pg=PA287&lpg=PA287&dq=DF_TELECOM+card&source=bl&ots=WoTxBtoMqw&sig=ACfU3U2uJq9jlLddQuNBk6KKUc0wUoSIEw&hl=en&sa=X&ved=2ahUKEwjZsc2w2K3nAhULuqQKHa7RD8cQ6AEwBXoECAoQAQ#v=onepage&q=DF_TELECOM%20card&f=false
 http://www.ttfn.net/techno/smartcards/iso7816_4.html
+APDU list https://web.archive.org/web/20090630004017/http://cheef.ru/docs/HowTo/APDU.info
