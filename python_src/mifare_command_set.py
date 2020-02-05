@@ -6,9 +6,6 @@ Therefore a spcecific response corresponds to a specific command, referred to as
 An application protocol data unit (APDU) contains either a command message or a response message, sent from the interface device to the card or conversely.
 In a command-response pair, the command message and the response message may contain data, thus inducing four cases 
 """
-SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
-DF_TELECOM = [0x7F, 0x10]
-
 
 INS_ERASE_BINARY = 0x0E
 INS_VERIFY = 0x20
@@ -28,3 +25,12 @@ INS_UPDATE_BINARY = 0xD6
 INS_PUT_DATA = 0xDA
 INS_UPDATE_DATA = 0xDC
 INS_APPEND_RECORD = 0xE2 
+
+
+SELECT = [0xA0, 0xA4, 0x00, 0x00, 0x02]
+
+GET_UID = [0xff, INS_GET_DATA, 0x00, 0x00, 0x00]
+DF_TELECOM = [0x7F, 0x10]
+
+
+

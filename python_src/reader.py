@@ -11,6 +11,35 @@ from mifare_command_set import *
 
 READER = "ACS ACR122U PICC Interface 00 00"
 	
+
+def read_uid():
+	"""
+	The steps required in reading the UID from a contactless card requires the following steps.
+	1. Get context handle (SCardEstablishContext)
+	2. Connect to the card on the reader (SCardConnect)
+	3. Send the Get Data Command using SCardTransmit. (See section 3.3.5.1.3 in Part 3 of the PC/SC specification for more details on this command. Link in References).
+	
+	So to read the UID we need to send a GET DATA command APDU using the SCardTransmit function. 
+	The GET DATA command APDU has the following format:
+	Command		Class	INS		P1			P2		Lc	DataIn	Le
+	Get Data	0xFF	0xCA	0x00 0x01	0x00	–	–		xx
+	
+	The options for P1 & P2 are:
+	P1		P2	
+	0x00	0x00	UID is returned
+	0x01	0x00	all historical bytes from the ATS of a ISO 14443 A card without CRC are returned
+	
+	"""
+	apdu = GET_UID
+	
+	cardrequest = CardRequest(timeout=1, cardType=cardtype)
+	cardservice = cardrequest.waitforcard()
+	cardservice.connection.connect()
+	
+	trace_command(apdu)
+	response, sw1, sw2 = cardservice.connection.transmit(apdu)
+	trace_response(response, sw1, sw2)
+	
 		
 def trace_command(apdu):
 	print("sending " + toHexString(apdu))
@@ -36,15 +65,7 @@ def get_cardtype(atr, action):
 
 
 def read_student_card(card):
-	apdu = SELECT+DF_TELECOM
-	
-	cardrequest = CardRequest(timeout=1, cardType=cardtype)
-	cardservice = cardrequest.waitforcard()
-	cardservice.connection.connect()
-	
-	trace_command(apdu)
-	response, sw1, sw2 = cardservice.connection.transmit(apdu)
-	trace_response(response, sw1, sw2)
+	read_uid()
 	
 
 def read_raspitag(card):
