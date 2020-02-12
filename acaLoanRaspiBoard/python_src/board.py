@@ -1,3 +1,6 @@
+from .atr_cardtype import StudentCard, RaspiTag
+
+
 class Board:
     """
     Represents the Raspberry Pi board at university laboratory
@@ -5,10 +8,10 @@ class Board:
     The boards numbered 0-10 should be used in the laboratory during the exercise lesson.
     The boards numbered 11-15 could be loaned by authorised student for home usage.
     """
-    def __init__(self, board_uid=None, board_no=0, board_type=None, board_status='Active',
+    def __init__(self, raspi_tag=None, board_no=0, board_type=None, board_status='Active',
                  is_board_loaned=False, loan_date=None, student=None):
         """Creates a new board with given parameters"""
-        self.board_uid = board_uid
+        self.raspi_tag = raspi_tag
         self.board_no = board_no
         self.board_type = board_type
         self.board_status = board_status
