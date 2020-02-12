@@ -25,7 +25,6 @@ class StudentCard(CardType):
 	"""
 	def init(self, student=None, uid=None):
 		self.atr_hex = ATR_STUDENT_CARD_HEX
-		self.student = student
 		self.uid = uid
 		
 
@@ -35,7 +34,6 @@ class RaspiTag(CardType):
 	"""
 	def init(self, board=None, uid=None):
 		self.atr_hex = ATR_RASPI_TAG_HEX
-		self.board = board
 		self.uid = uid
 
 

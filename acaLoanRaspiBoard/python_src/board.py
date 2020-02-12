@@ -17,6 +17,4 @@ class Board:
         self.board_status = board_status
         self.is_board_loaned = is_board_loaned
         self.loan_date = loan_date
-        self.student = student
-
 
