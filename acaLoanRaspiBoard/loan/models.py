@@ -1,14 +1,27 @@
 from django.db import models 
 from django_enumfield import enum
-from python_src import board_type, board_status
+import datetime
 
 
 class StudentCard(models.Model):
+	"""
+	Student card class
+	Primary key = default django primary key
+	Each card contains an integrated chip with a permanent identification number, or UID. 
+	This number is created during the manufacturing process, it is sometimes referred to as the card serial number.
+	
+	One unique student card belongs to only one student
+	"""
 	atr_hex = models.CharField('ATR HEX', max_length=66)
 	uid = models.CharField('Card UID', max_length=66, unique=True)
 
 
 class RaspiTag(models.Model):
+	"""
+	Raspberry board RFID
+	Primary key = default django primary key
+	One unique rfig tag belongs to one physical Raspberry Board
+	"""
 	atr_hex = models.CharField('ATR HEX', max_length=66)
 	uid = models.CharField('Card UID', max_length=66, unique=True)
 		
@@ -32,6 +45,14 @@ class BoardType(enum.Enum):
     """Represents two types of boards: for laboratory usage only and for home loan only"""
     LAB_LOAN = 1
     HOME_LOAN = 2
+    
+    
+class BoardStatus(enum.Enum):
+	ACTIVE = 1
+	LOANED = 2
+	OUT_OF_ORDER = 3
+	LOST = 4
+	UNDEFINED = 5
 
 
 class Student(models.Model):
@@ -41,6 +62,9 @@ class Student(models.Model):
     The group will be specified on the first lecture by the students/teaching assistance
     home_loan_enabled flag is to set by the admin in case the board was returned damaged
     and a student has not notified the teaching assistance about what happened
+    
+    Primary key = default django primary key
+	Each student has only one unuqie student card
     """
 	studentcard = models.OneToOneField(
         StudentCard,
@@ -57,27 +81,54 @@ class Student(models.Model):
 
 
 class Board(models.Model):
+	 """
+    Represents the Raspberry Pi board at university laboratory
+    There are 15 boards and every board has a number and a RFID Tag on it.
+    The boards numbered 0-10 should be used in the laboratory during the exercise lesson.
+    The boards numbered 11-15 could be loaned by authorised student for home usage.
+    
+    Primary key = default django primary key
+	Each board has only one unuqie rfid tag
+    """
 	raspi_tag = models.OneToOneField(
         RaspiTag,
         on_delete=models.CASCADE,
         primary_key=True,
     )
 	board_no = models.CharField('board number', max_length=10, unique=True)
-	board_type = models.CharField(max_length=10, types=[(t_board, t_board.value) for t_board in BoardType]  # types is a list of Tuple
-	board_status = models.CharField(max_length=10, states=[(t_status, t_status.value) for t_status in BoardStatus]  # types is a list of Tuple
+	board_type = enum.Enum(BoardType)
+	board_status = enum.Enum(BoardStatus, default=BoardStatus.ACTIVE)
 	is_board_loaned = models.BooleanField(default=False)
-	loan_date = models.DateField()
 
 
 class LogEntry(models.Model):
     """
-    Holds the record about the loan operation, student, board and time
+    Holds the record about the loan operation, student, board and time      
+    Primary key = default django primary key
+    Join table
     """
-    def __init__(self, student=None, board=None, timestamp=None, operation=6):
-        """A single entry about board loan/return operation"""
-        self.student = student
-        self.board = board
-        self.timestamp = timestamp
-        self.operation = Operation(operation)
+	student = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE,
+    )
+	board = models.ForeignKey(
+        Board,
+        on_delete=models.CASCADE,
+    )
+	timestamp = models.DateField(default=datetime.date.today)
+	operation = models.ForeignKey(
+        Operation,
+        on_delete=models.CASCADE,
+    )
+
+
+class LogJournal(models.Model):
+    """
+    Represents all records
+    """
+    log_entry = models.ForeignKey(
+        LogEntry,
+        on_delete=models.CASCADE,
+    )
 
 	
