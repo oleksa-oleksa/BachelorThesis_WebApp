@@ -42,9 +42,9 @@ class Operation(enum.Enum):
 
 
 class BoardType(enum.Enum):
-    """Represents two types of boards: for laboratory usage only and for home loan only"""
-    LAB_LOAN = 1
-    HOME_LOAN = 2
+	"""Represents two types of boards: for laboratory usage only and for home loan only"""
+	LAB_LOAN = 1
+	HOME_LOAN = 2
     
     
 class BoardStatus(enum.Enum):
@@ -56,16 +56,16 @@ class BoardStatus(enum.Enum):
 
 
 class Student(models.Model):
-	 """
-    Represents a student in database. The personal date will be specified
-    by the admin after student has made enrollment to the course.
-    The group will be specified on the first lecture by the students/teaching assistance
-    home_loan_enabled flag is to set by the admin in case the board was returned damaged
-    and a student has not notified the teaching assistance about what happened
-    
-    Primary key = default django primary key
+	"""
+	Represents a student in database. The personal date will be specified
+	by the admin after student has made enrollment to the course.
+	The group will be specified on the first lecture by the students/teaching assistance
+	home_loan_enabled flag is to set by the admin in case the board was returned damaged
+	and a student has not notified the teaching assistance about what happened
+
+	Primary key = default django primary key
 	Each student has only one unuqie student card
-    """
+	"""
 	studentcard = models.OneToOneField(
         StudentCard,
         on_delete=models.CASCADE,
@@ -102,11 +102,11 @@ class Board(models.Model):
 
 
 class LogEntry(models.Model):
-    """
-    Holds the record about the loan operation, student, board and time      
-    Primary key = default django primary key
-    Join table
-    """
+	"""
+	Holds the record about the loan operation, student, board and time      
+	Primary key = default django primary key
+	Join table
+	"""
 	student = models.ForeignKey(
         Student,
         on_delete=models.CASCADE,
@@ -121,14 +121,3 @@ class LogEntry(models.Model):
         on_delete=models.CASCADE,
     )
 
-
-class LogJournal(models.Model):
-    """
-    Represents all records
-    """
-    log_entry = models.ForeignKey(
-        LogEntry,
-        on_delete=models.CASCADE,
-    )
-
-	
