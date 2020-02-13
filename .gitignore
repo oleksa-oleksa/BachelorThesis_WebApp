@@ -10,9 +10,4 @@ img
 img/*.jpg
 img/*.png
 .idea
-settings.py
-wsgi.py
-__init__.py
-migrations
-static_cdn_test
 **/venv/*
