@@ -32,7 +32,7 @@ class StudentGroup(enum.Enum):
 	
 
 class Operation(models.Model):
-	"""Represents different operations that could be done by student or admin"""
+	"""Represents different operations that could be done by student or admin on loan system"""
 	class OperationEnum(models.IntegerChoices):
 		LAB_LOAN = 1
 		HOME_LOAN = 2
