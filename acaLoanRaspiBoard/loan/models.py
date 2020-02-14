@@ -100,10 +100,15 @@ class Board(models.Model):
 
 
 class BoardLabLoan(Board):
-	lab_loan_date = models.DateTimeField(blank=True, null=True)
-	lab_student = models.ForeignKey(Student, on_delete=models.CASCADE)
-	lab_operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
+	last_lab_date = models.DateTimeField('date of lab loan/return', blank=True, null=True)
+	last_lab_student = models.ForeignKey('student', Student, on_delete=models.CASCADE)
+	last_lab_operation = enum.EnumField('type of operation', Operation, default=Operation.UNKNOWN_OPERATION)
 
+
+class BoardHomeLoan(Board):
+	last_home_date = models.DateTimeField('date of home loan/return', blank=True, null=True)
+	last_home_student = models.ForeignKey('student', Student, on_delete=models.CASCADE)
+	last_home_operation = enum.EnumField('type of operation', Operation, default=Operation.UNKNOWN_OPERATION)
 
 class LogEntry(models.Model):
 	"""
