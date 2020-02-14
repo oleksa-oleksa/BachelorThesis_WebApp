@@ -31,17 +31,14 @@ class StudentGroup(enum.Enum):
 	B_GROUP = 2
 	
 
-class Operation(models.Model):
+class Operation(enum.Enum):
 	"""Represents different operations that could be done by student or admin on loan system"""
-	class OperationEnum(models.IntegerChoices):
-		LAB_LOAN = 1
-		HOME_LOAN = 2
-		RETURN_BOARD = 3
-		ENABLE_HOME_LOAN = 4
-		DISABLE_HOME_LOAN = 5
-		UNKNOWN_OPERATION = 6
-
-	operation = models.IntegerField(choices=OperationEnum.choices)
+	LAB_LOAN = 1
+	HOME_LOAN = 2
+	RETURN_BOARD = 3
+	ENABLE_HOME_LOAN = 4
+	DISABLE_HOME_LOAN = 5
+	UNKNOWN_OPERATION = 6
 
 
 class BoardType(enum.Enum):
@@ -76,14 +73,15 @@ class Student(models.Model):
 	hrz_no = models.CharField('hrz', max_length=10, unique=True)
 	group = enum.EnumField(StudentGroup)
 	is_home_loan_enabled = models.BooleanField(default=True)
+	lab_board = models.ForeignKey(Board, on_delete=models.CASCADE)
 
 
 class Board(models.Model):
 	"""
-	Represents the Raspberry Pi board at university laboratory
+	Abstract class for the basic representation of the Raspberry Pi board at university laboratory
 	There are 15 boards and every board has a number and a RFID Tag on it.
-	The boards numbered 0-10 should be used in the laboratory during the exercise lesson.
-	The boards numbered 11-15 could be loaned by authorised student for home usage.
+	The boards numbered 0-10 should be used in the laboratory during the exercise lesson (BoardLabLoan class)
+	The boards numbered 11-15 could be loaned by authorised student for home usage (BoardHomeLoan class)
 	Primary key = default django primary key
 	Each board has only one unuqie rfid tag
 	"""
@@ -92,6 +90,19 @@ class Board(models.Model):
 	board_type = enum.EnumField(BoardType)
 	board_status = enum.EnumField(BoardStatus, default=BoardStatus.ACTIVE)
 	is_board_loaned = models.BooleanField(default=False)
+	
+	class Meta:
+		abstract = True
+		ordering = ['board_no']
+		
+	def __str__(self):
+		return self.board_no + ': ' + self.raspi_tag + 'is loaned: ' + self.is_board_loaned
+
+
+class BoardLabLoan(Board):
+	lab_loan_date = models.DateTimeField(blank=True, null=True)
+	lab_student = models.ForeignKey(Student, on_delete=models.CASCADE)
+	lab_operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
 
 
 class LogEntry(models.Model):
@@ -103,5 +114,5 @@ class LogEntry(models.Model):
 	student = models.ForeignKey(Student, on_delete=models.CASCADE)
 	board = models.ForeignKey(Board, on_delete=models.CASCADE)
 	timestamp = models.DateField(default=datetime.date.today)
-	operation = models.ForeignKey(Operation, on_delete=models.CASCADE)
+	operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
 
