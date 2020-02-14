@@ -110,6 +110,7 @@ class BoardHomeLoan(Board):
 	last_home_student = models.ForeignKey('student', Student, on_delete=models.CASCADE)
 	last_home_operation = enum.EnumField('type of operation', Operation, default=Operation.UNKNOWN_OPERATION)
 
+
 class LogEntry(models.Model):
 	"""
 	Holds the record about the loan operation, student, board and time      
