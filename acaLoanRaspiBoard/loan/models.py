@@ -68,17 +68,35 @@ class Student(models.Model):
 	"""
 	studentcard = models.OneToOneField(StudentCard, on_delete=models.CASCADE, primary_key=True,)
 	first_name = models.CharField('first name', max_length=50)
-	second_name = models.CharField('second name', max_length=50)
+	family_name = models.CharField('family name', max_length=50)
 	matricul_no = models.CharField('matriculation', max_length=10, unique=True)
 	hrz_no = models.CharField('hrz', max_length=10, unique=True)
 	group = enum.EnumField(StudentGroup)
 	is_home_loan_enabled = models.BooleanField(default=True)
-	lab_board = models.ForeignKey(Board, on_delete=models.CASCADE)
+	board = models.ForeignKey(Board, on_delete=models.CASCADE)
+	action = models.ForeignKey(Action, on_delete=models.CASCADE)
 
+	
+	class Meta:
+		ordering = ['family_name']
+		
+	def __str__(self):
+		return self.board_no + ': ' + self.raspi_tag + 'is loaned: ' + self.is_board_loaned
+	
+
+class Action(models.Model):
+	"""
+	Holds the record about the loan operation, student, board and time      
+	Primary key = default django primary key
+	"""
+	student = models.ForeignKey(Student, on_delete=models.CASCADE)
+	board = models.ForeignKey(Board, on_delete=models.CASCADE)
+	timestamp = models.DateField(default=datetime.date.today)
+	operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
 
 class Board(models.Model):
 	"""
-	Abstract class for the basic representation of the Raspberry Pi board at university laboratory
+	Class for representation of the Raspberry Pi board at university laboratory
 	There are 15 boards and every board has a number and a RFID Tag on it.
 	The boards numbered 0-10 should be used in the laboratory during the exercise lesson (BoardLabLoan class)
 	The boards numbered 11-15 could be loaned by authorised student for home usage (BoardHomeLoan class)
@@ -89,38 +107,26 @@ class Board(models.Model):
 	board_no = models.CharField('board number', max_length=3, unique=True)
 	board_type = enum.EnumField(BoardType, default=BoardType=LAB_LOAN)
 	board_status = enum.EnumField(BoardStatus, default=BoardStatus.ACTIVE)
-	is_board_loaned = models.BooleanField(default=False)
-	is_board_returned = models.BooleanField(default=True)
+	student = models.ForeignKey(Student, on_delete=models.CASCADE)
+	action = models.ForeignKey(Action, on_delete=models.CASCADE)
 
 	
 	class Meta:
-		abstract = True
 		ordering = ['board_no']
 		
 	def __str__(self):
 		return self.board_no + ': ' + self.raspi_tag + 'is loaned: ' + self.is_board_loaned
-
-
-class BoardLabLoan(Board):
-	last_loan_date = models.DateTimeField('date of lab loan/return', blank=True, null=True)
-	last_loan_student = models.ForeignKey('student', Student, on_delete=models.CASCADE)
-	last_lab_operation = enum.EnumField('type of operation', Operation, default=Operation.UNKNOWN_OPERATION)
-
-
-class BoardHomeLoan(Board):
-	last_home_date = models.DateTimeField('date of home loan/return', blank=True, null=True)
-	last_home_student = models.ForeignKey('student', Student, on_delete=models.CASCADE)
-	last_home_operation = enum.EnumField('type of operation', Operation, default=Operation.UNKNOWN_OPERATION)
-
-
-class LogEntry(models.Model):
+	
+	
+class SemesterList(models.Model):
 	"""
-	Holds the record about the loan operation, student, board and time      
-	Primary key = default django primary key
-	Join table
+	For administrator
+	Keeps the all students that signed up for the course in the current semester
+	Keeps the all boards avaliable in this semester for lab and home usage
 	"""
+	semester = models.CharField(max_length=50) 
 	student = models.ForeignKey(Student, on_delete=models.CASCADE)
 	board = models.ForeignKey(Board, on_delete=models.CASCADE)
-	timestamp = models.DateField(default=datetime.date.today)
-	operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
+
+
 
