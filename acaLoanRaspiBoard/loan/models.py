@@ -66,33 +66,20 @@ class Student(models.Model):
 	Primary key = default django primary key
 	Each student has only one unuqie student card
 	"""
-	studentcard = models.OneToOneField(StudentCard, on_delete=models.CASCADE, primary_key=True,)
+	student_card = models.OneToOneField(StudentCard, on_delete=models.CASCADE, primary_key=True,)
 	first_name = models.CharField('first name', max_length=50)
-	family_name = models.CharField('family name', max_length=50)
+	second_name = models.CharField('second name', max_length=50)
 	matricul_no = models.CharField('matriculation', max_length=10, unique=True)
 	hrz_no = models.CharField('hrz', max_length=10, unique=True)
 	group = enum.EnumField(StudentGroup)
 	is_home_loan_enabled = models.BooleanField(default=True)
-	board = models.ForeignKey(Board, on_delete=models.CASCADE)
-	action = models.ForeignKey(Action, on_delete=models.CASCADE)
-
 	
 	class Meta:
-		ordering = ['family_name']
+		ordering = ['second_name']
 		
 	def __str__(self):
 		return self.board_no + ': ' + self.raspi_tag + 'is loaned: ' + self.is_board_loaned
 	
-
-class Action(models.Model):
-	"""
-	Holds the record about the loan operation, student, board and time      
-	Primary key = default django primary key
-	"""
-	student = models.ForeignKey(Student, on_delete=models.CASCADE)
-	board = models.ForeignKey(Board, on_delete=models.CASCADE)
-	timestamp = models.DateField(default=datetime.date.today)
-	operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
 
 class Board(models.Model):
 	"""
@@ -105,11 +92,8 @@ class Board(models.Model):
 	"""
 	raspi_tag = models.OneToOneField(RaspiTag, on_delete=models.CASCADE, primary_key=True)
 	board_no = models.CharField('board number', max_length=3, unique=True)
-	board_type = enum.EnumField(BoardType, default=BoardType=LAB_LOAN)
+	board_type = enum.EnumField(BoardType, default=BoardType.LAB_LOAN)
 	board_status = enum.EnumField(BoardStatus, default=BoardStatus.ACTIVE)
-	student = models.ForeignKey(Student, on_delete=models.CASCADE)
-	action = models.ForeignKey(Action, on_delete=models.CASCADE)
-
 	
 	class Meta:
 		ordering = ['board_no']
@@ -117,14 +101,30 @@ class Board(models.Model):
 	def __str__(self):
 		return self.board_no + ': ' + self.raspi_tag + 'is loaned: ' + self.is_board_loaned
 	
+
+
+class Action(models.Model):
+	"""
+	Holds the record about the loan operation, student, board and time      
+	Primary key = default django primary key
+	"""
+	student = models.ForeignKey(Student, on_delete=models.CASCADE)
+	board = models.ForeignKey(Board, on_delete=models.CASCADE)
+	timestamp = models.DateField(default=datetime.date.today)
+	operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
+
+
+class Semester(models.Model):
+	current_semester = models.CharField(max_length=20) 
 	
+
 class SemesterList(models.Model):
 	"""
 	For administrator
 	Keeps the all students that signed up for the course in the current semester
 	Keeps the all boards avaliable in this semester for lab and home usage
 	"""
-	semester = models.CharField(max_length=50) 
+	semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
 	student = models.ForeignKey(Student, on_delete=models.CASCADE)
 	board = models.ForeignKey(Board, on_delete=models.CASCADE)
 
