@@ -43,8 +43,8 @@ class Operation(enum.Enum):
 
 class BoardType(enum.Enum):
 	"""Represents two types of boards: for laboratory usage only and for home loan only"""
-	LAB_LOAN_BOARD = 1
-	HOME_LOAN_BOARD = 2
+	LAB_LOAN = 1
+	HOME_LOAN = 2
 
 
 class BoardStatus(enum.Enum):
@@ -86,10 +86,12 @@ class Board(models.Model):
 	Each board has only one unuqie rfid tag
 	"""
 	raspi_tag = models.OneToOneField(RaspiTag, on_delete=models.CASCADE, primary_key=True)
-	board_no = models.CharField('board number', max_length=10, unique=True)
-	board_type = enum.EnumField(BoardType)
+	board_no = models.CharField('board number', max_length=3, unique=True)
+	board_type = enum.EnumField(BoardType, default=BoardType=LAB_LOAN)
 	board_status = enum.EnumField(BoardStatus, default=BoardStatus.ACTIVE)
 	is_board_loaned = models.BooleanField(default=False)
+	is_board_returned = models.BooleanField(default=True)
+
 	
 	class Meta:
 		abstract = True
@@ -100,8 +102,8 @@ class Board(models.Model):
 
 
 class BoardLabLoan(Board):
-	last_lab_date = models.DateTimeField('date of lab loan/return', blank=True, null=True)
-	last_lab_student = models.ForeignKey('student', Student, on_delete=models.CASCADE)
+	last_loan_date = models.DateTimeField('date of lab loan/return', blank=True, null=True)
+	last_loan_student = models.ForeignKey('student', Student, on_delete=models.CASCADE)
 	last_lab_operation = enum.EnumField('type of operation', Operation, default=Operation.UNKNOWN_OPERATION)
 
 
