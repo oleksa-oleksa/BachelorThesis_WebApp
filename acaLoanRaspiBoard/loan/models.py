@@ -66,7 +66,7 @@ class Student(models.Model):
 	Primary key = default django primary key
 	Each student has only one unuqie student card
 	"""
-	student_card = models.OneToOneField(StudentCard, on_delete=models.CASCADE, primary_key=True,)
+	student_card = models.OneToOneField(StudentCard, on_delete=models.CASCADE, blank=True, null=True)
 	first_name = models.CharField('first name', max_length=50)
 	second_name = models.CharField('second name', max_length=50)
 	matricul_no = models.CharField('matriculation', max_length=10, unique=True)
@@ -78,8 +78,8 @@ class Student(models.Model):
 		ordering = ['second_name']
 		
 	def __str__(self):
-		return self.board_no + ': ' + self.raspi_tag + 'is loaned: ' + self.is_board_loaned
-	
+		return self.first_name + ' ' + self.second_name
+
 
 class Board(models.Model):
 	"""
@@ -90,7 +90,7 @@ class Board(models.Model):
 	Primary key = default django primary key
 	Each board has only one unuqie rfid tag
 	"""
-	raspi_tag = models.OneToOneField(RaspiTag, on_delete=models.CASCADE, primary_key=True)
+	raspi_tag = models.OneToOneField(RaspiTag, on_delete=models.CASCADE, blank=True, null=True)
 	board_no = models.CharField('board number', max_length=3, unique=True)
 	board_type = enum.EnumField(BoardType, default=BoardType.LAB_LOAN)
 	board_status = enum.EnumField(BoardStatus, default=BoardStatus.ACTIVE)
@@ -99,9 +99,12 @@ class Board(models.Model):
 		ordering = ['board_no']
 		
 	def __str__(self):
-		return self.board_no + ': ' + self.raspi_tag + 'is loaned: ' + self.is_board_loaned
-	
+		if self.raspi_tag is not None:
+			return self.board_no + ': ' + self.raspi_tag + 'has status: ' + self.board_status.name
+		else:
+			return self.board_no + ': ' + ' NO_RASPI_TAG has status: ' + self.board_status.name
 
+	
 
 class Action(models.Model):
 	"""
@@ -122,7 +125,7 @@ class SemesterList(models.Model):
 	"""
 	For administrator
 	Keeps the all students that signed up for the course in the current semester
-	Keeps the all boards avaliable in this semester for lab and home usage
+	Keeps the all boards available in this semester for lab and home usage
 	"""
 	semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
 	student = models.ForeignKey(Student, on_delete=models.CASCADE)
