@@ -76,10 +76,10 @@ class Student(models.Model):
 	
 	class Meta:
 		ordering = ['second_name']
-		
+	"""	
 	def __str__(self):
 		return self.first_name + ' ' + self.second_name
-
+	"""
 
 class Board(models.Model):
 	"""
