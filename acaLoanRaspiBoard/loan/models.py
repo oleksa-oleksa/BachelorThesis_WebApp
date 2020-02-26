@@ -3,6 +3,12 @@ from django_enumfield import enum
 import datetime
 
 
+class ATRCardType(enum.Enum):
+	"""Constant values for ATR ot student card and RFID tags on the Raspberry Pi"""
+	STUDENT_CARD_ATR = 1
+	RASPI_TAG_ATR = 2
+
+
 class StudentCard(models.Model):
 	"""
 	Student card class
@@ -12,7 +18,7 @@ class StudentCard(models.Model):
 	
 	One unique student card belongs to only one student
 	"""
-	atr_hex = models.CharField('ATR HEX', max_length=66)
+	atr_hex = enum.EnumField(ATRCardType, default=ATRCardType.STUDENT_CARD_ATR)
 	uid = models.CharField('Card UID', max_length=66, unique=True)
 
 
@@ -22,7 +28,7 @@ class RaspiTag(models.Model):
 	Primary key = default django primary key
 	One unique rfig tag belongs to one physical Raspberry Board
 	"""
-	atr_hex = models.CharField('ATR HEX', max_length=66)
+	atr_hex = enum.EnumField(ATRCardType, default=ATRCardType.RASPI_TAG_ATR)
 	uid = models.CharField('Card UID', max_length=66, unique=True)
 		
 
