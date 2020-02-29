@@ -61,6 +61,10 @@ class BoardStatus(enum.Enum):
 	UNDEFINED = 5
 
 
+class Semester(models.Model):
+	current_semester = models.CharField(max_length=20, unique=True)
+
+
 class Student(models.Model):
 	"""
 	Represents a student in database. The personal date will be specified
@@ -73,6 +77,7 @@ class Student(models.Model):
 	Each student has only one unuqie student card
 	"""
 	student_card = models.OneToOneField(StudentCard, on_delete=models.CASCADE, blank=True, null=True)
+	semester = models.ForeignKey(Semester, on_delete=models.CASCADE, blank=True, null=True)
 	first_name = models.CharField('first name', max_length=50)
 	second_name = models.CharField('second name', max_length=50)
 	matricul_no = models.CharField('matriculation', max_length=10, unique=True)
@@ -86,6 +91,7 @@ class Student(models.Model):
 	def __str__(self):
 		return self.first_name + ' ' + self.second_name
 	"""
+
 
 class Board(models.Model):
 	"""
@@ -110,7 +116,6 @@ class Board(models.Model):
 		else:
 			return self.board_no + ': ' + ' NO_RASPI_TAG has status: ' + self.board_status.name
 
-	
 
 class Action(models.Model):
 	"""
@@ -121,21 +126,3 @@ class Action(models.Model):
 	board = models.ForeignKey(Board, on_delete=models.CASCADE)
 	timestamp = models.DateField(default=datetime.date.today)
 	operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
-
-
-class Semester(models.Model):
-	current_semester = models.CharField(max_length=20) 
-	
-
-class SemesterList(models.Model):
-	"""
-	For administrator
-	Keeps the all students that signed up for the course in the current semester
-	Keeps the all boards available in this semester for lab and home usage
-	"""
-	semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
-	student = models.ForeignKey(Student, on_delete=models.CASCADE)
-	board = models.ForeignKey(Board, on_delete=models.CASCADE)
-
-
-
