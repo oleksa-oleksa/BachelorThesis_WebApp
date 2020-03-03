@@ -8,9 +8,17 @@ class StudentAdmin(admin.ModelAdmin):
                     'group', 'is_home_loan_enabled')
 
 
+class BoardAdmin(admin.ModelAdmin):
+    list_display = ('raspi_tag', 'board_no',  'board_type',  'board_status',)
+
+
+class ActionAdmin(admin.ModelAdmin):
+    list_display = ('', '',  '',  '',)
+
+
 # Register your models here.
 admin.site.register(Student, StudentAdmin)
-admin.site.register(Board)
+admin.site.register(Board, BoardAdmin)
 admin.site.register(Action)
 admin.site.register(StudentCard)
 admin.site.register(RaspiTag)
