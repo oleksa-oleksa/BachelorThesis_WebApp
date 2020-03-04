@@ -13,7 +13,7 @@ class BoardAdmin(admin.ModelAdmin):
 
 
 class ActionAdmin(admin.ModelAdmin):
-    list_display = ('', '',  '',  '',)
+    list_display = ('student', 'board',  'timestamp',  'operation',)
 
 
 # Register your models here.
