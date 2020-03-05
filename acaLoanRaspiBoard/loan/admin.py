@@ -16,12 +16,16 @@ class ActionAdmin(admin.ModelAdmin):
     list_display = ('student', 'board',  'timestamp',  'operation',)
 
 
+class SemesterAdmin(admin.ModelAdmin):
+    list_display = ['semester']
+
+
 # Register your models here.
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Board, BoardAdmin)
-admin.site.register(Action)
+admin.site.register(Action, ActionAdmin)
 admin.site.register(StudentCard)
 admin.site.register(RaspiTag)
-admin.site.register(Semester)
+admin.site.register(Semester, SemesterAdmin)
 
 
