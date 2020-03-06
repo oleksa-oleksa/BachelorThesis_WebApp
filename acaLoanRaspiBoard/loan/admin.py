@@ -20,11 +20,18 @@ class SemesterAdmin(admin.ModelAdmin):
     list_display = ['semester']
 
 
+class StudentCardAdmin(admin.ModelAdmin):
+    list_display = ('atr_hex', 'uid', 'student')
+
+    def student(self, obj):
+        return obj.student.second_name + obj.student.first_name
+
+
 # Register your models here.
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Board, BoardAdmin)
 admin.site.register(Action, ActionAdmin)
-admin.site.register(StudentCard)
+admin.site.register(StudentCard, StudentCardAdmin)
 admin.site.register(RaspiTag)
 admin.site.register(Semester, SemesterAdmin)
 
