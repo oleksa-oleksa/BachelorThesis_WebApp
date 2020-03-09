@@ -40,7 +40,7 @@ _______________
 Jan 27:
 RFID Reader can not read the Smart Cars and 2 types of RFID Tags that was ordered in order
 to mark the Raspberry Boards.
-Solutiuon: Change the hardware and use the ACR122U USB NFC Reader 
+Solution: Change the hardware and use the ACR122U USB NFC Reader 
 Installation steps:
 https://oneguyoneblog.com/2015/09/16/acr122u-nfc-usb-reader-raspberry-pi/
 Warning for myself: it was enough to make only steps for previous reader. 
@@ -90,3 +90,14 @@ Effectiveness problem with access to subtype rows. Some rows have to be discarde
 There has to be an additional attribute to specify the subtype (attribute ‘type’ may have value ‘i’ for ‘individual’ and ‘c’ for ‘company’ and no other value).
 It's easy to change the object’s subtype (we have to change ‘type’ from ‘i’ to ‘c’ or the other way around).
 Many attributes are subtype-specific, and these columns have null values on rows that apply to other subtype’s attributes.
+
+
+
+-----------------
+Mar 12
+Coronavirus, working from home instead of visiting University
+
+Anyway, today I'll do a script for the initial registration of the student card
+Suppose we will have the list of registered student before the first exercise session: it as obligatory to register on Moodle System. Thus admin can create a first database records for the Student table.
+On the first exercise the Python script will be executed by the admin on their Mac or windows computer and the UIDs of the card will be read with manually added matriculation number.
+An admin the will upload the txt-file to the Django admin from their computer and the file will be parsed and the UIDs of the student will be linked with their record created before. 
