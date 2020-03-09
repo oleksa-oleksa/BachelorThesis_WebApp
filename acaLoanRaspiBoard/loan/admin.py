@@ -27,12 +27,19 @@ class StudentCardAdmin(admin.ModelAdmin):
         return obj.student.second_name + obj.student.first_name
 
 
+class RaspiTagAdmin(admin.ModelAdmin):
+    list_display = ('atr_hex', 'uid', 'board')
+
+    def board(self, obj):
+        return obj.board.board_no + obj.board.board_type + 'is ' + obj.board.board_status
+
+
 # Register your models here.
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Board, BoardAdmin)
 admin.site.register(Action, ActionAdmin)
 admin.site.register(StudentCard, StudentCardAdmin)
-admin.site.register(RaspiTag)
+admin.site.register(RaspiTag, RaspiTagAdmin)
 admin.site.register(Semester, SemesterAdmin)
 
 
