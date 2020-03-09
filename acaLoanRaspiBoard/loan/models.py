@@ -112,9 +112,9 @@ class Board(models.Model):
 		
 	def __str__(self):
 		if self.raspi_tag is not None:
-			return self.board_no + ': ' + self.raspi_tag + 'has status: ' + self.board_status.name
+			return 'Board ' + self.board_no + ' is ' + self.board_status.name
 		else:
-			return self.board_no + ': ' + ' NO_RASPI_TAG has status: ' + self.board_status.name
+			return self.board_no + ': ' + ' NO_RASPI_TAG is ' + self.board_status.name
 
 
 class Action(models.Model):
