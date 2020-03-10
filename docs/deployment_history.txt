@@ -100,4 +100,6 @@ Coronavirus, working from home instead of visiting University
 Anyway, today I'll do a script for the initial registration of the student card
 Suppose we will have the list of registered student before the first exercise session: it as obligatory to register on Moodle System. Thus admin can create a first database records for the Student table.
 On the first exercise the Python script will be executed by the admin on their Mac or windows computer and the UIDs of the card will be read with manually added matriculation number.
-An admin the will upload the txt-file to the Django admin from their computer and the file will be parsed and the UIDs of the student will be linked with their record created before. 
+An admin the will upload the txt-file to the Django admin from their computer and the file will be parsed and the UIDs of the student will be linked with their record created before.
+
+Download drivers: https://www.acs.com.hk/en/driver/3/acr122u-usb-nfc-reader/ 
