@@ -182,6 +182,9 @@ cardobserver = DetectionObserver()
 
 cardmonitor.addObserver(cardobserver)
 
+print("Admin Board RFID Management Tool")
+print("Scan board rfid tags and add the board number")
+
 while (1):
     """
     """
