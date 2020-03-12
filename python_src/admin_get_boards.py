@@ -15,9 +15,11 @@ READER = "ACS ACR122U PICC Interface 00 00"
 
 
 def get_input(action):
-    answer = 'a'
-    while answer != 'Y' or answer != 'y' or answer != 'N' or answer != 'n':
-        answer = input("Do you want to " + action + "? [y/n]: ")
+    answer = ''
+    while answer != 'Y' and answer != 'y' and answer != 'N' and answer != 'n':
+        answer = input("Do you want to " + action + "? [y/n]: ").rstrip('\n')
+        answer = str.strip(answer)
+        print(answer)
     if answer == 'Y' or answer == 'y':
         return 1
     elif answer == 'N' or answer == 'n':
