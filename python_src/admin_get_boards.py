@@ -15,18 +15,29 @@ READER = "ACS ACR122U PICC Interface 00 00"
 
 
 def get_input(action):
-    answer = input("Are you sure you want to " + action + "? [y/n]: ")
+    answer = 'a'
+    while answer != 'Y' or answer != 'y' or answer != 'N' or answer != 'n':
+        answer = input("Do you want to " + action + "? [y/n]: ")
+    if answer == 'Y' or answer == 'y':
+        return 1
+    elif answer == 'N' or answer == 'n':
+        return 0
+
 
 def keyboard_interrupt_handler(sig, frame):
     print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(sig))
     if sig == 2:
-        answer = input("Are you sure you want to exit? [y/n]: ")
-        if answer == 'y' or answer == 'Y':
-            save = input("Write changes into file? [y/n]: ")
-            if save == 'y' or save == 'Y':
+        answer = get_input('exit')
+        if answer == 1:
+            save = input("write changes into file")
+            if save == 1:
                 print("File saved!")
-            elif save ==
-    exit(0)
+            elif save == 0:
+                print("Changes not added")
+            exit(0)
+        elif answer == 0:
+            print("Resumed...")
+
 
 
 def read_uid(cardtype):
