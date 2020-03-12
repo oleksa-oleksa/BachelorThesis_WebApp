@@ -103,3 +103,5 @@ On the first exercise the Python script will be executed by the admin on their M
 An admin the will upload the txt-file to the Django admin from their computer and the file will be parsed and the UIDs of the student will be linked with their record created before.
 
 Download drivers: https://www.acs.com.hk/en/driver/3/acr122u-usb-nfc-reader/ 
+
+https://simpleisbetterthancomplex.com/tutorial/2016/08/01/how-to-upload-files-with-django.html

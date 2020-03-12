@@ -6,11 +6,27 @@ from smartcard.CardMonitoring import CardMonitor, CardObserver
 from smartcard.CardRequest import CardRequest
 from smartcard.scard import *
 import smartcard.util
+import signal
 
 from atr_cardtype import *
 from scard_command_set import *
 
 READER = "ACS ACR122U PICC Interface 00 00"
+
+
+def get_input(action):
+    answer = input("Are you sure you want to " + action + "? [y/n]: ")
+
+def keyboard_interrupt_handler(sig, frame):
+    print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(sig))
+    if sig == 2:
+        answer = input("Are you sure you want to exit? [y/n]: ")
+        if answer == 'y' or answer == 'Y':
+            save = input("Write changes into file? [y/n]: ")
+            if save == 'y' or save == 'Y':
+                print("File saved!")
+            elif save ==
+    exit(0)
 
 
 def read_uid(cardtype):
@@ -116,7 +132,9 @@ class DetectionObserver(CardObserver):
             print("+Inserted: ", atr)
             added_card = get_cardtype(atr, "added")
             if isinstance(added_card, StudentCard):
-                read_student_card(added_card)
+                print("*** Please use Raspberry Pi Board RFID Tag! ***")
+                print("*** Remove student card to continue... ***")
+                break
 
             elif isinstance(added_card, RaspiTag):
                 read_raspitag(added_card)
@@ -182,8 +200,20 @@ cardobserver = DetectionObserver()
 
 cardmonitor.addObserver(cardobserver)
 
+# KeyboardInterrupt Handler
+signal.signal(signal.SIGINT, keyboard_interrupt_handler)
+
+
+print("=============================================")
+print("University of Applied Sciences Berlin")
+print("=============================================")
 print("Admin Board RFID Management Tool")
 print("Scan board rfid tags and add the board number")
+print("=============================================")
+print("Press Ctrl+C to exit the tool")
+
+f = open("admin_boards.txt", "a+")
+
 
 while (1):
     """
