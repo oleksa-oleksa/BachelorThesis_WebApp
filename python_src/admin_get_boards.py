@@ -27,11 +27,11 @@ def get_input(action):
 
 
 def keyboard_interrupt_handler(sig, frame):
-    print("KeyboardInterrupt (ID: {}) has been caught. Cleaning up...".format(sig))
+    print("KeyboardInterrupt (ID: {}) has been caught. Exiting...".format(sig))
     if sig == 2:
         answer = get_input('exit')
         if answer == 1:
-            save = input("write changes into file")
+            save = get_input("write changes into file")
             if save == 1:
                 print("File saved!")
             elif save == 0:
@@ -125,7 +125,6 @@ def get_cardtype(atr, action):
 
 def read_student_card(cardtype):
     read_uid(cardtype)
-    print("uid", cardtype.uid)
 
 
 def read_raspitag(cardtype):
@@ -151,6 +150,7 @@ class DetectionObserver(CardObserver):
 
             elif isinstance(added_card, RaspiTag):
                 read_raspitag(added_card)
+                print("Hier:", added_card.uid)
 
             elif added_card is None:
                 print("Insert valid student card or scan a Raspberry Board RFID Tag")
@@ -163,8 +163,7 @@ class DetectionObserver(CardObserver):
                 pass
 
             elif isinstance(removed_card, RaspiTag):
-                pass
-
+                print("bla")
             elif removed_card is None:
                 print("Goog bye stranger")
 
@@ -221,9 +220,9 @@ print("=============================================")
 print("University of Applied Sciences Berlin")
 print("=============================================")
 print("Admin Board RFID Management Tool")
-print("Scan board rfid tags and add the board number")
-print("=============================================")
 print("Press Ctrl+C to exit the tool")
+print("=============================================")
+print("SCAN BOARD RFID TAG")
 
 f = open("admin_boards.txt", "a+")
 
