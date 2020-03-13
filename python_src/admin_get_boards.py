@@ -34,8 +34,10 @@ def keyboard_interrupt_handler(sig, frame):
             save = get_input("write changes into file")
             if save == 1:
                 print("File saved!")
+                f.close()
             elif save == 0:
                 print("Changes not added")
+                f.close()
             exit(0)
         elif answer == 0:
             print("Resumed...")
@@ -150,7 +152,14 @@ class DetectionObserver(CardObserver):
 
             elif isinstance(added_card, RaspiTag):
                 read_raspitag(added_card)
-                print("Hier:", added_card.uid)
+                print("RFID UID:", added_card.uid)
+                answer = get_input('save uid')
+                if answer == 1:
+                    number = input("Board number?: ").rstrip('\n')
+                    number = str.strip(number)
+                    f.write("{n},{u}".format(n=number, u=added_card.uid))
+                elif answer == 0:
+                    print("Remove tag!")
 
             elif added_card is None:
                 print("Insert valid student card or scan a Raspberry Board RFID Tag")
@@ -163,7 +172,9 @@ class DetectionObserver(CardObserver):
                 pass
 
             elif isinstance(removed_card, RaspiTag):
-                print("bla")
+                print("SCAN BOARD RFID TAG")
+                print("or press Ctrl+C to exit the tool")
+
             elif removed_card is None:
                 print("Goog bye stranger")
 
