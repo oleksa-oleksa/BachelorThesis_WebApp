@@ -157,9 +157,10 @@ class DetectionObserver(CardObserver):
                 if answer == 1:
                     number = input("Board number?: ").rstrip('\n')
                     number = str.strip(number)
-                    f.write("{n},{u}".format(n=number, u=added_card.uid))
+                    f.write("{n},{u}\n".format(n=number, u=added_card.uid))
                 elif answer == 0:
                     print("Remove tag!")
+                print("Saved!")
 
             elif added_card is None:
                 print("Insert valid student card or scan a Raspberry Board RFID Tag")
@@ -169,7 +170,8 @@ class DetectionObserver(CardObserver):
             print("-Removed: ", atr)
             removed_card = get_cardtype(atr, "removed")
             if isinstance(removed_card, StudentCard):
-                pass
+                print("SCAN BOARD RFID TAG")
+                print("or press Ctrl+C to exit the tool")
 
             elif isinstance(removed_card, RaspiTag):
                 print("SCAN BOARD RFID TAG")
