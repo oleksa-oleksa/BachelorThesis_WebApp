@@ -9,5 +9,5 @@ def index(request):
 """
 
 
-def index(response):
-	return render(response, "loan/index.html")
+def index(request):
+	return render(request, "loan/index.html")
