@@ -31,17 +31,11 @@ def keyboard_interrupt_handler(sig, frame):
     if sig == 2:
         answer = get_input('exit')
         if answer == 1:
-            save = get_input("write changes into file")
-            if save == 1:
-                print("File saved!")
-                f.close()
-            elif save == 0:
-                print("Changes not added")
-                f.close()
+            print("File saved!")
+            f.close()
             exit(0)
         elif answer == 0:
             print("Resumed...")
-
 
 
 def read_uid(cardtype):
