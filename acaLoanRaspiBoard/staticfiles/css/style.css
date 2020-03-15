@@ -4,6 +4,49 @@ body {
 	font-family: 'Source Sans Pro', sans-serif;
 }
 
+.main_header_container {
+    display: block;
+    width: 100%;
+}
+
+.content_container {
+    display: block;
+    width: 100%;
+}
+
+.left_header_container {
+    width: 60%;
+    float:left;
+    height: 400px;
+    background: orange;
+    margin: 10px;
+}
+
+.right_header_container {
+    width: 35%;
+    float:left;
+    height: 400px;
+    background: yellow;
+    margin: 10px;
+}
+
+
+.right_header_img {
+    width: 555px;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.abs {
+  position: absolute;
+}
+
+.rel {
+  position: relative;
+}
+
 .lab_header {
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size: 22px;
