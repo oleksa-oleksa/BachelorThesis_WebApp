@@ -12,31 +12,33 @@ body {
 .content_container {
     display: block;
     width: 100%;
+    height: 500px;
+
 }
 
 .left_header_container {
     width: 60%;
     float:left;
-    height: 400px;
     background: orange;
     margin: 10px;
 }
 
 .right_header_container {
     width: 35%;
-    float:left;
-    height: 400px;
+    float: left;
     background: yellow;
     margin: 10px;
 }
 
 
 .right_header_img {
-    width: 555px;
+    width: 90%;
     height: auto;
     display: block;
     margin-left: auto;
     margin-right: auto;
+    padding-top: 70px;
+
 }
 
 .abs {
