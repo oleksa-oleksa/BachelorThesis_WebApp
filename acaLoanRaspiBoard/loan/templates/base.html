@@ -39,18 +39,25 @@
         {% endblock head_css %}
     </head>
     <body>
-        <div class="lab_header">
-            Labor für Pervasive Systems Engineering
-        </div>
-        <div class="system_header">
-            Raspberry Pi Loan System
-        </div>
-        <div class="content container">
-            <div class="row">
-                <div class="col-md-8">
-                {% block content %}
-                {% endblock %}
+        <div class="main_header_container rel">
+            <div class="left_header_container">
+                <div class="lab_header">
+                    Labor für Pervasive Systems Engineering
+                </div>
+                <div class="system_header">
+                    Raspberry Pi Loan System
                 </div>
             </div>
+
+            <div class="right_header_container">
+                    <img src="{% static "csm_acaLoan-Raspi.jpg" %}">
+            </div>
+        </div>
+
+        <div class="content_container rel">
+
+            {% block content %}
+            {% endblock %}
+
         </div>
     </body>
