@@ -1,21 +1,35 @@
 body {
 	margin: 0;
 	background: #FFFFFF;
-	font-family: arial, verdana, sans-serif;
-
+	font-family: 'Source Sans Pro', sans-serif;
 }
 
-.page-wrapper .intro header {
-	width: 985px;
-	height: 300px;
-	font-family: "Poiret One", cursive;
-	font-size: x-large; 
-	font-weight: bold;
-	color: white;
-	padding-top: 15px;
-	padding-left: 15px;
-	background-image: url("../images/climate-carpathians.jpg");
+.lab_header {
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 22px;
+	color: #0098a1;
+	font-weight: regular;
+	padding-top: 70px;
+	padding-left: 150px;
+}
 
+.system_header {
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 32px;
+	color: #424242;
+	font-weight: regular;
+	padding-top: 40px;
+	padding-left: 150px;
+}
+
+
+.blue_text {
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 22px;
+	color: #0098a1;
+	font-weight: regular;
+	padding-top: 10px;
+	padding-left: 150px;
 }
 
 
@@ -26,60 +40,4 @@ p {
 	padding-left: 20px;
 	display: block;
     font-size: medium;	
-}
-p a { 
-	color: #607914;
-}
-
-p a:hover {
-	color: #B1CA65; 
-}
-
-footer {
-	height: 50px;
-	background-color: #141F27;
-	padding-top: 20px;
-	text-align: center;
-}
-	
-
-footer a {
-	font-family: "Poiret One", cursive;
-	font-size: medium; 
-	font-weight: bold;	
-	color: white;
-	font-weight: bold;
-	padding-left: 25px;
-	padding-right: 25px;
-	text-decoration: none;
-}
-
-footer a:visited {	
-	color: #BDC6CC;
-}		
-
-footer a:hover {
-	color: #B0F9DA;
-}
-
-nav ul {
-	background: #52270F;
-    padding: 20px;
-}
-
-nav ul li {
-	list-style-type: square;
-	background: #643113;
-    margin: 5px;
-	}
-
-h3 {
-	font-family: "Roboto", cursive;
-	font-size: large; 
-	font-weight: bold;
-	font-style: italic;
-	text-transform: uppercase;
-	margin-left: 20px;
-	color: #607914;
-	
 }
