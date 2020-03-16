@@ -1,4 +1,5 @@
-from django.db import models 
+from django.db import models
+from django.forms import ModelForm
 from django_enumfield import enum
 import datetime
 
@@ -30,7 +31,10 @@ class RaspiTag(models.Model):
 	"""
 	atr_hex = enum.EnumField(ATRCardType, default=ATRCardType.RASPI_TAG_ATR)
 	uid = models.CharField('Card UID', max_length=66, unique=True)
-		
+
+	def __str__(self):
+		return self.uid
+
 
 class StudentGroup(enum.Enum):
 	A_GROUP = 1
@@ -87,10 +91,9 @@ class Student(models.Model):
 	
 	class Meta:
 		ordering = ['second_name']
-	"""	
+
 	def __str__(self):
 		return self.first_name + ' ' + self.second_name
-	"""
 
 
 class Board(models.Model):
