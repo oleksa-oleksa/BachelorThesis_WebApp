@@ -22,6 +22,9 @@ class StudentCard(models.Model):
 	atr_hex = enum.EnumField(ATRCardType, default=ATRCardType.STUDENT_CARD_ATR)
 	uid = models.CharField('Card UID', max_length=66, unique=True)
 
+	def __str__(self):
+		return self.uid
+
 
 class RaspiTag(models.Model):
 	"""
@@ -68,6 +71,8 @@ class BoardStatus(enum.Enum):
 class Semester(models.Model):
 	semester = models.CharField(max_length=20, unique=True)
 
+	def __str__(self):
+		return self.semester
 
 class Student(models.Model):
 	"""
@@ -115,9 +120,9 @@ class Board(models.Model):
 		
 	def __str__(self):
 		if self.raspi_tag is not None:
-			return 'Board ' + self.board_no + ' is ' + self.board_status.name
+			return 'Board ' + self.board_no
 		else:
-			return self.board_no + ': ' + ' NO_RASPI_TAG is ' + self.board_status.name
+			return 'Board ' + self.board_no
 
 
 class Action(models.Model):
@@ -129,3 +134,6 @@ class Action(models.Model):
 	board = models.ForeignKey(Board, on_delete=models.CASCADE)
 	timestamp = models.DateField(default=datetime.date.today)
 	operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
+
+	class Meta:
+		ordering = ['timestamp']
