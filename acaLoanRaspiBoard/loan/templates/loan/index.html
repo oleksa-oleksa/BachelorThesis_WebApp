@@ -9,25 +9,39 @@ AcaLoan: Loan/Return Main page
     <div class="blue_text" style="padding-top: 30px;">
         Take a Raspi Board and get your student card ready!
     </div>
-    <a href="#" class="blue_button" style="margin-top: 50px; margin-left: 150px;">LOAN / RETURN BOARD</a>
+    <a href="#" class="blue_button" style="margin-top: 30px; margin-left: 150px;">LOAN / RETURN BOARD</a>
 {% endblock %}
 
 {% block content %}
 <div class="left_content_container">
-    <div class="dark_text" style="font-size: 23px; padding-top: 40px;">
-        What I need to loan or return a board?
-    </div>
-     <div class="blue_text" style="padding-top: 40px;">
-        Student card
-    </div>
-    <div class="gray_text" style="padding-top: 40px;">
-        Use your Beuth Campus card to identify yourself
-    </div>
+    <div class="dark_text" style="font-size: 23px; padding-top: 30px;">
+            What I need to loan or return a board?
+        </div>
+    <div class="left_content_container" style="width: 70%;">
 
+         <div class="blue_text" style="padding-top: 20px;">
+            Student card
+        </div>
+        <div class="gray_text" style="padding-top: 10px;">
+            Use your Beuth Campus card<br> to identify yourself<br>
+            <font size="-2">https://www.beuth-hochschule.de/campus-card</font>
+        </div>
+        <div class="blue_text" style="padding-top: 40px;">
+            Raspberry Board
+        </div>
+        <div class="gray_text" style="padding-top: 10px;">
+            Take a Raspberry Board<br> from the shelf in this room<br>
+        </div>
+    </div>
+    <div class="right_content_container" style="width: 30%;">
+        <img class="info_img"  style="width: 150px;" align=”right” src="{% static "campuscard-beuth.jpg" %}">
+        <img class="info_img" style="width: 150px; height: 100px; padding-top: 30px;" align=”right” src="{% static "raspi_board.jpg" %}">
+
+    </div>
 </div>
 
 <div class="right_content_container">
-bla
+DJANGO TABLE HERE!
 </div>
 {% endblock %}
 
