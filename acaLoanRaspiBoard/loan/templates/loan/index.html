@@ -9,7 +9,7 @@ AcaLoan: Loan/Return Main page
     <div class="blue_text" style="padding-top: 30px;">
         Take a Raspi Board and get your student card ready!
     </div>
-    <a href="#" class="blue_button" style="margin-top: 30px; margin-left: 150px;">LOAN / RETURN BOARD</a>
+    <a href="#" class="blue_button" style="margin-top: 40px; margin-left: 150px;">LOAN / RETURN BOARD</a>
 {% endblock %}
 
 {% block content %}
@@ -41,9 +41,22 @@ AcaLoan: Loan/Return Main page
 </div>
 
 <div class="right_content_container">
-{% for object in home_boards_list %}
-        {{ object.raspi_tag }}
-{% endfor %}
+    <div class="blue_text" style="padding-top: 30px; padding-left: 20px; padding-bottom: 10px;">Boards for programming at home:</div>
+    <table id="homeLoanInfo">
+        <tr>
+            <th>Board</th>
+            <th>Status</th>
+            <th>Info</th>
+        </tr>
+
+        {% for object in home_boards_list %}
+        <tr>
+            <td>{{ object.board_no }}</td>
+            <td>{{ object.board_status }}</td>
+            <td>untill 23.04</td>
+        </tr>
+        {% endfor %}
+    </table>
 </div>
 {% endblock %}
 
