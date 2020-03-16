@@ -105,3 +105,14 @@ An admin the will upload the txt-file to the Django admin from their computer an
 Download drivers: https://www.acs.com.hk/en/driver/3/acr122u-usb-nfc-reader/ 
 
 https://simpleisbetterthancomplex.com/tutorial/2016/08/01/how-to-upload-files-with-django.html
+
+____________________
+
+Mar 16
+Coronaviris un Berlin
+All kindergarten are closed, so I am writing a bachelor thesis at home being accompanied
+by my 1,5 years kid. My husband also has home office.
+Today the first index page were created using html+css
+
+Time to show some data from database:
+https://djangobook.com/mdj2-models/
