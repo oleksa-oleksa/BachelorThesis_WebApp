@@ -41,7 +41,9 @@ AcaLoan: Loan/Return Main page
 </div>
 
 <div class="right_content_container">
-DJANGO TABLE HERE!
+{% for object in home_boards_list %}
+        {{ object.raspi_tag }}
+{% endfor %}
 </div>
 {% endblock %}
 

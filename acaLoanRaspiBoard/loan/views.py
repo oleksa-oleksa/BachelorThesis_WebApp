@@ -10,4 +10,7 @@ def index(request):
 
 
 def index(request):
-	return render(request, "loan/index.html")
+	queryset = Board.objects.all()
+	template_name = "loan/index.html"
+	context = {"home_boards_list": queryset}
+	return render(request, template_name, context)
