@@ -6,17 +6,26 @@ AcaLoan: Loan/Return Main page
 {% endblock %}
 
 {% block invitation %}
-    <div class="blue_text">
+    <div class="blue_text" style="padding-top: 30px;">
         Take a Raspi Board and get your student card ready!
     </div>
-    <a href="#" class="blue_button">LOAN / RETURN BOARD</a>
+    <a href="#" class="blue_button" style="margin-top: 50px; margin-left: 150px;">LOAN / RETURN BOARD</a>
 {% endblock %}
 
 {% block content %}
-Home Page
+<div class="left_content_container">
+                <div class="dark_text" style="	font-size: 18px;
+">
+                    Your tiny desktop computer to learn programming,<br> sensors and others awesome things.
+                </div>
+
+            </div>
+
+            <div class="right_content_container">
+
+            </div>
 {% endblock %}
 
 {% block right_header_img %}
 <img class="right_header_img" src="{% static "csm_acaLoan-Raspi.jpg" %}">
-
 {% endblock %}
