@@ -116,3 +116,10 @@ Today the first index page were created using html+css
 
 Time to show some data from database:
 https://djangobook.com/mdj2-models/
+
+-----------
+
+Mar 19
+https://kite.com/python/docs/django.contrib.admindocs.views.staff_member_required
+Using staff_member_required decorator.
+Upload and parse txt file, add record into database
