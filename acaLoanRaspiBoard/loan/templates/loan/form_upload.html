@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% if title %}
+    <h1>{{ title }}</h1>
+{% endif %}
+
+{% block content %}
+
+<form method='POST' action='.' enctype="multipart/form-data"> {% csrf_token %}
+    {{ form.as_p }} <!--- will render wrapped in <p> tags -->
+    <button type="submit">Send</button>
+</form>
+
+{% endblock %}
