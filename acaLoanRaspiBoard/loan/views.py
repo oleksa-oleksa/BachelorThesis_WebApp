@@ -1,9 +1,11 @@
+import csv, io
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 
 from .models import StudentGroup, Student, Operation, Board, Action
+from .forms import StudentCardFormModel
 
 """
 def index(request):
@@ -19,17 +21,24 @@ def index(request):
 
 
 @staff_member_required
+def rfid_upload(request):
+	template_name = "loan/rfid_upload.html"
+
+	prompt = {
+		'order': 'Order of CSV should be: board_no,  rfid_uid'
+	}
+
+	if request.method == "GET":
+		return render(request, template_name, prompt)
+
 def file_upload_view(request):
 	# create objects -> use a form
-	form = BlogPostModelForm(request.POST or None, request.FILES or None)
+	form = StudentCardFormModel(request.POST or None, request.FILES or None)
 	if form.is_valid():
-		# obj = BlogPost.objects.create(**form.cleaned_data)
 		obj = form.save(commit=False)
-		# obj.title = form.cleaned_data.get("title")
-		obj.user = request.user
 		obj.save()
-		form = BlogPostModelForm()
-	template_name = "blog/form.html"
+		form = StudentCardFormModel()
+	template_name = "loan/file_upload.html"
 	context = {"form": form}
 	return render(request, template_name, context)
 

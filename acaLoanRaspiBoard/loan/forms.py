@@ -8,17 +8,12 @@ class StudentCardForm(forms.Form):
     uid = forms.CharField('Card UID', max_length=66, unique=True)
 
 
-class BlogPostForm(forms.Form):
-    title = forms.CharField()
-    slug = forms.SlugField()
-    content = forms.CharField(widget=forms.Textarea)
 
-
-class BlogPostModelForm(forms.ModelForm):
+class StudentCardFormModel(forms.ModelForm):
     # to change the form instead of model
     # title = forms.CharField(max_length=150)
     class Meta:
-        model = BlogPost
+        model = StudentCard
         fields = ["title", "image", "slug", "content"]
 
     def clean_title(self, *args, **kwargs):
