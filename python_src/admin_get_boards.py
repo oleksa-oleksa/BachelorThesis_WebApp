@@ -235,7 +235,7 @@ print("Press Ctrl+C to exit the tool")
 print("=============================================")
 print("SCAN BOARD RFID TAG")
 
-f = open("admin_boards.txt", "a+")
+f = open("admin_boards.csv", "a+")
 
 
 while (1):

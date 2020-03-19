@@ -23,13 +23,13 @@ def file_upload_view(request):
 	# create objects -> use a form
 	form = BlogPostModelForm(request.POST or None, request.FILES or None)
 	if form.is_valid():
-        # obj = BlogPost.objects.create(**form.cleaned_data)
-        obj = form.save(commit=False)
-        # obj.title = form.cleaned_data.get("title")
-        obj.user = request.user
-        obj.save()
-        form = BlogPostModelForm()
-    template_name = "blog/form.html"
-    context = {"form": form}
-    return render(request, template_name, context)
+		# obj = BlogPost.objects.create(**form.cleaned_data)
+		obj = form.save(commit=False)
+		# obj.title = form.cleaned_data.get("title")
+		obj.user = request.user
+		obj.save()
+		form = BlogPostModelForm()
+	template_name = "blog/form.html"
+	context = {"form": form}
+	return render(request, template_name, context)
 
