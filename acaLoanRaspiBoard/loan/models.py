@@ -74,6 +74,7 @@ class Semester(models.Model):
 	def __str__(self):
 		return self.semester
 
+
 class Student(models.Model):
 	"""
 	Represents a student in database. The personal date will be specified
