@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 
-from .models import StudentGroup, Student, Operation, Board, Action, RaspiTag
+from .models import StudentGroup, Student, Operation, Board, Action, RaspiTag, ATRCardType
 from .forms import RaspiTagFormModel
 
 """
@@ -43,8 +43,12 @@ def rfid_upload(request):
 
 	for row in csv.reader(io_string, delimiter=','):
 		_, createdTag = RaspiTag.objects.update_or_create(
+			atr_hex=ATRCardType.RASPI_TAG_ATR,
 			uid=row[1]
 		)
+
+	context = {}
+	return render(request, template_name, context)
 
 
 def file_upload_view(request):
