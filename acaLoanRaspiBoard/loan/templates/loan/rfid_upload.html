@@ -20,7 +20,8 @@
 
 <form method='POST' action='.' enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }} <!--- will render wrapped in <p> tags -->
+    <label>Upload a file</label>
+    <input type="file" name="rfid_list"
     <button type="submit">Send</button>
 </form>
 
