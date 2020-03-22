@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% if title %}
-    <h1>{{ title }}</h1>
+    <h1>{{ title }} Bla</h1>
 {% endif %}
 
 {% block content %}
@@ -18,7 +18,7 @@
 {% endif%}
 
 
-<form method='POST' action='.' enctype="multipart/form-data">
+<form method='POST' enctype="multipart/form-data">
     {% csrf_token %}
     <label>Upload a file</label>
     <input type="file" name="rfid_list" accept="text/csv">
