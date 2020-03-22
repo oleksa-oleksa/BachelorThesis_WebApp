@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% if title %}
+    <h1>{{ title }}</h1>
+{% endif %}
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div>
+            <strong>{{ message|safe }}</strong>
+        </div>
+    {% endfor %}
+{% else %}
+    {{ order }}
+
+{% endif%}
+
+
+<form method='POST' action='.' enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>Upload a file</label>
+    <input type="file" name="rfid_list" accept="text/csv">
+    <p>Only accepts CSV-files</p>
+    <button type="submit">Upload</button>
+</form>
+
+{% endblock %}
