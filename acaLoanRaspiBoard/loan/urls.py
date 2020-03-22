@@ -5,6 +5,5 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('admin/', admin.site.urls),
-    path('upload_csv_rfid', views.)
+    path('upload_csv_rfid', views.upload_rfid, name='upload_rfid')
 ]
