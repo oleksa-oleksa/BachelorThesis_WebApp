@@ -22,8 +22,8 @@ def index(request):
 
 
 @staff_member_required
-def rfid_upload(request):
-	template_name = "loan/rfid_upload.html"
+def upload_rfid(request):
+	template_name = "loan/upload_rfid.html"
 
 	prompt = {
 		'order': 'Order of CSV should be: board_no,  rfid_uid'
@@ -32,7 +32,7 @@ def rfid_upload(request):
 	if request.method == "GET":
 		return render(request, template_name, prompt)
 
-	csv_file = request.FILES['file']
+	csv_file = request.FILES['rfid_list']
 
 	if not csv_file.name.endswith('.csv'):
 		messages.error(request, "This is not a csv file!")
@@ -48,17 +48,5 @@ def rfid_upload(request):
 		)
 
 	context = {}
-	return render(request, template_name, context)
-
-
-def file_upload_view(request):
-	# create objects -> use a form
-	form = RaspiTagFormModel(request.POST or None, request.FILES or None)
-	if form.is_valid():
-		obj = form.save(commit=False)
-		obj.save()
-		form = RaspiTagFormModel()
-	template_name = "loan/file_upload.html"
-	context = {"form": form}
 	return render(request, template_name, context)
 
