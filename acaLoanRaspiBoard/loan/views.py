@@ -37,6 +37,10 @@ def upload_rfid(request):
 	if not csv_file.name.endswith('.csv'):
 		messages.error(request, "This is not a csv file!")
 
+	if csv_file.multiple_chunks():
+		messages.error(request, "Uploaded file is too big (%.2f MB)." % (csv_file.size / (1000 * 1000),))
+		return render(request, template_name, prompt)
+
 	data_set = csv_file.read().decode('UTF-8')
 	io_string = io.StringIO(data_set)
 	next(io_string)
