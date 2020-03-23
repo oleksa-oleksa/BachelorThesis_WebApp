@@ -9,8 +9,6 @@ class RaspiTagForm(forms.Form):
 
 
 class RaspiTagFormModel(forms.ModelForm):
-    # to change the form instead of model
-    # title = forms.CharField(max_length=150)
     class Meta:
         model = RaspiTag
         fields = ["atr_hex", "uid"]

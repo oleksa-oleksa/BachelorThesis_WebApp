@@ -43,7 +43,8 @@ def upload_rfid(request):
 
 	data_set = csv_file.read().decode('UTF-8')
 	io_string = io.StringIO(data_set)
-	next(io_string)
+	# admin_get_boards.py creates csv-file without header (there is no need, file contains only two columns)
+	# next(io_string)
 
 	for row in csv.reader(io_string, delimiter=','):
 		_, createdTag = RaspiTag.objects.update_or_create(
