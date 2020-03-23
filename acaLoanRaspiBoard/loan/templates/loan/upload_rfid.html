@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+{% extends "admin.html" %}
+{% load static %}
 
 {% block head_title %}
 Upload CSV
@@ -26,4 +27,9 @@ Upload CSV
     <button type="submit">Upload</button>
 </form>
 
+{% endblock %}
+
+
+{% block right_header_img %}
+<img class="right_header_img_admin" src="{% static "icons8-raspberry-pi-96.png" %}">
 {% endblock %}
