@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    {# Make modifiable head elements #}
+    <head>
+       <title>ADMIN AcaLoan: {% block head_title %}{% endblock %}</title>
+        {% block head_favicon %}
+            <link rel="icon" type="image/png" href="{% static "favicon.ico" %}">
+
+        {% endblock head_favicon %}
+        {% block head_meta %}
+            {% block head_meta_charset %}
+                <meta http-equiv="Content-Type"
+                      content="text/html; charset=utf-8" />
+            {% endblock head_meta_charset %}
+            {% block head_meta_contentlanguage %}
+                <meta http-equiv="Content-Language" value="en-US" />
+            {% endblock head_meta_contentlanguage %}
+            {% block head_meta_viewport %}
+                <meta name="viewport"
+                      content="width=device-width, initial-scale=1.0">
+            {% endblock head_meta_viewport %}
+            {% block head_meta_description %}
+                <meta name="description" content="AcaLoan: Labor für Pervasive Systems Engineering">
+            {% endblock head_meta_description %}
+            {% block head_meta_author %}
+                <meta name="author" content="Oleksandra Baga Bachelor Thesis SS2020">
+            {% endblock head_meta_author %}
+
+        {% endblock head_meta %}
+        {% block head_css %}
+            {% block head_css_site %}
+                <link rel="stylesheet" href="{% static "css/style.css" %}">
+                <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+            {% endblock head_css_site %}
+            {% block head_css_section %}{% endblock head_css_section %}
+            {% block head_css_page %}{% endblock head_css_page %}
+        {% endblock head_css %}
+    </head>
+    <body>
+        <div class="main_header_container rel">
+            <div class="left_header_container">
+                <div class="lab_header">
+                    Labor für Pervasive Systems Engineering
+                </div>
+                <div class="system_header">
+                    Raspberry Pi Loan System
+                </div>
+                <div class="dark_text">
+                    Your tiny desktop computer to learn programming,<br> sensors and others awesome things.
+                </div>
+                {% block invitation %}
+                {% endblock %}
+            </div>
+
+            <div class="right_header_container">
+                    {% block right_header_img %}
+                    {% endblock %}
+            </div>
+        </div>
+
+        <div class="content_container rel">
+
+            {% block content %}
+            {% endblock %}
+
+        </div>
+    </body>
