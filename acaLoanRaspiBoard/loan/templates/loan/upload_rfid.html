@@ -5,7 +5,17 @@
 Upload CSV
 {% endblock %}
 
+
+{% block invitation %}
+    <div class="blue_text" style="padding-top: 30px;">
+        Upload CSV file you have created before with boards_no and boards_uid
+        <hr style="margin-top: 20px;">
+    </div>
+{% endblock %}
+
 {% block content %}
+
+<div class="admin_content_container">
 
 {% if messages %}
     {% for message in messages %}
@@ -18,14 +28,17 @@ Upload CSV
 
 {% endif%}
 
-
 <form method='POST' enctype="multipart/form-data">
     {% csrf_token %}
     <label>Upload a file</label>
-    <input type="file" name="rfid_list" accept="text/csv">
-    <p>Only accepts CSV-files</p>
-    <button type="submit">Upload</button>
+    <div class="upload-btn-wrapper">
+        <input type="file" name="rfid_list" accept="text/csv">
+        <p>Only accepts CSV-files</p>
+        <button class="btn" type="submit">Upload</button>
+    </div>
 </form>
+
+</div>
 
 {% endblock %}
 
