@@ -42,6 +42,7 @@ def upload_rfid(request):
 		return render(request, template_name, prompt)
 
 	data_set = csv_file.read().decode('UTF-8')
+	"""In-memory text streams are also available as StringIO objects:"""
 	io_string = io.StringIO(data_set)
 	# admin_get_boards.py creates csv-file without header (there is no need, file contains only two columns)
 	# next(io_string)
