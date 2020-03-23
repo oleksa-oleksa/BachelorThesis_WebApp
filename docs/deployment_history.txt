@@ -129,3 +129,7 @@ Mar 22
 Upload csv-file using model form
 https://docs.djangoproject.com/en/3.0/ref/csrf/
 
+---- 
+Mar 23
+Icon for admin page: https://icons8.de/icon/54088/raspberry-pi
+

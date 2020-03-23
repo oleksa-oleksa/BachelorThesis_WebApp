@@ -51,6 +51,15 @@ body {
     margin-bottom: 5px;
 }
 
+.right_header_img_admin {
+    width: 96px;
+    height: 96px;
+    display: block;
+    float: left;
+    padding-top: 150px;
+    margin-bottom: 5px;
+}
+
 .info_img {
     display: block;
     float: left;
