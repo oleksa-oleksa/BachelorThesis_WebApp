@@ -1,0 +1,29 @@
+{% extends "admin.html" %}
+{% load static %}
+
+{% block head_title %}
+Link Boards
+{% endblock %}
+
+
+{% block invitation %}
+    <div class="system_header" style="color: green;">
+        CSV Uploaded
+    </div>
+    <div class="dark_text">
+        Link Boards RFID UIDs to Boards Numbers
+    </div>
+{% endblock %}
+
+{% block content %}
+
+    <div class="admin_content_container">
+        <a href="#" class="blue_button" style="margin-top: 40px;">LINK BOARDS</a>
+    </div>
+
+{% endblock %}
+
+
+{% block right_header_img %}
+<img class="right_header_img_admin" src="{% static "icons8-raspberry-pi-96.png" %}">
+{% endblock %}

@@ -24,6 +24,8 @@ def index(request):
 @staff_member_required
 def upload_rfid(request):
 	template_name = "loan/upload_rfid.html"
+	template_name_submitted = "loan/link_boards.html"
+
 
 	prompt = {
 		'order': 'Order of CSV should be: board_no,  rfid_uid'
@@ -53,6 +55,12 @@ def upload_rfid(request):
 			uid=row[1]
 		)
 
-	# context = {}
-	return redirect("index")
+	context = {}
+	return render(request, template_name_submitted, context)
 
+@staff_member_required
+def link_boards(request):
+	queryset = RaspiTag.objects.all()
+	template_name = "loan/link_boards.html"
+	context = {"boards_uid_list": queryset}
+	return render(request, template_name, context)
