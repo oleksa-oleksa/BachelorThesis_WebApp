@@ -55,7 +55,7 @@ def upload_rfid(request):
 			uid=row[1]
 		)
 
-	context = {}
+	context = {"csv_uploaded": "True"}
 	return render(request, template_name_submitted, context)
 
 @staff_member_required
