@@ -53,6 +53,6 @@ def upload_rfid(request):
 			uid=row[1]
 		)
 
-	context = {}
-	return render(request, template_name, context)
+	# context = {}
+	return redirect("index")
 
