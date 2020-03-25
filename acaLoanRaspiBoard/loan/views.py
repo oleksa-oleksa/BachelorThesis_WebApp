@@ -51,16 +51,31 @@ def upload_rfid(request):
 	# admin_get_boards.py creates csv-file without header (there is no need, file contains only two columns)
 	# next(io_string)
 
+	rfids_dict = {}
+	boards_failed_list = []
+	rfids_uids_failed_list = []
 	counter = 0
 	for row in csv.reader(io_string, delimiter=','):
 		_, createdTag = RaspiTag.objects.update_or_create(
 			atr_hex=ATRCardType.RASPI_TAG_ATR,
 			uid=row[1]
 		)
+		"""The update() method adds element(s) to the dictionary if the key is not in the dictionary. 
+		If the key is in the dictionary, it updates the key with the new value."""
+		if row[0] not in rfids_dict.keys() and row[1] not in rfids_dict.values():
+			rfids_dict.update({row[0]: row[1]})
+		elif row[0] in rfids_dict.keys():
+			boards_failed_list.append(row[0])
+		elif row[1] in rfids_dict.values():
+			rfids_uids_failed_list.append(row[1])
 		counter += 1
 
 	queryset = RaspiTag.objects.all().order_by('-id')[:counter]
-	context = {"csv_uploaded": "True", "boards_uid_list": queryset, "counter": counter}
+	boards_qs = Board.objects.all()
+	context = {"csv_uploaded": "True", "boards_uid_list": queryset, "boards": boards_qs, "counter": counter,
+				"rfids_dict": rfids_dict, "boards_failed_list": boards_failed_list,
+				"rfids_uids_failed_list": rfids_uids_failed_list}
+	context = {}
 	return render(request, template_name_submitted, context)
 
 @staff_member_required
