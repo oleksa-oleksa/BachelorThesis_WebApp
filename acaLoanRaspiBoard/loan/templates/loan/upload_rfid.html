@@ -6,43 +6,36 @@ Upload CSV
 {% endblock %}
 
 
-{% block invitation %}
+{% block content %}
+ <div class="admin_content_container">
+
     <div class="dark_text">
         Upload Boards RFID List
     </div>
     <div class="blue_text" style="padding-top: 5px; font-size: 14px;">
         Upload CSV file you have created before with boards_no and boards_uid
-        <hr style="margin-top: 20px;">
+        <hr style="margin-top: 20px; margin-right: 150px; margin-bottom: 30px;">
     </div>
-{% endblock %}
-
-{% block content %}
-
-    <div class="admin_content_container" style="padding-left: 150px;">
-
-        {% if messages %}
-            {% for message in messages %}
-                <div>
-                    <strong>{{ message|safe }}</strong>
-                </div>
-            {% endfor %}
-        {% else %}
-            <div class="blue_text" style="padding-top: 5px; padding-left: 150px; font-size: 12px;">
-                {{ order }}
+    {% if messages %}
+        {% for message in messages %}
+            <div>
+                <strong>{{ message|safe }}</strong>
             </div>
-        {% endif %}
+        {% endfor %}
+    {% else %}
+        <div class="blue_text" style="padding-top: 5px; font-size: 12px;">
+            {{ order }}
+        </div>
+    {% endif %}
 
 
-        <form method='POST' enctype="multipart/form-data">
-        {% csrf_token %}
-        <label>Upload a csv-file: </label>
-        <input type="file" name="rfid_list" accept="text/csv"><br>
-        <button type="submit">Upload</button>
-        </form>
-    </div>
-
-    </div>
-
+    <form method='POST' enctype="multipart/form-data" style="padding-left: 150px; ">
+    {% csrf_token %}
+    <label>Upload a csv-file: </label>
+    <input type="file" name="rfid_list" accept="text/csv"><br>
+    <button type="submit">Upload</button>
+    </form>
+ </div>
 {% endblock %}
 
 
