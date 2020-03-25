@@ -21,6 +21,26 @@ Link Boards
 
             <a href="#" class="blue_button">LINK RFID TAGS TO BOARDS</a>
 
+            <div class="dark_text" style="padding-top: 20px;">
+                Recently added RFIDs:
+            </div>
+
+            <table id="infoTable" style="width: 40%;">
+            <tr>
+                <th>ATR_HEX</th>
+                <th>UID</th>
+                <th>Board</th>
+            </tr>
+
+            {% for rfid in boards_uid_list %}
+            <tr>
+                <td>{{ rfid.atr_hex}}</td>
+                <td>{{ rfid.uid }}</td>
+                <td>bla</td>
+            </tr>
+            {% endfor %}
+        </table>
+
         <!–– NO CSV FILE WAS UPLOADED IN THE PREVIOUS DJANGO TEMPLATE ––>
         {% else %}
             <div style="color: black; font-size: 16px;">
