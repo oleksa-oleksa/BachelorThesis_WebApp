@@ -7,7 +7,7 @@
 
 {% block invitation %}
     <div>
-        <div class="blue_text" style="padding-top: 30px;">
+        <div class="blue_text" style="padding-top: 30px; padding-left: 150px;">
             Take a Raspi Board and have your student card ready!
         </div>
 
@@ -16,53 +16,55 @@
 {% endblock %}
 
 {% block content %}
-<div class="left_content_container">
-    <div class="dark_text" style="font-size: 23px; padding-top: 30px;">
-            What I need to loan or return a board?
-        </div>
-    <div class="left_content_container" style="width: 70%;">
+    <div class="left_content_container">
+        <div class="dark_text" style="font-size: 23px; padding-top: 30px; padding-left: 150px;">
+                What I need to loan or return a board?
+            </div>
+        <div class="left_content_container" style="width: 70%;">
 
-         <div class="blue_text" style="padding-top: 20px;">
-            Student card
+             <div class="blue_text" style="padding-top: 20px; padding-left: 150px;">
+                Student card
+            </div>
+            <div class="gray_text" style="padding-top: 10px; padding-left: 150px;">
+                Use your Beuth Campus card<br> to identify yourself<br>
+                <font size="-2">https://www.beuth-hochschule.de/campus-card</font>
+            </div>
+            <div class="blue_text" style="padding-top: 40px; padding-left: 150px;">
+                Raspberry Board
+            </div>
+            <div class="gray_text" style="padding-top: 10px; padding-left: 150px;">
+                Take a Raspberry Board<br> from the shelf in this room<br>
+            </div>
         </div>
-        <div class="gray_text" style="padding-top: 10px;">
-            Use your Beuth Campus card<br> to identify yourself<br>
-            <font size="-2">https://www.beuth-hochschule.de/campus-card</font>
-        </div>
-        <div class="blue_text" style="padding-top: 40px;">
-            Raspberry Board
-        </div>
-        <div class="gray_text" style="padding-top: 10px;">
-            Take a Raspberry Board<br> from the shelf in this room<br>
+        <div class="right_content_container" style="width: 30%;">
+            <img class="info_img"  style="width: 150px;" align=”right” src="{% static "campuscard-beuth.jpg" %}">
+            <img class="info_img" style="width: 150px; height: 100px; padding-top: 30px;" align=”right” src="{% static "raspi_board.jpg" %}">
+
         </div>
     </div>
-    <div class="right_content_container" style="width: 30%;">
-        <img class="info_img"  style="width: 150px;" align=”right” src="{% static "campuscard-beuth.jpg" %}">
-        <img class="info_img" style="width: 150px; height: 100px; padding-top: 30px;" align=”right” src="{% static "raspi_board.jpg" %}">
 
+    <div class="right_content_container">
+        <div class="blue_text" style="padding-top: 30px; padding-left: 20px; padding-bottom: 10px;">
+            Boards for programming at home:
+        </div>
+        <table id="homeLoanInfo">
+            <tr>
+                <th>Board</th>
+                <th>Status</th>
+                <th>Info</th>
+            </tr>
+
+            {% for object in home_boards_list %}
+            <tr>
+                <td>{{ object.board_no }}</td>
+                <td>{{ object.board_status }}</td>
+                <td>untill 23.04</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
-</div>
-
-<div class="right_content_container">
-    <div class="blue_text" style="padding-top: 30px; padding-left: 20px; padding-bottom: 10px;">Boards for programming at home:</div>
-    <table id="homeLoanInfo">
-        <tr>
-            <th>Board</th>
-            <th>Status</th>
-            <th>Info</th>
-        </tr>
-
-        {% for object in home_boards_list %}
-        <tr>
-            <td>{{ object.board_no }}</td>
-            <td>{{ object.board_status }}</td>
-            <td>untill 23.04</td>
-        </tr>
-        {% endfor %}
-    </table>
-</div>
 {% endblock %}
 
 {% block right_header_img %}
-<img class="right_header_img" src="{% static "csm_acaLoan-Raspi.jpg" %}">
+    <img class="right_header_img" src="{% static "csm_acaLoan-Raspi.jpg" %}">
 {% endblock %}
