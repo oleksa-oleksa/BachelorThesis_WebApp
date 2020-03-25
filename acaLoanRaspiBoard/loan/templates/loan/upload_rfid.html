@@ -18,7 +18,7 @@ Upload CSV
 
 {% block content %}
 
-    <div class="admin_content_container">
+    <div class="admin_content_container" style="padding-left: 150px;">
 
         {% if messages %}
             {% for message in messages %}
@@ -27,10 +27,11 @@ Upload CSV
                 </div>
             {% endfor %}
         {% else %}
-            <div class="blue_text" style="padding-top: 5px; padding-left: 0px; font-size: 12px;">
+            <div class="blue_text" style="padding-top: 5px; padding-left: 150px; font-size: 12px;">
                 {{ order }}
             </div>
         {% endif %}
+
 
         <form method='POST' enctype="multipart/form-data">
         {% csrf_token %}
@@ -38,6 +39,7 @@ Upload CSV
         <input type="file" name="rfid_list" accept="text/csv"><br>
         <button type="submit">Upload</button>
         </form>
+    </div>
 
     </div>
 
