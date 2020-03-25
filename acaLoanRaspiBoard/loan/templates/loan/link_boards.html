@@ -6,34 +6,32 @@ Link Boards
 {% endblock %}
 
 
-{% block invitation %}
-    {% if csv_uploaded %}
-    <div class="system_header" style="color: black; font-size: 12px;">
-        <font style="background-color: #e6ffff; padding: 10px;">
-            CSV file uploaded and added to database<br>
-        </font>
-    </div>
-    {% else %}
-    <div class="system_header" style="color: black; font-size: 12px;">
-        <font style="background-color: #ffe6e6; padding: 10px;">
-            Please upload CSV file with boards_no and boards_uid!<br>
-        </font>
-    </div>
-    {% endif%}
-{% endblock %}
-
 {% block content %}
     <div class="admin_content_container">
+
         {% if csv_uploaded %}
+            <div class="system_header" style="color: black; font-size: 12px;">
+                <font style="background-color: #e6ffff; padding: 10px;">
+                    CSV file uploaded and added to database<br>
+                </font>
+            </div>
+
             <div class="dark_text">
                 Link Boards RFID UIDs to Boards Numbers
             </div>
+
             <a href="#" class="blue_button" style="margin-top: 40px;">LINK BOARDS</a>
 
         {% else %}
-            <a href="upload_rfid" class="blue_button" style="margin-top: 40px;">BACK TO UPLOAD</a>
-        {% endif%}
+            <div class="system_header" style="color: black; font-size: 12px;">
+                <font style="background-color: #ffe6e6; padding: 10px;">
+                    Please upload CSV file with boards_no and boards_uid!<br>
+                </font>
+            </div>
 
+            <a href="upload_rfid" class="blue_button" style="margin-top: 40px; margin-left: 150px;">BACK TO UPLOAD</a>
+
+        {% endif%}
     </div>
 
 {% endblock %}
