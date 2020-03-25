@@ -149,23 +149,21 @@ body {
 }
 
 
-#homeLoanInfo {
+#infoTable {
   font-family: 'Source Sans Pro', sans-serif;
   border-collapse: collapse;
-  width: 70%;
-  margin-left: 20px;
 }
 
-#homeLoanInfo td, #homeLoanInfo th {
+#infoTable td, #infoTable th {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-#homeLoanInfo tr:nth-child(even){background-color: #f2f2f2;}
+#infoTable tr:nth-child(even){background-color: #f2f2f2;}
 
-#homeLoanInfo tr:hover {background-color: #ddd;}
+#infoTable tr:hover {background-color: #ddd;}
 
-#homeLoanInfo th {
+#infoTable th {
   padding-top: 8px;
   padding-bottom: 8px;
   text-align: left;

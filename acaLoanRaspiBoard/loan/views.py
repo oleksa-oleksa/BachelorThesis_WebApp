@@ -1,4 +1,6 @@
-import csv, io
+import csv
+import io
+import datetime
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -49,18 +51,22 @@ def upload_rfid(request):
 	# admin_get_boards.py creates csv-file without header (there is no need, file contains only two columns)
 	# next(io_string)
 
+	counter = 0
 	for row in csv.reader(io_string, delimiter=','):
 		_, createdTag = RaspiTag.objects.update_or_create(
 			atr_hex=ATRCardType.RASPI_TAG_ATR,
 			uid=row[1]
 		)
+		counter += 1
 
-	context = {"csv_uploaded": "True"}
+	queryset = RaspiTag.objects.all().order_by('-id')[:counter]
+	context = {"csv_uploaded": "True", "boards_uid_list": queryset, "counter": counter}
 	return render(request, template_name_submitted, context)
 
 @staff_member_required
 def link_boards(request):
-	queryset = RaspiTag.objects.all()
+	#queryset = RaspiTag.objects.all()
 	template_name = "loan/link_boards.html"
-	context = {"boards_uid_list": queryset}
+	#context = {"boards_uid_list": queryset}
+	context = {}
 	return render(request, template_name, context)
