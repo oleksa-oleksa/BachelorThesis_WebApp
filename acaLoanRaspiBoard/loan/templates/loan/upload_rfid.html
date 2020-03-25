@@ -7,15 +7,16 @@ Upload CSV
 
 
 {% block content %}
- <div class="admin_content_container" style="margin-left: 150px;">
+ <div class="admin_content_container" style="padding-left: 150px;">
 
     <div class="dark_text">
         Upload Boards RFID List
     </div>
     <div class="blue_text" style="padding-top: 5px; font-size: 14px;">
         Upload CSV file you have created before with boards_no and boards_uid
-        <hr style="margin-top: 20px; margin-right: 150px; margin-bottom: 30px;">
     </div>
+     <hr class="hr_line" style="margin-left: 0px; margin-top: 20px; margin-bottom: 30px; width: 40%;">
+
     {% if messages %}
         {% for message in messages %}
             <div>

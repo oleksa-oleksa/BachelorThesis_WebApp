@@ -124,7 +124,6 @@ body {
 	color: #424242;
 	font-weight: regular;
 	padding-top: 20px;
-	padding-left: 150px;
 }
 
 .gray_text {
@@ -174,3 +173,6 @@ body {
   color: #0098a1;
 }
 
+.hr_line {
+    border-top: 1px dashed gray;
+}
