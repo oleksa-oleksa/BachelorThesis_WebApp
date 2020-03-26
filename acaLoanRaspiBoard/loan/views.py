@@ -62,12 +62,13 @@ def upload_rfid(request):
 		)
 		"""The update() method adds element(s) to the dictionary if the key is not in the dictionary. 
 		If the key is in the dictionary, it updates the key with the new value."""
+		if row[0] in rfids_dict.keys():
+			boards_failed_list.append(row[0])
+		if row[1] in rfids_dict.values():
+			rfids_uids_failed_list.append(row[1])
 		if row[0] not in rfids_dict.keys() and row[1] not in rfids_dict.values():
 			rfids_dict.update({row[0]: row[1]})
-		elif row[0] in rfids_dict.keys():
-			boards_failed_list.append(row[0])
-		elif row[1] in rfids_dict.values():
-			rfids_uids_failed_list.append(row[1])
+
 		counter += 1
 
 	queryset = RaspiTag.objects.all().order_by('-id')[:counter]
@@ -75,7 +76,6 @@ def upload_rfid(request):
 	context = {"csv_uploaded": "True", "boards_uid_list": queryset, "boards": boards_qs, "counter": counter,
 				"rfids_dict": rfids_dict, "boards_failed_list": boards_failed_list,
 				"rfids_uids_failed_list": rfids_uids_failed_list}
-	context = {}
 	return render(request, template_name_submitted, context)
 
 @staff_member_required
