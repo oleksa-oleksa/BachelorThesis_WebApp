@@ -20,17 +20,30 @@ Link Boards
             <hr class="hr_line" style="margin-left: 0px; margin-top: 50px; margin-bottom: 30px; width: 40%;">
 
             <!–– KEY OR VALUE DUPLICATES WERE FOUND ––>
-            {% if boards_failed_list != 0 %}
-                <div style="color: black; font-size: 16px;">
-                    <font style="background-color: #ffe6e6; padding: 15px;">
+            {% if boards_failed_list %}
+                <div style="color: black; font-size: 16px; margin-top: 15px;">
+                    <font style="background-color: #ffe6e6; ">
                         Upload problem: board_no duplicates are found.<br>
                         Probably you typed the same board_no twice<br>
                         Check and corrects csv-file. You might need to delete csv-file and re-scan all rfids again<br>
                     </font>
+                    <table id="infoTable" style="width: 40%;">
+                        <tr>
+                            <th>Board number</th>
+                        </tr>
+
+                        {% for board_no in boards_failed_list %}
+                        <tr>
+                            <td>{{ board_no }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
                 </div>
-            {% elif rfids_uids_failed_list != 0 %}
-                <div style="color: black; font-size: 16px;">
-                    <font style="background-color: #ffe6e6; padding: 15px;">
+            {% endif %}
+
+            {% if rfids_uids_failed_list %}
+                <div style="color: black; font-size: 16px; margin-top: 15px;">
+                    <font style="background-color: #ffe6e6;">
                         Upload problem: rfid_uid duplicates are found.<br>
                         Probably you scanned the same rfid tag twice and saved it as another board_no<br>
                         Check and corrects csv-file. You might need to delete csv-file and re-scan all rfids again<br>
@@ -39,7 +52,7 @@ Link Boards
             {% endif %}
 
             <!–– THE CSV FILE IS OK: NO DUPLICATES, UPLOADED ––>
-            {% if boards_failed_list == 0 and rfids_uids_failed_list == 0 %}
+            {% if not boards_failed_list and not rfids_uids_failed_list %}
                 <a href="#" class="blue_button">LINK RFID TAGS TO BOARDS</a>
 
                 <div class="dark_text" style="padding-top: 20px;">
