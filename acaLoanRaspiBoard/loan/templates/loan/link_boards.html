@@ -20,34 +20,51 @@ Link Boards
             <hr class="hr_line" style="margin-left: 0px; margin-top: 50px; margin-bottom: 30px; width: 40%;">
 
             <!–– KEY OR VALUE DUPLICATES WERE FOUND ––>
-            {% if boards_failed_list %}
+            {% if boards_failed_dict %}
                 <div style="color: black; font-size: 16px; margin-top: 15px;">
                     <font style="background-color: #ffe6e6; ">
                         Upload problem: board_no duplicates are found.<br>
                         Probably you typed the same board_no twice<br>
-                        Check and corrects csv-file. You might need to delete csv-file and re-scan all rfids again<br>
+                        Check and corrects csv-file. You might need to delete csv-file and re-scan all rfids again
                     </font>
-                    <table id="infoTable" style="width: 40%;">
+                    <div class="dark_text">Found board number duplicates:</div>
+                    <table style="width: 30%; padding-top: 20px;">
                         <tr>
                             <th>Board number</th>
+                            <th>UID</th>
                         </tr>
 
-                        {% for board_no in boards_failed_list %}
+                        {% for key, value in boards_failed_dict.items %}
                         <tr>
-                            <td>{{ board_no }}</td>
+                            <td>{{ key }}</td>
+                            <td>{{ value }}</td>
                         </tr>
                         {% endfor %}
                     </table>
                 </div>
             {% endif %}
 
-            {% if rfids_uids_failed_list %}
+            {% if rfids_uids_failed_dict %}
                 <div style="color: black; font-size: 16px; margin-top: 15px;">
                     <font style="background-color: #ffe6e6;">
                         Upload problem: rfid_uid duplicates are found.<br>
                         Probably you scanned the same rfid tag twice and saved it as another board_no<br>
                         Check and corrects csv-file. You might need to delete csv-file and re-scan all rfids again<br>
                     </font>
+                    <div class="dark_text">Found UID duplicates:</div>
+                    <table style="width: 30%; padding-top: 20px;">
+                        <tr>
+                            <th>Board number</th>
+                            <th>UID</th>
+                        </tr>
+
+                        {% for key, value in rfids_uids_failed_dict.items %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ value }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
                 </div>
             {% endif %}
 
@@ -59,7 +76,7 @@ Link Boards
                     Recently added RFIDs:
                 </div>
 
-                <table id="infoTable" style="width: 40%;">
+                <table style="width: 40%;">
                 <tr>
                     <th>ATR_HEX</th>
                     <th>UID</th>
