@@ -112,7 +112,7 @@ class Board(models.Model):
 	Each board has only one unuqie rfid tag
 	"""
 	raspi_tag = models.OneToOneField(RaspiTag, on_delete=models.SET_NULL, blank=True, null=True)
-	board_no = models.IntegerField('board number', unique=True)
+	board_no = models.CharField('board number', max_length=3, unique=True)
 	board_type = enum.EnumField(BoardType, default=BoardType.LAB_LOAN)
 	board_status = enum.EnumField(BoardStatus, default=BoardStatus.ACTIVE)
 	
@@ -121,9 +121,9 @@ class Board(models.Model):
 		
 	def __str__(self):
 		if self.raspi_tag is not None:
-			return 'Board ' + str(self.board_no)
+			return 'Board ' + self.board_no
 		else:
-			return 'Board ' + str(self.board_no)
+			return 'Board ' + self.board_no
 
 
 class Action(models.Model):
