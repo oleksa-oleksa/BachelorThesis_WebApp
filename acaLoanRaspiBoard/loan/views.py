@@ -85,7 +85,7 @@ def upload_rfid(request):
 
 	queryset = RaspiTag.objects.all().order_by('-id')[:counter]
 	for tag in queryset:
-		boards_qs = Board.objects.filter(raspi_tag=tag)
+		boards_qs = Board.objects.all().filter(raspi_tag=tag)
 	context = {"csv_uploaded": "True", "boards_uid_list": queryset, "boards": boards_qs, "counter": counter,
 				"rfids_dict": rfids_dict, "boards_failed_dict": boards_failed_dict,
 				"rfids_uids_failed_dict": rfids_uids_failed_dict}
