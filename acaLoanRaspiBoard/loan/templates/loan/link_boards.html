@@ -37,7 +37,11 @@ Link Boards
                         {% for key, value in boards_failed_dict.items %}
                         <tr>
                             <td>{{ key }}</td>
-                            <td>{{ value }}</td>
+                            <td>
+                                {% for uid in value %}
+                                {{ uid }}<br>
+                                {% endfor %}
+                            </td>
                         </tr>
                         {% endfor %}
                     </table>
@@ -54,14 +58,18 @@ Link Boards
                     <div class="dark_text">Found UID duplicates:</div>
                     <table style="width: 30%; padding-top: 20px;">
                         <tr>
-                            <th>Board number</th>
                             <th>UID</th>
+                            <th>Board number</th>
                         </tr>
 
                         {% for key, value in rfids_uids_failed_dict.items %}
                         <tr>
                             <td>{{ key }}</td>
-                            <td>{{ value }}</td>
+                            <td>
+                                {% for board in value %}
+                                {{ board }}<br>
+                                {% endfor %}
+                            </td>
                         </tr>
                         {% endfor %}
                     </table>

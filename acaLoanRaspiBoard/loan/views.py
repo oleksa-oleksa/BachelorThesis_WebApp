@@ -64,13 +64,21 @@ def upload_rfid(request):
 		If the key is in the dictionary, it updates the key with the new value."""
 		# board_no is duplicated
 		if row[0] in rfids_dict.keys():
-			boards_failed_dict.update({row[0]: row[1]})
+			if row[0] not in boards_failed_dict.keys():
+				boards_failed_dict[row[0]] = [row[1]]
+			else:
+				boards_failed_dict[row[0]].append(row[1])
+
 		# rfid_tag is duplicated
 		if row[1] in rfids_dict.values():
-			rfids_uids_failed_dict.update({row[0]: row[1]})
+			if row[1] not in rfids_uids_failed_dict.keys():
+				rfids_uids_failed_dict[row[1]] = [row[0]]
+			else:
+				rfids_uids_failed_dict[row[1]].append(row[0])
 		# everything is okay
 		if row[0] not in rfids_dict.keys() and row[1] not in rfids_dict.values():
 			rfids_dict.update({row[0]: row[1]})
+			Board.objects.filter(board_no=row[0]).update(raspi_tag=createdTag)
 
 		counter += 1
 
