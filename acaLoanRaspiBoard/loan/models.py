@@ -86,7 +86,7 @@ class Student(models.Model):
 	Primary key = default django primary key
 	Each student has only one unuqie student card
 	"""
-	student_card = models.OneToOneField(StudentCard, on_delete=models.CASCADE, blank=True, null=True)
+	student_card = models.OneToOneField(StudentCard, on_delete=models.SET_NULL, blank=True, null=True)
 	semester = models.ForeignKey(Semester, on_delete=models.CASCADE, blank=True, null=True)
 	first_name = models.CharField('first name', max_length=50)
 	second_name = models.CharField('second name', max_length=50)
@@ -111,7 +111,7 @@ class Board(models.Model):
 	Primary key = default django primary key
 	Each board has only one unuqie rfid tag
 	"""
-	raspi_tag = models.OneToOneField(RaspiTag, on_delete=models.CASCADE, blank=True, null=True)
+	raspi_tag = models.OneToOneField(RaspiTag, on_delete=models.SET_NULL, blank=True, null=True)
 	board_no = models.CharField('board number', max_length=3, unique=True)
 	board_type = enum.EnumField(BoardType, default=BoardType.LAB_LOAN)
 	board_status = enum.EnumField(BoardStatus, default=BoardStatus.ACTIVE)
