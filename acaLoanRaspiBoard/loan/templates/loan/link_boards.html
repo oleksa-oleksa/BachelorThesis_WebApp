@@ -81,9 +81,6 @@ Link Boards
                 <a href="#" class="blue_button">LINK RFID TAGS TO BOARDS</a>
 
                 <div class="dark_text" style="padding-top: 20px;">
-                    {% for nom in boards %}
-                        {{ nom }}
-                    {% endfor %}
                     Recently added RFIDs:
                 </div>
 
@@ -98,7 +95,7 @@ Link Boards
                 <tr>
                     <td>{{ rfid.atr_hex}}</td>
                     <td>{{ rfid.uid }}</td>
-                    <td>bla</td>
+                    <td>{{ rfid.board }}</td>
                 </tr>
                 {% endfor %}
             </table>
