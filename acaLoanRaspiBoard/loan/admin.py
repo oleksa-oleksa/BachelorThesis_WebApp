@@ -4,12 +4,12 @@ from .models import Student, Board, Action, StudentCard, RaspiTag, Semester
 
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('student_card', 'semester', 'first_name', 'second_name', 'matricul_no', 'hrz_no',
+    list_display = ('second_name', 'first_name', 'matricul_no', 'hrz_no', 'semester', 'student_card',
                     'group', 'is_home_loan_enabled')
 
 
 class BoardAdmin(admin.ModelAdmin):
-    list_display = ('raspi_tag', 'board_no',  'board_type',  'board_status',)
+    list_display = ('board_no', 'board_type', 'board_status', 'raspi_tag')
 
 
 class ActionAdmin(admin.ModelAdmin):
