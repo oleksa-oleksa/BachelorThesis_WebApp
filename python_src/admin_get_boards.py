@@ -161,7 +161,7 @@ class DetectionObserver(CardObserver):
                     print("Remove tag!")
                 print("=============================================")
             elif added_card is None:
-                print("Insert valid student card or scan a Raspberry Board RFID Tag")
+                print("Sscan a Raspberry Board RFID Tag")
 
         for card in removedcards:
             atr = toHexString(card.atr)
