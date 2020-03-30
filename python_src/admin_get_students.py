@@ -140,28 +140,28 @@ class DetectionObserver(CardObserver):
             print("+Inserted: ", atr)
             added_card = get_cardtype(atr, "added")
             if isinstance(added_card, StudentCard):
+                read_raspitag(added_card)
                 print("=============================================")
-                print("*** Please use Raspberry Pi Board RFID Tag! ***")
-                print("*** Remove student card to continue... ***")
+                print("Student card UID:", added_card.uid)
+                answer = get_input('save uid')
+                if answer == 1:
+                    number = input("Student matriculation number?: ").rstrip('\n')
+                    number = str.strip(number)
+                    f.write("{n},{u}\n".format(n=number, u=added_card.uid))
+                    print("SAVED: Board: {n}, UID: {u}".format(n=number, u=added_card.uid))
+                    print("Remove card!")
+                elif answer == 0:
+                    print("Remove card!")
                 print("=============================================")
                 break
 
             elif isinstance(added_card, RaspiTag):
-                read_raspitag(added_card)
                 print("=============================================")
-                print("RFID UID:", added_card.uid)
-                answer = get_input('save uid')
-                if answer == 1:
-                    number = input("Board number?: ").rstrip('\n')
-                    number = str.strip(number)
-                    f.write("{n},{u}\n".format(n=number, u=added_card.uid))
-                    print("SAVED: Board: {n}, UID: {u}".format(n=number, u=added_card.uid))
-                    print("Remove tag!")
-                elif answer == 0:
-                    print("Remove tag!")
+                print("*** Please use MIFARE Student card! ***")
+                print("*** Remove rfid to continue... ***")
                 print("=============================================")
             elif added_card is None:
-                print("Insert valid student card or scan a Raspberry Board RFID Tag")
+                print("Insert valid student card!")
 
         for card in removedcards:
             atr = toHexString(card.atr)
@@ -235,7 +235,7 @@ print("Press Ctrl+C to exit the tool")
 print("=============================================")
 print("SCAN BOARD RFID TAG")
 
-f = open("admin_boards.csv", "a+")
+f = open("admin_students.csv", "a+")
 
 
 while (1):
