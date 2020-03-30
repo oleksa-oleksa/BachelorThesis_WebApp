@@ -1,0 +1,124 @@
+{% extends "admin.html" %}
+{% load static %}
+
+{% block head_title %}
+Link Students
+{% endblock %}
+
+
+{% block content %}
+    <div class="admin_content_container" style="padding-left: 150px;">
+
+        <!–– THE CSV FILE WAS UPLOADED IN THE PREVIOUS DJANGO TEMPLATE ––>
+        {% if csv_uploaded %}
+            <div style="color: black; font-size: 16px;">
+                <font style="background-color: #e6ffff; padding: 15px;">
+                    CSV file uploaded and added to database<br>
+                </font>
+            </div>
+
+            <hr class="hr_line" style="margin-left: 0px; margin-top: 50px; margin-bottom: 30px; width: 40%;">
+
+            <!–– KEY OR VALUE DUPLICATES WERE FOUND ––>
+            {% if boards_failed_dict %}
+                <div style="color: black; font-size: 16px; margin-top: 15px;">
+                    <font style="background-color: #ffe6e6; ">
+                        Upload problem: board_no duplicates are found.<br>
+                        Probably you typed the same board_no twice<br>
+                        Check and corrects csv-file. You might need to delete csv-file and re-scan all rfids again
+                    </font>
+                    <div class="dark_text">Found board number duplicates:</div>
+                    <table style="width: 30%; padding-top: 20px;">
+                        <tr>
+                            <th>Board number</th>
+                            <th>UID</th>
+                        </tr>
+
+                        {% for key, value in boards_failed_dict.items %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>
+                                {% for uid in value %}
+                                {{ uid }}<br>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% endif %}
+
+            {% if rfids_uids_failed_dict %}
+                <div style="color: black; font-size: 16px; margin-top: 15px;">
+                    <font style="background-color: #ffe6e6;">
+                        Upload problem: rfid_uid duplicates are found.<br>
+                        Probably you scanned the same rfid tag twice and saved it as another board_no<br>
+                        Check and corrects csv-file. You might need to delete csv-file and re-scan all rfids again<br>
+                    </font>
+                    <div class="dark_text">Found UID duplicates:</div>
+                    <table style="width: 30%; padding-top: 20px;">
+                        <tr>
+                            <th>UID</th>
+                            <th>Board number</th>
+                        </tr>
+
+                        {% for key, value in rfids_uids_failed_dict.items %}
+                        <tr>
+                            <td>{{ key }}</td>
+                            <td>
+                                {% for board in value %}
+                                {{ board }}<br>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% endif %}
+
+            <!–– THE CSV FILE IS OK: NO DUPLICATES, UPLOADED ––>
+            {% if not boards_failed_list and not rfids_uids_failed_list %}
+                <a href="#" class="blue_button">LINK RFID TAGS TO BOARDS</a>
+
+                <div class="dark_text" style="padding-top: 20px;">
+                    Recently added RFIDs:
+                </div>
+
+                <table style="width: 40%;">
+                <tr>
+                    <th>ATR_HEX</th>
+                    <th>UID</th>
+                    <th>Board</th>
+                </tr>
+
+                {% for rfid in boards_uid_list %}
+                <tr>
+                    <td>{{ rfid.atr_hex}}</td>
+                    <td>{{ rfid.uid }}</td>
+                    <td>{{ rfid.board }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+
+        <!–– NO CSV FILE WAS UPLOADED IN THE PREVIOUS DJANGO TEMPLATE ––>
+        {% else %}
+            <div style="color: black; font-size: 16px;">
+                <font style="background-color: #ffe6e6; padding: 15px;">
+                    Please upload CSV file with boards_no and boards_uid!<br>
+                </font>
+            </div>
+
+            <hr class="hr_line" style="margin-left: 0px; margin-top: 50px; margin-bottom: 30px; width: 40%;">
+
+            <a href="upload_rfid" class="blue_button">BACK TO UPLOAD</a>
+
+        {% endif%}
+    </div>
+
+{% endblock %}
+
+
+{% block right_header_img %}
+<img class="right_header_img_admin" src="{% static "icons8-raspberry-pi-96.png" %}">
+{% endblock %}
