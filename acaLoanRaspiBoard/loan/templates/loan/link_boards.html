@@ -78,7 +78,7 @@ Link Boards
 
             <!–– THE CSV FILE IS OK: NO DUPLICATES, UPLOADED ––>
             {% if not boards_failed_list and not rfids_uids_failed_list %}
-                <a href="#" class="blue_button">LINK RFID TAGS TO BOARDS</a>
+                <a href="admin" class="blue_button">BACK TO ADMIN</a>
 
                 <div class="dark_text" style="padding-top: 20px;">
                     Recently added RFIDs:
@@ -86,16 +86,16 @@ Link Boards
 
                 <table style="width: 40%;">
                 <tr>
-                    <th>ATR_HEX</th>
-                    <th>UID</th>
                     <th>Board</th>
+                    <th>UID</th>
+                    <th>ATR_HEX</th>
                 </tr>
 
-                {% for rfid in boards_uid_list %}
+                {% for rfid in queryset %}
                 <tr>
-                    <td>{{ rfid.atr_hex}}</td>
-                    <td>{{ rfid.uid }}</td>
                     <td>{{ rfid.board }}</td>
+                    <td>{{ rfid.uid }}</td>
+                    <td>{{ rfid.atr_hex}}</td>
                 </tr>
                 {% endfor %}
             </table>
@@ -111,7 +111,7 @@ Link Boards
 
             <hr class="hr_line" style="margin-left: 0px; margin-top: 50px; margin-bottom: 30px; width: 40%;">
 
-            <a href="upload_rfid" class="blue_button">BACK TO UPLOAD</a>
+            <a href="admin" class="blue_button">BACK TO ADMIN</a>
 
         {% endif%}
     </div>
