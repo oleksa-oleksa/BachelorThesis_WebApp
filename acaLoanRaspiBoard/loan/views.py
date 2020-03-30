@@ -87,7 +87,7 @@ def upload_rfid(request):
 	# seelct * from raspi_tag join boards on raspitag.id = boards.rapbitag_id
 	queryset = RaspiTag.objects.select_related('board').all().order_by('-id')[:counter]
 
-	context = {"csv_uploaded": "True", "boards_uid_list": queryset, "counter": counter,
+	context = {"csv_uploaded": "True", "queryset": queryset, "counter": counter,
 				"rfids_dict": rfids_dict, "boards_failed_dict": boards_failed_dict,
 				"rfids_uids_failed_dict": rfids_uids_failed_dict}
 	return render(request, template_name_submitted, context)
@@ -105,7 +105,7 @@ def link_boards(request):
 @staff_member_required
 def upload_student(request):
 	template_name = "loan/upload_student.html"
-	template_name_submitted = "loan/link_student.html"
+	template_name_submitted = "loan/link_students.html"
 
 
 	prompt = {
@@ -166,7 +166,7 @@ def upload_student(request):
 	# seelct * from raspi_tag join boards on raspitag.id = boards.rapbitag_id
 	queryset = StudentCard.objects.select_related('student').all().order_by('-id')[:counter]
 
-	context = {"csv_uploaded": "True", "boards_uid_list": queryset, "counter": counter,
+	context = {"csv_uploaded": "True", "queryset": queryset, "counter": counter,
 				"cards_dict": cards_dict, "student_failed_dict": student_failed_dict,
 				"cards_uids_failed_dict": cards_uids_failed_dict}
 	return render(request, template_name_submitted, context)
