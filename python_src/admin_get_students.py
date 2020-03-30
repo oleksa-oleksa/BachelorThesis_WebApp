@@ -6,11 +6,36 @@ from smartcard.CardMonitoring import CardMonitor, CardObserver
 from smartcard.CardRequest import CardRequest
 from smartcard.scard import *
 import smartcard.util
+import signal
 
 from atr_cardtype import *
 from scard_command_set import *
 
 READER = "ACS ACR122U PICC Interface 00 00"
+
+
+def get_input(action):
+    answer = ''
+    while answer != 'Y' and answer != 'y' and answer != 'N' and answer != 'n':
+        answer = input("Do you want to " + action + "? [y/n]: ").rstrip('\n')
+        answer = str.strip(answer)
+        print(answer)
+    if answer == 'Y' or answer == 'y':
+        return 1
+    elif answer == 'N' or answer == 'n':
+        return 0
+
+
+def keyboard_interrupt_handler(sig, frame):
+    print("KeyboardInterrupt (ID: {}) has been caught. Exiting...".format(sig))
+    if sig == 2:
+        answer = get_input('exit')
+        if answer == 1:
+            print("File saved!")
+            f.close()
+            exit(0)
+        elif answer == 0:
+            print("Resumed...")
 
 
 def read_uid(cardtype):
@@ -96,7 +121,6 @@ def get_cardtype(atr, action):
 
 def read_student_card(cardtype):
     read_uid(cardtype)
-    print("uid", cardtype.uid)
 
 
 def read_raspitag(cardtype):
@@ -116,11 +140,26 @@ class DetectionObserver(CardObserver):
             print("+Inserted: ", atr)
             added_card = get_cardtype(atr, "added")
             if isinstance(added_card, StudentCard):
-                read_student_card(added_card)
+                print("=============================================")
+                print("*** Please use Raspberry Pi Board RFID Tag! ***")
+                print("*** Remove student card to continue... ***")
+                print("=============================================")
+                break
 
             elif isinstance(added_card, RaspiTag):
                 read_raspitag(added_card)
-
+                print("=============================================")
+                print("RFID UID:", added_card.uid)
+                answer = get_input('save uid')
+                if answer == 1:
+                    number = input("Board number?: ").rstrip('\n')
+                    number = str.strip(number)
+                    f.write("{n},{u}\n".format(n=number, u=added_card.uid))
+                    print("SAVED: Board: {n}, UID: {u}".format(n=number, u=added_card.uid))
+                    print("Remove tag!")
+                elif answer == 0:
+                    print("Remove tag!")
+                print("=============================================")
             elif added_card is None:
                 print("Insert valid student card or scan a Raspberry Board RFID Tag")
 
@@ -129,10 +168,12 @@ class DetectionObserver(CardObserver):
             print("-Removed: ", atr)
             removed_card = get_cardtype(atr, "removed")
             if isinstance(removed_card, StudentCard):
-                pass
+                print("SCAN BOARD RFID TAG")
+                print("or press Ctrl+C to exit the tool")
 
             elif isinstance(removed_card, RaspiTag):
-                pass
+                print("SCAN BOARD RFID TAG")
+                print("or press Ctrl+C to exit the tool")
 
             elif removed_card is None:
                 print("Goog bye stranger")
@@ -181,6 +222,21 @@ print_readers_info(readers())
 cardobserver = DetectionObserver()
 
 cardmonitor.addObserver(cardobserver)
+
+# KeyboardInterrupt Handler
+signal.signal(signal.SIGINT, keyboard_interrupt_handler)
+
+
+print("=============================================")
+print("University of Applied Sciences Berlin")
+print("=============================================")
+print("Admin Board RFID Management Tool")
+print("Press Ctrl+C to exit the tool")
+print("=============================================")
+print("SCAN BOARD RFID TAG")
+
+f = open("admin_boards.csv", "a+")
+
 
 while (1):
     """
