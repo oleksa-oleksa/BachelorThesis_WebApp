@@ -31,7 +31,7 @@ def keyboard_interrupt_handler(sig, frame):
     if sig == 2:
         answer = get_input('exit')
         if answer == 1:
-            print("File saved!")
+            print("Exiting!")
             f.close()
             exit(0)
         elif answer == 0:
@@ -168,11 +168,11 @@ class DetectionObserver(CardObserver):
             print("-Removed: ", atr)
             removed_card = get_cardtype(atr, "removed")
             if isinstance(removed_card, StudentCard):
-                print("SCAN BOARD RFID TAG")
+                print("SCAN STUDENT CARD")
                 print("or press Ctrl+C to exit the tool")
 
             elif isinstance(removed_card, RaspiTag):
-                print("SCAN BOARD RFID TAG")
+                print("SCAN STUDENT CARD")
                 print("or press Ctrl+C to exit the tool")
 
             elif removed_card is None:
@@ -230,10 +230,10 @@ signal.signal(signal.SIGINT, keyboard_interrupt_handler)
 print("=============================================")
 print("University of Applied Sciences Berlin")
 print("=============================================")
-print("Admin Board RFID Management Tool")
+print("Admin STUDENT CARD Management Tool")
 print("Press Ctrl+C to exit the tool")
 print("=============================================")
-print("SCAN BOARD RFID TAG")
+print("SCAN STUDENT CARD")
 
 f = open("admin_students.csv", "a+")
 
