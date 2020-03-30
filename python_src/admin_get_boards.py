@@ -31,7 +31,7 @@ def keyboard_interrupt_handler(sig, frame):
     if sig == 2:
         answer = get_input('exit')
         if answer == 1:
-            print("File saved!")
+            print("Exiting!")
             f.close()
             exit(0)
         elif answer == 0:
@@ -230,7 +230,7 @@ signal.signal(signal.SIGINT, keyboard_interrupt_handler)
 print("=============================================")
 print("University of Applied Sciences Berlin")
 print("=============================================")
-print("Admin Board RFID Management Tool")
+print("Admin BOARD RFID Management Tool")
 print("Press Ctrl+C to exit the tool")
 print("=============================================")
 print("SCAN BOARD RFID TAG")
