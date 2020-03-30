@@ -24,6 +24,12 @@ def index(request):
 
 
 @staff_member_required
+def admin_page(request):
+	template_name = "loan/admin_page.html"
+	context = {}
+	return render(request, template_name, context)
+
+@staff_member_required
 def upload_rfid(request):
 	template_name = "loan/upload_rfid.html"
 	template_name_submitted = "loan/link_boards.html"
@@ -95,9 +101,7 @@ def upload_rfid(request):
 
 @staff_member_required
 def link_boards(request):
-	#queryset = RaspiTag.objects.all()
 	template_name = "loan/link_boards.html"
-	#context = {"boards_uid_list": queryset}
 	context = {}
 	return render(request, template_name, context)
 
@@ -174,8 +178,6 @@ def upload_student(request):
 
 @staff_member_required
 def link_students(request):
-	#queryset = RaspiTag.objects.all()
 	template_name = "loan/link_students.html"
-	#context = {"boards_uid_list": queryset}
 	context = {}
 	return render(request, template_name, context)
