@@ -148,6 +148,20 @@ body {
   cursor: pointer;
 }
 
+.red_button {
+  background-color: red;
+  width: 340px;
+  border: none;
+  color: white;
+  padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 18px;
+  cursor: pointer;
+}
+
 table {
   font-family: 'Source Sans Pro', sans-serif;
   border-collapse: collapse;
