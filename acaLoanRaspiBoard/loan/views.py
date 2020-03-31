@@ -10,11 +10,11 @@ from django.contrib import auth
 from django.contrib.auth import logout
 
 from .models import StudentCard, Student, Operation, Board, Action, RaspiTag, ATRCardType
-from .forms import RaspiTagFormModel
+from .constraint import *
 
 
 def index(request):
-	queryset = Board.objects.all()
+	queryset = Board.objects.filter(board_no__gte=HOME_LOAN_MINIMAL_NO)
 	template_name = "loan/index.html"
 	context = {"home_boards_list": queryset}
 	return render(request, template_name, context)
@@ -28,13 +28,9 @@ def admin_page(request):
 
 
 def logout_view(request):
-	queryset = Board.objects.all()
 	if request.user.is_authenticated:
-			logout(request)
-	template_name = "loan/index.html"
-	context = {"home_boards_list": queryset}
-	return render(request, template_name, context)
-
+		logout(request)
+	return redirect('index')
 
 @staff_member_required
 def upload_rfid(request):
