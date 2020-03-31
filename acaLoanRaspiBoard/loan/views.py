@@ -6,16 +6,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
+from django.contrib import auth
 from django.contrib.auth import logout
-
 
 from .models import StudentCard, Student, Operation, Board, Action, RaspiTag, ATRCardType
 from .forms import RaspiTagFormModel
-
-"""
-def index(request):
-	return HttpResponse("Hello, world. You're at the loan index.")
-"""
 
 
 def index(request):
@@ -27,19 +22,17 @@ def index(request):
 
 @staff_member_required
 def admin_page(request):
-	if request.user.is_authenticated:
-		user = request.user
-		# user_out = logout(request)
 	template_name = "loan/admin_page.html"
-	context = {"user": user}
+	context = {}
 	return render(request, template_name, context)
 
 
-def logout(request):
+def logout_view(request):
+	queryset = Board.objects.all()
 	if request.user.is_authenticated:
-		user_out = logout(request)
+			logout(request)
 	template_name = "loan/index.html"
-	context = {}
+	context = {"home_boards_list": queryset}
 	return render(request, template_name, context)
 
 

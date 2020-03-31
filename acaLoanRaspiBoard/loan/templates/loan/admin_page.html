@@ -10,8 +10,8 @@ Admin Main Page
  <div class="admin_content_container" style="padding-left: 150px;">
 
     <div class="dark_text">
-        {% if user %}
-            Welcome, <strong> {{ user }}!</strong>
+        {% if user.is_authenticated %}
+            Welcome, <strong> {{ user.username }}!</strong>
         {% endif %}
     </div>
      <hr class="hr_line" style="margin-left: 0px; margin-top: 20px; margin-bottom: 30px; width: 40%;">
@@ -23,9 +23,10 @@ Admin Main Page
      <br>
      <a href="upload_student" class="blue_button" style="margin-top: 50px;">UPLOAD STUDENT CARD CSV-FILE</a>
      <br>
-     <a href="logout" class="blue_button" style="background-color: red; margin-top: 50px;">LOG OUT</a>
-
-
+     <form method="post" action="logout">
+        {% csrf_token %}
+        <button type="submit" class="red_button" style="margin-top: 50px;">LOG OUT</button>
+     </form>
  </div>
 {% endblock %}
 
