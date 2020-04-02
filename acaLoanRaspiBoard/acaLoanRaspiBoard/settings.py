@@ -105,14 +105,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'Europe/Berlin'
 
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
+TIME_INPUT_FORMATS = ['%H:%M:%S']
+TIME_FORMAT = '%H:%M:%S'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -120,3 +116,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
+
+from django.conf.locale.de import formats as de_formats
+de_formats.TIME_FORMAT = "H:i:s"
+de_formats.DATETIME_FORMAT = "c"

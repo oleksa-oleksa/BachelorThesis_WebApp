@@ -11,6 +11,6 @@ urlpatterns = [
     path('link_student_card', views.link_students, name='link_students'),
     path('admin', views.admin_page, name='admin'),
     path('logout', views.logout_view, name='logout'),
-
+    path('start', views.start, name='start'),
 
 ]
