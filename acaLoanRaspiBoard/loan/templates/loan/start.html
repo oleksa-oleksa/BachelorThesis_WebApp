@@ -5,10 +5,15 @@
 | Start
 {% endblock %}
 
+{% block info %}
+Use the card reader near the monitor.
+{% endblock %}
+
 {% block invitation %}
     <div>
-        <div class="blue_text" style="padding-top: 30px; padding-left: 150px;">
-            Take a Raspi Board and have your student card ready!
+        <div class="dark_text" style="padding-top: 30px; padding-left: 150px; font-size: 18px;">
+            First scan your student card:
+
         </div>
 
             <a href="http://www.oleksa.de" class="blue_button" style="margin-top: 40px; margin-left: 150px;">LOAN / RETURN BOARD</a>
@@ -66,5 +71,5 @@
 {% endblock %}
 
 {% block right_header_img %}
-    <img class="right_header_img" src="{% static "csm_acaLoan-Raspi.jpg" %}">
+    <img class="right_header_img" src="{% static "reader.png" %}">
 {% endblock %}
