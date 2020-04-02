@@ -177,17 +177,16 @@ def request_any_card(cardtype):
 """
 MAIN PART OF THE SCRIPT 
 """
+if __name__ == '__main__':
+	cardmonitor = CardMonitor()
 
-cardmonitor = CardMonitor()
+	print_readers_info(readers())
 
-print_readers_info(readers())
+	cardobserver = DetectionObserver()
 
-cardobserver = DetectionObserver()
+	cardmonitor.addObserver(cardobserver)
 
-cardmonitor.addObserver(cardobserver)
-
-
-while(1):
-	"""
-	"""
+	while(1):
+		"""
+		"""
 

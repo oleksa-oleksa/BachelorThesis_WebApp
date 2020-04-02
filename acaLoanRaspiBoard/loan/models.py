@@ -131,9 +131,9 @@ class Action(models.Model):
 	Holds the record about the loan operation, student, board and time      
 	Primary key = default django primary key
 	"""
-	student = models.ForeignKey(Student, on_delete=models.CASCADE)
-	board = models.ForeignKey(Board, on_delete=models.CASCADE)
-	timestamp = models.DateField(default=datetime.datetime.now())
+	student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
+	board = models.ForeignKey(Board, on_delete=models.SET_NULL, blank=True, null=True)
+	timestamp = models.DateTimeField(default=datetime.datetime.now)
 	operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
 
 	class Meta:

@@ -20,6 +20,13 @@ def index(request):
 	return render(request, template_name, context)
 
 
+def start(request):
+	queryset = Board.objects.filter(board_no__gte=HOME_LOAN_MINIMAL_NO)
+	template_name = "loan/start.html"
+	context = {"home_boards_list": queryset}
+	return render(request, template_name, context)
+
+
 @staff_member_required
 def admin_page(request):
 	template_name = "loan/admin_page.html"
