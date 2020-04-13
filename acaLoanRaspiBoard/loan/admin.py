@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Student, Board, Action, StudentCard, RaspiTag, Semester
+from .models import Student, Board, Action, StudentCard, RaspiTag, Semester, Session
 
 
 class StudentAdmin(admin.ModelAdmin):
@@ -41,5 +41,7 @@ admin.site.register(Action, ActionAdmin)
 admin.site.register(StudentCard, StudentCardAdmin)
 admin.site.register(RaspiTag, RaspiTagAdmin)
 admin.site.register(Semester, SemesterAdmin)
+admin.site.register(Session)
+
 
 

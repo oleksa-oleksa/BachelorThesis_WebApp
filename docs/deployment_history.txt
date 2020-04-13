@@ -109,7 +109,7 @@ https://simpleisbetterthancomplex.com/tutorial/2016/08/01/how-to-upload-files-wi
 ____________________
 
 Mar 16
-Coronaviris un Berlin
+Coronaviris in Berlin
 All kindergarten are closed, so I am writing a bachelor thesis at home being accompanied
 by my 1,5 years kid. My husband also has home office.
 Today the first index page were created using html+css
@@ -138,3 +138,15 @@ Mar 24
 Django forms explained
 https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Forms
 
+____
+13 Apr:
+Sessions Api:
+Endpoints .../api/sessions => "sessions" is the name of the resource
+using json
+
+start buttons: empty request, user is undefined => POST api/sessions {}
+draw "scan your card" page
+response: {session_id, state} 200
+
+GET api/sessions/session_id
+response: {session_id, state} 200 or 404 or 440 HTTP status code for session expired

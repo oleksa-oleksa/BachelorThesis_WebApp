@@ -146,10 +146,11 @@ class Session(models.Model):
 	Holds the information about the interaction between user (student) and system
 	Primary key = default django primary key
 	"""
-	student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
-	board = models.ForeignKey(Board, on_delete=models.SET_NULL, blank=True, null=True)
+	# student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
+	# board = models.ForeignKey(Board, on_delete=models.SET_NULL, blank=True, null=True)
 	start_time = models.DateTimeField(default=datetime.datetime.now)
-	operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
+	state = models.CharField('current state', max_length=20, unique=False)
+	# operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
 
 	class Meta:
 		ordering = ['start_time']
