@@ -1,6 +1,7 @@
 from django.db import models
 from django.forms import ModelForm
 from django_enumfield import enum
+from django.core.exceptions import ValidationError
 import datetime
 
 
@@ -141,16 +142,25 @@ class Action(models.Model):
 		ordering = ['timestamp']
 
 
+def validate_active_session(value):
+	threshold = datetime.datetime.now()-datetime.timedelta(minutes=1)
+	active_sessions = Session.objects.filter(start_time__gte=threshold)
+
+	if models.Exists(active_sessions):
+		raise ValidationError
+
+
 class Session(models.Model):
 	"""
 	Holds the information about the interaction between user (student) and system
 	Primary key = default django primary key
 	"""
+
 	# student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
 	# board = models.ForeignKey(Board, on_delete=models.SET_NULL, blank=True, null=True)
 	start_time = models.DateTimeField(default=datetime.datetime.now)
-	state = models.CharField('current state', max_length=20, unique=False)
+	state = models.CharField('current state', max_length=20, unique=False, validators=[validate_active_session])
 	# operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
 
 	class Meta:
-		ordering = ['start_time']
+		ordering = ['id']

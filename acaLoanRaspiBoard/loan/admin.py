@@ -13,7 +13,7 @@ class BoardAdmin(admin.ModelAdmin):
 
 
 class ActionAdmin(admin.ModelAdmin):
-    list_display = ('student', 'board',  'timestamp',  'operation',)
+    list_display = ('student', 'board',  'timestamp',  'operation')
 
 
 class SemesterAdmin(admin.ModelAdmin):
@@ -34,6 +34,10 @@ class RaspiTagAdmin(admin.ModelAdmin):
         return obj.board.board_no + obj.board.board_type + 'is ' + obj.board.board_status
 
 
+class SessionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'start_time', 'state')
+
+
 # Register your models here.
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Board, BoardAdmin)
@@ -41,7 +45,7 @@ admin.site.register(Action, ActionAdmin)
 admin.site.register(StudentCard, StudentCardAdmin)
 admin.site.register(RaspiTag, RaspiTagAdmin)
 admin.site.register(Semester, SemesterAdmin)
-admin.site.register(Session)
+admin.site.register(Session, SessionAdmin)
 
 
 
