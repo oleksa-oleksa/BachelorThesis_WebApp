@@ -8,6 +8,10 @@ verify_ssl = true
 [packages]
 django = "*"
 django-enumfield = "*"
+djangorestframework = "*"
+markdown = "*"
+django-filter = "*"
+requests = "*"
 
 [requires]
 python_version = "3.8"
