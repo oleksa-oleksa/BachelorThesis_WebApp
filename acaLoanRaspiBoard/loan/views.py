@@ -1,16 +1,25 @@
 import csv
 import io
 import datetime
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.contrib import auth
 from django.contrib.auth import logout
+from django.views.decorators.csrf import csrf_exempt
+from django.forms.models import model_to_dict
 
-from .models import StudentCard, Student, Operation, Board, Action, RaspiTag, ATRCardType
+from .models import StudentCard, Student, Operation, Board, Action, RaspiTag, ATRCardType, Session
 from .constraint import *
+
+
+@csrf_exempt
+def sessions_list(request):
+	if request.method == "POST":
+		session = Session.objects.create()
+		return JsonResponse(model_to_dict(session), status=201, safe=False)
 
 
 def index(request):
