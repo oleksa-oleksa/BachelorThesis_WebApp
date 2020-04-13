@@ -11,62 +11,30 @@ Use the card reader near the monitor.
 
 {% block invitation %}
     <div>
-        <div class="dark_text" style="padding-top: 30px; padding-left: 150px; font-size: 18px;">
+        <div class="dark_text" style="padding-top: 40px; padding-left: 150px; font-size: 18px;">
             First scan your student card:
-
         </div>
-
-            <a href="http://www.oleksa.de" class="blue_button" style="margin-top: 40px; margin-left: 150px;">LOAN / RETURN BOARD</a>
+         <div class="blue_text" style="padding-top: 10px; padding-left: 150px; font-size: 26px;">
+                {% if student %}
+                    {{ student }}
+                {% endif %}
+         </div>
     </div>
 {% endblock %}
 
 {% block content %}
     <div class="left_content_container">
-        <div class="dark_text" style="font-size: 23px; padding-top: 30px; padding-left: 150px;">
-                What I need to loan or return a board?
+        <div class="dark_text" style="padding-top: 10px; padding-left: 150px;">
+            {% if student %}
+                Place your Raspi Board at least 1 cm from the scanner
+            {% endif %}
             </div>
-        <div class="left_content_container" style="width: 70%;">
-
-             <div class="blue_text" style="padding-top: 20px; padding-left: 150px;">
-                Student card
-            </div>
-            <div class="gray_text" style="padding-top: 10px; padding-left: 150px;">
-                Use your Beuth Campus card<br> to identify yourself<br>
-                <font size="-2">https://www.beuth-hochschule.de/campus-card</font>
-            </div>
-            <div class="blue_text" style="padding-top: 40px; padding-left: 150px;">
-                Raspberry Board
-            </div>
-            <div class="gray_text" style="padding-top: 10px; padding-left: 150px;">
-                Take a Raspberry Board<br> from the shelf in this room<br>
-            </div>
-        </div>
-        <div class="right_content_container" style="width: 30%;">
-            <img class="info_img"  style="width: 150px;" align=”right” src="{% static "campuscard-beuth.jpg" %}">
-            <img class="info_img" style="width: 150px; height: 100px; padding-top: 30px;" align=”right” src="{% static "raspi_board.jpg" %}">
-
-        </div>
     </div>
 
     <div class="right_content_container">
-        <div class="blue_text" style="padding-top: 30px; padding-left: 20px; padding-bottom: 10px;">
-            Boards for programming at home:
+        <div class="blue_text" style="padding-top: 10px; padding-left: 100px; padding-bottom: 10px;">
+            You have 1 board
         </div>
-        <table style="width: 70%; margin-left: 20px;">
-            <tr>
-                <th>Board</th>
-                <th>Status</th>
-                <th>Info</th>
-            </tr>
-
-            {% for object in home_boards_list %}
-            <tr>
-                <td>{{ object.board_no }}</td>
-                <td>{{ object.board_status }}</td>
-                <td>untill 23.04</td>
-            </tr>
-            {% endfor %}
-        </table>
     </div>
 {% endblock %}
 

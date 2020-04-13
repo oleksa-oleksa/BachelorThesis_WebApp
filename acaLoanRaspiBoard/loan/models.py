@@ -51,7 +51,8 @@ class Operation(enum.Enum):
 	RETURN_BOARD = 3
 	ENABLE_HOME_LOAN = 4
 	DISABLE_HOME_LOAN = 5
-	UNKNOWN_OPERATION = 6
+	START_SESSION = 6
+	UNKNOWN_OPERATION = 7
 
 
 class BoardType(enum.Enum):
@@ -128,7 +129,7 @@ class Board(models.Model):
 
 class Action(models.Model):
 	"""
-	Holds the record about the loan operation, student, board and time      
+	Holds the record about the loan operation, student, board and time
 	Primary key = default django primary key
 	"""
 	student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
@@ -138,3 +139,17 @@ class Action(models.Model):
 
 	class Meta:
 		ordering = ['timestamp']
+
+
+class Session(models.Model):
+	"""
+	Holds the information about the interaction between user (student) and system
+	Primary key = default django primary key
+	"""
+	student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
+	board = models.ForeignKey(Board, on_delete=models.SET_NULL, blank=True, null=True)
+	start_time = models.DateTimeField(default=datetime.datetime.now)
+	operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
+
+	class Meta:
+		ordering = ['start_time']

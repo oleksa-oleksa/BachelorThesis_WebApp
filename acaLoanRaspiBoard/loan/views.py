@@ -23,7 +23,8 @@ def index(request):
 def start(request):
 	queryset = Board.objects.filter(board_no__gte=HOME_LOAN_MINIMAL_NO)
 	template_name = "loan/start.html"
-	context = {"home_boards_list": queryset}
+	student = "Oleksandra Baga"
+	context = {"home_boards_list": queryset, "student": student}
 	return render(request, template_name, context)
 
 
