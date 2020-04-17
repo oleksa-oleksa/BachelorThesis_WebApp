@@ -12,6 +12,7 @@ djangorestframework = "*"
 markdown = "*"
 django-filter = "*"
 requests = "*"
+django-fsm = "*"
 
 [requires]
 python_version = "3.8"

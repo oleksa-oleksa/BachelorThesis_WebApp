@@ -13,5 +13,6 @@ urlpatterns = [
     path('logout', views.logout_view, name='logout'),
     path('start', views.start, name='start'),
     path('api/sessions', views.sessions_list, name='sessions_list'),
+    path('api/reader', views.reader_event, name='reader_event'),
 
 ]
