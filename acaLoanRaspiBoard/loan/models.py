@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from django_enumfield import enum
 from django.core.exceptions import ValidationError
 import datetime
+from django_fsm import FSMField, transition
 
 
 class ATRCardType(enum.Enum):
@@ -142,14 +143,6 @@ class Action(models.Model):
 		ordering = ['timestamp']
 
 
-def validate_active_session(value):
-	threshold = datetime.datetime.now()-datetime.timedelta(minutes=1)
-	active_sessions = Session.objects.filter(start_time__gte=threshold)
-
-	if models.Exists(active_sessions):
-		raise ValidationError
-
-
 class Session(models.Model):
 	"""
 	Holds the information about the interaction between user (student) and system
@@ -159,8 +152,34 @@ class Session(models.Model):
 	# student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
 	# board = models.ForeignKey(Board, on_delete=models.SET_NULL, blank=True, null=True)
 	start_time = models.DateTimeField(default=datetime.datetime.now)
-	state = models.CharField('current state', max_length=20, unique=False, validators=[validate_active_session])
+	state = FSMField(default='session_started')
 	# operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
 
 	class Meta:
 		ordering = ['id']
+
+	@transition(field=state, source='session_started', target='valid_student_card')
+	def valid_student_card_inserted(self):
+		pass
+
+	@transition(field=state, source='session_started', target='unknown_student')
+	def unknown_student_card_inserted(self):
+		pass
+		# info
+
+	@transition(field=state, source='session_started', target='banned_student')
+	def banned_student_card_inserted(self):
+		pass
+		# info
+
+	@transition(field=state, source='*', target='timeout')
+	def timeout(self):
+		pass
+
+	@transition(field=state, source='valid_student_card', target='valid_lab_board')
+	def valid_lab_rfid_inserted(self):
+		pass
+
+	@transition(field=state, source=['unknown_student', 'banned_student', 'valid_lab_board'], target='finished')
+	def finished(self):
+		pass
