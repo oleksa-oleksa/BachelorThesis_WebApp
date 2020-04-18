@@ -72,7 +72,8 @@ def read_uid(cardtype):
 			print("NO_READER")
 	else:
 		print("FAILED")
-		
+
+
 def trace_command(apdu):
 	print("sending " + toHexString(apdu))
 
@@ -95,7 +96,6 @@ def get_cardtype(atr, action):
 		return None
 
 
-
 def read_student_card(cardtype):
 	read_uid(cardtype)
 	print("uid", cardtype.uid)
@@ -110,7 +110,7 @@ class DetectionObserver(CardObserver):
 	when cards are inserted/removed from the system and
 	detects the type of the card based on ATR
 	"""
-    
+
 	def update(self, observable, actions):
 		(addedcards, removedcards) = actions
 		for card in addedcards:
