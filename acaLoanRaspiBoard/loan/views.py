@@ -1,6 +1,7 @@
 import csv
 import io
 import datetime
+import json
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -11,7 +12,7 @@ from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
 from django.core.exceptions import ValidationError
-
+from django_fsm import TransitionNotAllowed
 from .models import StudentCard, Student, Operation, Board, Action, RaspiTag, ATRCardType, Session
 from .constraint import *
 
@@ -31,9 +32,35 @@ def sessions_list(request):
 @csrf_exempt
 def reader_event(request):
 	if request.method != "POST":
-		return HttpResponse('', status=404, safe=False)
+		return HttpResponse('', status_code=404)
 
-	session = Session.objects.first()
+	session = Session.get_active_session()
+
+	if session is None:
+		return HttpResponse('', status_code=400)
+
+	# type, uid
+
+	try:
+		body = json.loads(request.body)
+		input_type = body['type']
+		uid = body['uid']
+	except (KeyError, json.JSONDecodeError):
+		return HttpResponse("", status_code=400)
+
+	if input_type not in ["card", "tag"]:
+		return HttpResponse('', status_code=400)
+
+	try:
+		if input_type == "card":
+			session.valid_student_card_inserted(uid)
+		elif input_type == "tag":
+			session.valid_lab_rfid_inserted(uid)
+	except TransitionNotAllowed:
+		return HttpResponse("", status_code=409)
+	finally:
+		session.save()
+
 	return JsonResponse(model_to_dict(session), status=201, safe=False)
 
 
@@ -64,11 +91,11 @@ def logout_view(request):
 		logout(request)
 	return redirect('index')
 
+
 @staff_member_required
 def upload_rfid(request):
 	template_name = "loan/upload_rfid.html"
 	template_name_submitted = "loan/link_boards.html"
-
 
 	prompt = {
 		'order': 'Order of CSV should be: board_no,  rfid_uid'
