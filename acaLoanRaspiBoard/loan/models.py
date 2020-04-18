@@ -4,6 +4,8 @@ from django_enumfield import enum
 from django.core.exceptions import ValidationError
 import datetime
 from django_fsm import FSMField, transition
+from django.core.exceptions import ValidationError
+
 
 
 class ATRCardType(enum.Enum):
@@ -149,6 +151,8 @@ class Session(models.Model):
 	Primary key = default django primary key
 	"""
 
+	TERMINAL_STATES = ['timeout', 'finished']
+
 	# student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
 	# board = models.ForeignKey(Board, on_delete=models.SET_NULL, blank=True, null=True)
 	start_time = models.DateTimeField(default=datetime.datetime.now)
@@ -157,6 +161,12 @@ class Session(models.Model):
 
 	class Meta:
 		ordering = ['id']
+
+	def clean(self):
+		open_session = Session.objects.exclude(state__in=Session.TERMINAL_STATES).count()
+		if open_session != 0:
+			raise ValidationError('Active session already exists!')
+		super().clean()
 
 	@transition(field=state, source='session_started', target='valid_student_card')
 	def valid_student_card_inserted(self):

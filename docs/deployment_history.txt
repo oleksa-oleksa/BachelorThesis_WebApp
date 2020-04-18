@@ -150,3 +150,8 @@ response: {session_id, state} 200
 
 GET api/sessions/session_id
 response: {session_id, state} 200 or 404 or 440 HTTP status code for session expired
+
+----
+18 Apr
+Model Validation for Session
+https://docs.djangoproject.com/en/dev/ref/models/instances/#validating-objects

@@ -10,6 +10,7 @@ from django.contrib import auth
 from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
+from django.core.exceptions import ValidationError
 
 from .models import StudentCard, Student, Operation, Board, Action, RaspiTag, ATRCardType, Session
 from .constraint import *
@@ -18,8 +19,22 @@ from .constraint import *
 @csrf_exempt
 def sessions_list(request):
 	if request.method == "POST":
-		session = Session.objects.create()
+		session = Session()
+		try:
+			session.full_clean()
+		except ValidationError as e:
+			return JsonResponse(e.message_dict, status=403, safe=False)
+		session.save()
 		return JsonResponse(model_to_dict(session), status=201, safe=False)
+
+
+@csrf_exempt
+def reader_event(request):
+	if request.method != "POST":
+		return HttpResponse('', status=404, safe=False)
+
+	session = Session.objects.first()
+	return JsonResponse(model_to_dict(session), status=201, safe=False)
 
 
 def index(request):
