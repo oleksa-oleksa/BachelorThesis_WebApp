@@ -11,3 +11,5 @@ img/*.jpg
 img/*.png
 .idea
 **/venv/*
+db.sqlite3
+
