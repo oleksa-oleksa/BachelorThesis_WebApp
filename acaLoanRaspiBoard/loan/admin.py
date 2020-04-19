@@ -23,9 +23,6 @@ class SemesterAdmin(admin.ModelAdmin):
 class StudentCardAdmin(admin.ModelAdmin):
     list_display = ('atr_hex', 'uid', 'student')
 
-    def student(self, obj):
-        return obj.student.second_name + obj.student.first_name
-
 
 class RaspiTagAdmin(admin.ModelAdmin):
     list_display = ('atr_hex', 'uid', 'board')
@@ -35,8 +32,14 @@ class RaspiTagAdmin(admin.ModelAdmin):
 
 
 class SessionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'start_time', 'state')
+    list_display = ('id', 'student_card', 'student_name', 'start_time', 'state')
 
+    def student_name(self, obj):
+        if obj.student_card is None:
+            return "None"
+
+        student = obj.student_card.student
+        return "{} {}".format(student.second_name, student.first_name)
 
 # Register your models here.
 admin.site.register(Student, StudentAdmin)

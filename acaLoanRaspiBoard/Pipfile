@@ -13,6 +13,7 @@ markdown = "*"
 django-filter = "*"
 requests = "*"
 django-fsm = "*"
+pyscard = "*"
 
 [requires]
 python_version = "3.8"

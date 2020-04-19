@@ -19,6 +19,7 @@ from board import *
 ATR_STUDENT_CARD_HEX = "3B 81 80 01 80 80"
 ATR_RASPI_TAG_HEX = "3B 8F 80 01 80 4F 0C A0 00 00 03 06 03 00 01 00 00 00 00 6A"
 
+
 class StudentCard(CardType):
 	"""
 	Student card class
