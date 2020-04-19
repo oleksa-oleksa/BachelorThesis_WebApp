@@ -160,8 +160,6 @@ class Session(models.Model):
 
 	student_card = models.ForeignKey(StudentCard, on_delete=models.SET_NULL, blank=True, null=True, related_name='+')
 	raspi_tag = models.ForeignKey(RaspiTag, on_delete=models.SET_NULL, blank=True, null=True, related_name='+')
-
-
 	# operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
 
 	class Meta:
@@ -169,7 +167,7 @@ class Session(models.Model):
 
 	@staticmethod
 	def get_active_session():
-		return Session.objects.exclude(state__in=Session.TERMINAL_STATES).firts()
+		return Session.objects.exclude(state__in=Session.TERMINAL_STATES).first()
 
 	def clean(self):
 		open_session = Session.objects.exclude(state__in=Session.TERMINAL_STATES).count()
@@ -178,10 +176,9 @@ class Session(models.Model):
 		super().clean()
 
 	@transition(field=state, source='session_started', target='valid_student_card')
-	def valid_student_card_inserted(self, card_uid):
-		card = StudentCard.get(uid=card_uid)
+	def student_card_inserted(self, card_uid):
+		card = StudentCard.objects.get(uid=card_uid)
 		self.student_card = card
-
 
 	@transition(field=state, source='session_started', target='unknown_student')
 	def unknown_student_card_inserted(self):
@@ -197,12 +194,15 @@ class Session(models.Model):
 	def timeout(self):
 		pass
 
-	@transition(field=state, source='valid_student_card', target='valid_lab_board')
-	def valid_lab_rfid_inserted(self, uid):
+	@transition(field=state, source='valid_student_card', target='valid_rfid')
+	def rfid_inserted(self, uid):
 		tag = RaspiTag.objects.get(uid=uid)
 		self.raspi_tag = tag
 
+	@transition(field=state, source='valid_rfid', target='finished')
+	def loaned(self):
+		pass
 
 	@transition(field=state, source=['unknown_student', 'banned_student', 'valid_lab_board'], target='finished')
-	def finished(self):
+	def finish(self):
 		pass

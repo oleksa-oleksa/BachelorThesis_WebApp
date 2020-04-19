@@ -2,7 +2,7 @@ import csv
 import io
 import datetime
 import json
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseNotAllowed
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -32,12 +32,12 @@ def sessions_list(request):
 @csrf_exempt
 def reader_event(request):
 	if request.method != "POST":
-		return HttpResponse('', status_code=404)
+		return HttpResponseNotFound()
 
 	session = Session.get_active_session()
 
 	if session is None:
-		return HttpResponse('', status_code=400)
+		return HttpResponseBadRequest()
 
 	# type, uid
 
@@ -46,20 +46,20 @@ def reader_event(request):
 		input_type = body['type']
 		uid = body['uid']
 	except (KeyError, json.JSONDecodeError):
-		return HttpResponse("", status_code=400)
+		return HttpResponseBadRequest()
 
 	if input_type not in ["card", "tag"]:
-		return HttpResponse('', status_code=400)
+		return HttpResponseBadRequest()
 
 	try:
 		if input_type == "card":
-			session.valid_student_card_inserted(uid)
+			session.student_card_inserted(uid)
 		elif input_type == "tag":
-			session.valid_lab_rfid_inserted(uid)
+			session.rfid_inserted(uid)
 	except TransitionNotAllowed:
-		return HttpResponse("", status_code=409)
-	finally:
-		session.save()
+		return HttpResponseNotAllowed()
+
+	session.save()
 
 	return JsonResponse(model_to_dict(session), status=201, safe=False)
 
