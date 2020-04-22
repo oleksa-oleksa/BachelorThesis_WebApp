@@ -155,3 +155,9 @@ response: {session_id, state} 200 or 404 or 440 HTTP status code for session exp
 18 Apr
 Model Validation for Session
 https://docs.djangoproject.com/en/dev/ref/models/instances/#validating-objects
+
+----
+19 Apr
+FSM with Python https://github.com/viewflow/django-fsm
+Encapsulation for reader client
+Set and Get Environment Variables in Python for Client Api URL
