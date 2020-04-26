@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block js_load %}
+    <script src="{% static "js/session_state.js" %}"></script>
+
+{% endblock js_load %}
+
 {% block head_title %}
 | Start
 {% endblock %}

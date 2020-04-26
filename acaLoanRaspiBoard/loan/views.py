@@ -64,6 +64,20 @@ def reader_event(request):
 	return JsonResponse(model_to_dict(session), status=201, safe=False)
 
 
+@csrf_exempt
+def session_state(request, session_id):
+	# we receive GET /api/sessions/id
+	if request.method == "GET":
+		current_session = Session.get_active_session()
+		if current_session.id == session_id:
+			return JsonResponse(model_to_dict(current_session), status=200, safe=False)
+		else:
+			return HttpResponseNotFound()
+
+	else:
+		return HttpResponseNotFound()
+
+
 def index(request):
 	queryset = Board.objects.filter(board_no__gte=HOME_LOAN_MINIMAL_NO)
 	template_name = "loan/index.html"
