@@ -36,6 +36,16 @@
             {% block head_css_section %}{% endblock head_css_section %}
             {% block head_css_page %}{% endblock head_css_page %}
         {% endblock head_css %}
+
+        {% block jquery_block %}
+            <script
+                src="https://code.jquery.com/jquery-3.5.0.slim.min.js"
+              integrity="sha256-MlusDLJIP1GRgLrOflUQtshyP0TwT/RHXsI1wWGnQhs="
+              crossorigin="anonymous"></script>
+        {% endblock jquery_block %}
+
+        {% block js_load %}
+        {% endblock js_load %}
     </head>
     <body>
         <div class="main_header_container">
