@@ -1,9 +1,9 @@
 function refresh_session_state() {
+    console.log( "ready!" );
 
 }
 
 $(document).ready(function() {
-    console.log( "ready!" );
-    alert("hello");
+    setInterval(refresh_session_state, 1000)
 })
 
