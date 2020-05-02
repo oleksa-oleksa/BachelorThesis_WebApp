@@ -165,7 +165,7 @@ Set and Get Environment Variables in Python for Client Api URL
 ----
 26 Apr
 session_state
-for JavaScript: compare session id with the current id and show the sesion state to be processed by js
+for JavaScript: compare session id with the current id and show the session state to be processed by js
 
 added to base.html https://code.jquery.com/
 https://www.geeksforgeeks.org/javascript-cleartimeout-clearinterval-method/
