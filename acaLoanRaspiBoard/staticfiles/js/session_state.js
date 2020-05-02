@@ -2,7 +2,7 @@ var session_refresh_timer
 
 function refresh_session_state() {
     $.ajax(
-    {url: "api/sessions/14", method: "GET"}).done(function(body) {
+    {url: "api/sessions/17", method: "GET"}).done(function(body) {
         console.log(body);
     })
     .fail(function() {

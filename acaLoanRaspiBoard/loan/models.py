@@ -175,7 +175,7 @@ class Session(models.Model):
 			raise ValidationError('Active session already exists!')
 		super().clean()
 
-	@transition(field=state, source='session_started', target='valid_student_card')
+	@transition(field=state, source='session_started', target='valid_student_card', on_error='unknown_student_card')
 	def student_card_inserted(self, card_uid):
 		card = StudentCard.objects.get(uid=card_uid)
 		self.student_card = card

@@ -53,7 +53,10 @@ def reader_event(request):
 
 	try:
 		if input_type == "card":
-			session.student_card_inserted(uid)
+			try:
+				session.student_card_inserted(uid)
+			except StudentCard.DoesNotExist:
+				pass
 		elif input_type == "tag":
 			session.rfid_inserted(uid)
 	except TransitionNotAllowed:
