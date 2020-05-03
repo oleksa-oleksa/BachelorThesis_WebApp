@@ -169,6 +169,11 @@ class Session(models.Model):
 	def get_active_session():
 		return Session.objects.exclude(state__in=Session.TERMINAL_STATES).first()
 
+	def get_active_student(self):
+		if self.student_card is None:
+			return None
+		return self.student_card.student
+
 	def clean(self):
 		open_session = Session.objects.exclude(state__in=Session.TERMINAL_STATES).count()
 		if open_session != 0:
@@ -179,16 +184,6 @@ class Session(models.Model):
 	def student_card_inserted(self, card_uid):
 		card = StudentCard.objects.get(uid=card_uid)
 		self.student_card = card
-
-	@transition(field=state, source='session_started', target='unknown_student')
-	def unknown_student_card_inserted(self):
-		pass
-		# info
-
-	@transition(field=state, source='session_started', target='banned_student')
-	def banned_student_card_inserted(self):
-		pass
-		# info
 
 	@transition(field=state, source='*', target='timeout')
 	def timeout(self):
@@ -203,6 +198,8 @@ class Session(models.Model):
 	def loaned(self):
 		pass
 
-	@transition(field=state, source=['unknown_student', 'banned_student', 'valid_lab_board'], target='finished')
+	@transition(field=state, source=['unknown_student_card', 'banned_student',
+									'valid_lab_board', 'unknown_lab_board', 'valid_home_board', 'unknown_home_board'],
+				target='finished')
 	def finish(self):
 		pass
