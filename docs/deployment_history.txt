@@ -4,9 +4,9 @@ RFID-RC522 for RFID Tags on Raspberry Pi Boards
 Raspbery Pi Board
 Anker USB charger to avoid "under voltage" problem
 
-Choose language: Python for Raspberry Pi and Django web framework 
+Choose language: Python for Raspberry Pi and Django web framework
 
-Installation Raspbian: Graphic Interface 
+Installation Raspbian: Graphic Interface
 sudo apt-get install lxde-core xserver-xorg xinit
 
 fix a bug with a Raspbian's pre-installed window manager that automatically closes
@@ -23,10 +23,10 @@ sudo apt-get install libpcsclite-dev
 sudo apt-get install libusb-1.0-0-dev
 
 Quellcode
-Finden Sie Ihre Distribution oben nicht aufgeführt, können wir dafür aktuell keine vorkompilierten Pakete anbieten. 
+Finden Sie Ihre Distribution oben nicht aufgeführt, können wir dafür aktuell keine vorkompilierten Pakete anbieten.
 Sie können den zugehörigen Quellcode aber selbst kompilieren.
 V 1.4.0 -->  ccid_1.4.0.tar.gz
-unpack: tar -xzf ccid_1.4.0.tar.gz 
+unpack: tar -xzf ccid_1.4.0.tar.gz
 ./configure (screenshot)
 make (screenshot)
 sudo make install
@@ -40,10 +40,10 @@ _______________
 Jan 27:
 RFID Reader can not read the Smart Cars and 2 types of RFID Tags that was ordered in order
 to mark the Raspberry Boards.
-Solution: Change the hardware and use the ACR122U USB NFC Reader 
+Solution: Change the hardware and use the ACR122U USB NFC Reader
 Installation steps:
 https://oneguyoneblog.com/2015/09/16/acr122u-nfc-usb-reader-raspberry-pi/
-Warning for myself: it was enough to make only steps for previous reader. 
+Warning for myself: it was enough to make only steps for previous reader.
 No need to add vendorID and deviceID, this can be skipped in the thesis
 
 ______________
@@ -102,7 +102,7 @@ Suppose we will have the list of registered student before the first exercise se
 On the first exercise the Python script will be executed by the admin on their Mac or windows computer and the UIDs of the card will be read with manually added matriculation number.
 An admin the will upload the txt-file to the Django admin from their computer and the file will be parsed and the UIDs of the student will be linked with their record created before.
 
-Download drivers: https://www.acs.com.hk/en/driver/3/acr122u-usb-nfc-reader/ 
+Download drivers: https://www.acs.com.hk/en/driver/3/acr122u-usb-nfc-reader/
 
 https://simpleisbetterthancomplex.com/tutorial/2016/08/01/how-to-upload-files-with-django.html
 
@@ -129,11 +129,11 @@ Mar 22
 Upload csv-file using model form
 https://docs.djangoproject.com/en/3.0/ref/csrf/
 
----- 
+----
 Mar 23
 Icon for admin page: https://icons8.de/icon/54088/raspberry-pi
 
---- 
+---
 Mar 24
 Django forms explained
 https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Forms
@@ -169,3 +169,9 @@ for JavaScript: compare session id with the current id and show the session stat
 
 added to base.html https://code.jquery.com/
 https://www.geeksforgeeks.org/javascript-cleartimeout-clearinterval-method/
+
+----
+09 Mai
+on_error reached unknown_student_card state
+javascript shows text inside html document if unknown student card was inserted in the rfid reader
+Added into Session last_action_time = models.DateTimeField(auto_now=True, auto_now_add=True)

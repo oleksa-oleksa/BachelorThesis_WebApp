@@ -1,4 +1,5 @@
 var session_refresh_timer
+var active_session_id
 
 function handle_session_event(body) {
     if (body.state == "unknown_student_card") {
@@ -10,8 +11,9 @@ function handle_session_event(body) {
 }
 
 function refresh_session_state() {
-    $.ajax(
-    {url: "api/sessions/17", method: "GET"}).done(handle_session_event)
+    $.ajax({url: "api/sessions/"+active_session_id,
+            method: "GET"})
+    .done(handle_session_event)
     .fail(function() {
         clearInterval(session_refresh_timer)
         alert("Something is wrong. Timeout. Please start again!")
@@ -20,9 +22,19 @@ function refresh_session_state() {
 
 }
 
+function session_started(body) {
+    console.log("Started session with id " + body.id)
+    active_session_id = body.id
+    session_refresh_timer = setInterval(refresh_session_state, 1000)
+}
 
 $(document).ready(function() {
     console.log("ready!");
-    session_refresh_timer = setInterval(refresh_session_state, 1000)
+    $.ajax({url: "api/sessions", method: "POST"})
+        .done(session_started)
+        .fail(function(){
+            alert("Can not start new session, try again later")
+            window.location.replace("/loan")
+        })
 })
 

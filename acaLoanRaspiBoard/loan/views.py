@@ -72,8 +72,13 @@ def session_state(request, session_id):
 	# we receive GET /api/sessions/id
 	if request.method == "GET":
 		current_session = Session.get_active_session()
-		if current_session.id == session_id:
+
+		if current_session is None:
+			return HttpResponseNotFound()
+
+		elif current_session is not None and current_session.id == session_id:
 			return JsonResponse(model_to_dict(current_session), status=200, safe=False)
+
 		else:
 			return HttpResponseNotFound()
 
@@ -91,9 +96,13 @@ def index(request):
 def start(request):
 	queryset = Board.objects.filter(board_no__gte=HOME_LOAN_MINIMAL_NO)
 	template_name = "loan/start.html"
-	session = Session.get_active_session()
-	student = session.get_active_student()
-	context = {"home_boards_list": queryset, "student": student}
+	# session = Session.get_active_session()
+	#
+	# if session is None:
+	# 	session = Session()
+	# 	session.save()
+
+	context = {"home_boards_list": queryset}
 	return render(request, template_name, context)
 
 
