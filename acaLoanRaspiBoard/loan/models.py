@@ -157,7 +157,7 @@ class Session(models.Model):
 	# board = models.ForeignKey(Board, on_delete=models.SET_NULL, blank=True, null=True)
 	start_time = models.DateTimeField(default=datetime.datetime.now)
 	state = FSMField(default='session_started')
-
+	last_action_time = models.DateTimeField(auto_now=True)
 	student_card = models.ForeignKey(StudentCard, on_delete=models.SET_NULL, blank=True, null=True, related_name='+')
 	raspi_tag = models.ForeignKey(RaspiTag, on_delete=models.SET_NULL, blank=True, null=True, related_name='+')
 	# operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
