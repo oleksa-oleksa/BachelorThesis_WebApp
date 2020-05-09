@@ -175,3 +175,4 @@ https://www.geeksforgeeks.org/javascript-cleartimeout-clearinterval-method/
 on_error reached unknown_student_card state
 javascript shows text inside html document if unknown student card was inserted in the rfid reader
 Added into Session last_action_time = models.DateTimeField(auto_now=True, auto_now_add=True)
+session_started state from browser instead of using postman. timeout command to cleat old sessions
