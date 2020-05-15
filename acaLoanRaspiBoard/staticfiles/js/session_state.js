@@ -9,7 +9,7 @@ function handle_session_event(body) {
             "Please contact teaching assistant or administrator! Session is terminated")
     }
     if (body.state == "valid_student_card") {
-
+            $("#student_name").text(body.student)
     }
 }
 
