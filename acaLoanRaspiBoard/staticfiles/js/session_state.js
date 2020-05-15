@@ -2,12 +2,15 @@ var session_refresh_timer
 var active_session_id
 
 function handle_session_event(body) {
+    console.log(body);
+
     if (body.state == "unknown_student_card") {
            $("#student_name").text("Unknown student card. You are not registered on this course." +
             "Please contact teaching assistant or administrator! Session is terminated")
+    }
+    if (body.state == "valid_student_card") {
 
     }
-//    console.log(body);
 }
 
 function refresh_session_state() {
@@ -16,7 +19,7 @@ function refresh_session_state() {
     .done(handle_session_event)
     .fail(function() {
         clearInterval(session_refresh_timer)
-        alert("Something is wrong. Timeout. Please start again!")
+        alert("Timeout. Please start again!")
         window.location.replace("/loan")
         })
 
