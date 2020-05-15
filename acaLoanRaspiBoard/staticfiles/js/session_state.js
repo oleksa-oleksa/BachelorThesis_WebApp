@@ -13,6 +13,7 @@ function handle_session_event(body) {
             $("#place_board").show()
             $("#scan_card").hide()
             $("#welcome_student").show()
+            $("#board_info").show()
     }
 }
 
