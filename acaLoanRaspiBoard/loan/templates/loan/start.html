@@ -16,7 +16,7 @@ Use the card reader near the monitor.
 
 {% block invitation %}
     <div>
-        <div class="dark_text" style="padding-top: 40px; padding-left: 150px; font-size: 18px;">
+        <div id="scan_card" class="dark_text" style="padding-top: 40px; padding-left: 150px; font-size: 18px;">
             First scan your student card:
         </div>
         <div id="student_name" class="blue_text" style="padding-top: 10px; padding-left: 150px; font-size: 26px;">
@@ -28,11 +28,9 @@ Use the card reader near the monitor.
 
 {% block content %}
     <div class="left_content_container">
-        <div class="dark_text" style="padding-top: 10px; padding-left: 150px;">
-            {% if student %}
-                Place your Raspi Board at least 1 cm from the scanner
-            {% endif %}
-            </div>
+        <div id="place_board" class="dark_text" style="padding-top: 10px; padding-left: 150px; display: none;">
+            Place your Raspi Board at least 1 cm from the scanner
+         </div>
     </div>
 
     <div class="right_content_container">
