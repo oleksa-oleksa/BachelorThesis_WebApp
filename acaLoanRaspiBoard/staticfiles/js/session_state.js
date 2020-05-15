@@ -12,6 +12,7 @@ function handle_session_event(body) {
             $("#student_name").text(body.student)
             $("#place_board").show()
             $("#scan_card").hide()
+            $("#welcome_student").show()
     }
 }
 
