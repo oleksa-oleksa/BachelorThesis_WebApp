@@ -169,6 +169,11 @@ class Session(models.Model):
 	def get_active_session():
 		return Session.objects.exclude(state__in=Session.TERMINAL_STATES).first()
 
+	def get_active_board(self):
+		if self.raspi_tag is None:
+			return None
+		return self.raspi_tag.board
+
 	def get_active_student(self):
 		if self.student_card is None:
 			return None

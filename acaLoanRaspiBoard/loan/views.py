@@ -15,7 +15,7 @@ from django.core.exceptions import ValidationError
 from django_fsm import TransitionNotAllowed
 from .models import StudentCard, Student, Operation, Board, Action, RaspiTag, ATRCardType, Session
 from .constraint import *
-
+from .serializers import render_session
 
 @csrf_exempt
 def sessions_list(request):
@@ -67,6 +67,7 @@ def reader_event(request):
 	return JsonResponse(model_to_dict(session), status=201, safe=False)
 
 
+
 @csrf_exempt
 def session_state(request, session_id):
 	# we receive GET /api/sessions/id
@@ -77,7 +78,8 @@ def session_state(request, session_id):
 			return HttpResponseNotFound()
 
 		elif current_session is not None and current_session.id == session_id:
-			return JsonResponse(model_to_dict(current_session), status=200, safe=False)
+			session_dict = render_session(current_session)
+			return JsonResponse(session_dict, status=201, safe=False)
 
 		else:
 			return HttpResponseNotFound()
