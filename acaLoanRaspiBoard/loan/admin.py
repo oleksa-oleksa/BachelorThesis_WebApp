@@ -32,7 +32,7 @@ class RaspiTagAdmin(admin.ModelAdmin):
 
 
 class SessionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'student_card', 'student_name', 'start_time', 'state')
+    list_display = ('id', 'student_card', 'student_name', 'board_no', 'start_time', 'state')
 
     def student_name(self, obj):
         if obj.student_card is None:
@@ -40,6 +40,13 @@ class SessionAdmin(admin.ModelAdmin):
 
         student = obj.student_card.student
         return "{} {}".format(student.second_name, student.first_name)
+
+    def board_no(self, obj):
+        if obj.raspi_tag is None:
+            return "None"
+
+        return "{}".format(obj.raspi_tag.board.board_no)
+
 
 # Register your models here.
 admin.site.register(Student, StudentAdmin)
