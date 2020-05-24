@@ -190,11 +190,7 @@ class Session(models.Model):
 		card = StudentCard.objects.get(uid=card_uid)
 		self.student_card = card
 
-	@transition(field=state, source='*', target='timeout')
-	def timeout(self):
-		pass
-
-	@transition(field=state, source='valid_student_card', target='valid_rfid')
+	@transition(field=state, source='valid_student_card', target='valid_rfid', on_error='unknown_rfid')
 	def rfid_inserted(self, uid):
 		tag = RaspiTag.objects.get(uid=uid)
 		self.raspi_tag = tag
@@ -203,8 +199,12 @@ class Session(models.Model):
 	def loaned(self):
 		pass
 
+	@transition(field=state, source='*', target='timeout')
+	def timeout(self):
+		pass
+
 	@transition(field=state, source=['unknown_student_card', 'banned_student',
-									'valid_lab_board', 'unknown_lab_board', 'valid_home_board', 'unknown_home_board'],
+									'valid_lab_board', 'valid_home_board', 'unknown_rfid'],
 				target='finished')
 	def finish(self):
 		pass

@@ -177,4 +177,6 @@ javascript shows text inside html document if unknown student card was inserted 
 Added into Session last_action_time = models.DateTimeField(auto_now=True, auto_now_add=True)
 session_started state from browser instead of using postman. timeout command to clear old sessions
 
+20 Mai:
+re-scanned rfids and student card
 
