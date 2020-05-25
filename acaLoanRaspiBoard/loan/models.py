@@ -153,13 +153,12 @@ class Session(models.Model):
 
 	TERMINAL_STATES = ['timeout', 'finished']
 
-	# student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
-	# board = models.ForeignKey(Board, on_delete=models.SET_NULL, blank=True, null=True)
 	start_time = models.DateTimeField(default=datetime.datetime.now)
 	state = FSMField(default='session_started')
 	last_action_time = models.DateTimeField(auto_now=True)
 	student_card = models.ForeignKey(StudentCard, on_delete=models.SET_NULL, blank=True, null=True, related_name='+')
 	raspi_tag = models.ForeignKey(RaspiTag, on_delete=models.SET_NULL, blank=True, null=True, related_name='+')
+	previous_action = models.ForeignKey(Action, on_delete=models.SET_NULL, blank=True, null=True, related_name='+')
 	# operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
 
 	class Meta:
@@ -189,6 +188,7 @@ class Session(models.Model):
 	def student_card_inserted(self, card_uid):
 		card = StudentCard.objects.get(uid=card_uid)
 		self.student_card = card
+		#self.previous_action = Action.objects.filter(student)
 
 	@transition(field=state, source='valid_student_card', target='valid_rfid', on_error='unknown_rfid')
 	def rfid_inserted(self, uid):
