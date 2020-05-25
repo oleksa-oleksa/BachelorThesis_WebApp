@@ -6,14 +6,18 @@ def render_session(session):
         student_first_name = student.first_name
         student_second_name = student.second_name
         session_student = student_first_name + " " + student_second_name
+
+        loaned_board = student.first_name
     else:
         session_student = ""
+        loaned_board = ""
 
-    board = session.get_active_board()
-    if board is not None:
-        session_board = board.board_no
+    scanned_board = session.get_active_board()
+    if scanned_board is not None:
+        session_board = scanned_board.board_no
     else:
-        session_board = "No boards assigned"
+        session_board = "Please scan board"
 
-    session_dict = {"state": session_state, "student": session_student, "board": session_board}
+    session_dict = {"state": session_state, "student": session_student, "scanned_board": session_board,
+                    "loaned_board": loaned_board}
     return session_dict
