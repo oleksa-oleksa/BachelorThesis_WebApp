@@ -7,7 +7,8 @@ def render_session(session):
         student_second_name = student.second_name
         session_student = student_first_name + " " + student_second_name
 
-        loaned_board = student.first_name
+        boards = student.get_student_boards()
+        loaned_board = boards["lab"].board_no + " " + boards["lab"].board_status
     else:
         session_student = ""
         loaned_board = ""
