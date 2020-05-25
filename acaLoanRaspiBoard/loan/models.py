@@ -106,6 +106,19 @@ class Student(models.Model):
 	def __str__(self):
 		return self.first_name + ' ' + self.second_name
 
+	def get_student_boards(self):
+		boards = {"lab": "", "home": ""}
+		lab_board = self.action_set.get(operation=Operation.LAB_LOAN).last()
+		home_board = self.action_set.get(operation=Operation.HOME_LOAN).last()
+
+		if lab_board.board_status == BoardStatus.LOANED:
+			boards["lab"] = lab_board
+
+		if home_board.board_status == BoardStatus.LOANED:
+			boards["home"] = home_board
+
+		return boards
+
 
 class Board(models.Model):
 	"""
@@ -158,15 +171,13 @@ class Session(models.Model):
 	last_action_time = models.DateTimeField(auto_now=True)
 	student_card = models.ForeignKey(StudentCard, on_delete=models.SET_NULL, blank=True, null=True, related_name='+')
 	raspi_tag = models.ForeignKey(RaspiTag, on_delete=models.SET_NULL, blank=True, null=True, related_name='+')
-	previous_action = models.ForeignKey(Action, on_delete=models.SET_NULL, blank=True, null=True, related_name='+')
-	# operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
 
 	class Meta:
 		ordering = ['id']
 
 	@staticmethod
 	def get_active_session():
-		return Session.objects.exclude(state__in=Session.TERMINAL_STATES).first()
+		return Session.objects.exclude(state__in=Session.TERMINAL_STATES).last()
 
 	def get_active_board(self):
 		if self.raspi_tag is None:
@@ -184,11 +195,12 @@ class Session(models.Model):
 			raise ValidationError('Active session already exists!')
 		super().clean()
 
+	# =================== Django Final State Machine ===================================
+
 	@transition(field=state, source='session_started', target='valid_student_card', on_error='unknown_student_card')
 	def student_card_inserted(self, card_uid):
 		card = StudentCard.objects.get(uid=card_uid)
 		self.student_card = card
-		#self.previous_action = Action.objects.filter(student)
 
 	@transition(field=state, source='valid_student_card', target='valid_rfid', on_error='unknown_rfid')
 	def rfid_inserted(self, uid):
