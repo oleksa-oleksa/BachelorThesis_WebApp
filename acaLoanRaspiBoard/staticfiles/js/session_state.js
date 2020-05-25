@@ -13,6 +13,8 @@ function handle_session_event(body) {
             $("#place_board").show()
             $("#scan_card").hide()
             $("#welcome_student").show()
+            $("#loaned_board_info").show()
+            $("#loaned_board_info").text(body.board)
     }
 
     if (body.state == "valid_rfid") {
@@ -21,7 +23,7 @@ function handle_session_event(body) {
             $("#scan_card").hide()
             $("#welcome_student").show()
             $("#loaned_board_info").show()
-            $("#student_name").text(body.board)
+            $("#loaned_board_info").text(body.board)
     }
 }
 
