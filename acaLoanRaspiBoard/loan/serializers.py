@@ -13,7 +13,7 @@ def render_session(session):
     if board is not None:
         session_board = board.board_no
     else:
-        session_board = ""
+        session_board = "No boards assigned"
 
     session_dict = {"state": session_state, "student": session_student, "board": session_board}
     return session_dict
