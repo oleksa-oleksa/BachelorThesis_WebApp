@@ -108,14 +108,16 @@ class Student(models.Model):
 
 	def get_student_boards(self):
 		boards = {"lab": "", "home": ""}
-		lab_board = self.action_set.filter(operation=Operation.LAB_LOAN).last()
-		home_board = self.action_set.filter(operation=Operation.HOME_LOAN).last()
+		lab_board_action = self.action_set.filter(operation=Operation.LAB_LOAN).last()
+		home_board_action = self.action_set.filter(operation=Operation.HOME_LOAN).last()
 
-		if lab_board.board_status == BoardStatus.LOANED:
-			boards["lab"] = lab_board
+		if lab_board_action is not None:
+			if lab_board_action.board.board_status == BoardStatus.LOANED:
+				boards["lab"] = lab_board_action.board
 
-		if home_board.board_status == BoardStatus.LOANED:
-			boards["home"] = home_board
+		if home_board_action is not None:
+			if home_board_action.board.board_status == BoardStatus.LOANED:
+				boards["home"] = home_board_action.board
 
 		return boards
 
