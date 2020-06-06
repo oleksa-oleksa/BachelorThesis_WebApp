@@ -108,8 +108,8 @@ class Student(models.Model):
 
 	def get_student_boards(self):
 		boards = {"lab": "", "home": ""}
-		lab_board = self.action_set.get(operation=Operation.LAB_LOAN).last()
-		home_board = self.action_set.get(operation=Operation.HOME_LOAN).last()
+		lab_board = self.action_set.filter(operation=Operation.LAB_LOAN).last()
+		home_board = self.action_set.filter(operation=Operation.HOME_LOAN).last()
 
 		if lab_board.board_status == BoardStatus.LOANED:
 			boards["lab"] = lab_board
