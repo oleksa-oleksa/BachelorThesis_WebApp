@@ -25,6 +25,7 @@ function handle_session_event(body) {
             $("#student_name").text(body.student)
             $("#place_board").hide()
             $("#scan_card").hide()
+            $("#scanned_board_text").show()
             $("#scanned_board_info").show()
             $("#scanned_board_info").text(body.scanned_board)
             $("#operation_info").text(body.operation)
