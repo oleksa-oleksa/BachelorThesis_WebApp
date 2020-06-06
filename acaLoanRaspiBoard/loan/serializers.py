@@ -10,14 +10,14 @@ def render_session(session):
         boards = student.get_student_boards()
 
         if boards["lab"] == "":
-            loaned_lab_board = "No lab boards assigned"
+            loaned_lab_board = "No lab boards assigned. You can take a board (1-11) to work during exercise time in lab."
         else:
             loaned_lab_board = boards["lab"].board_no + " " + boards["lab"].board_status
 
         if boards["home"] == "":
             loaned_home_board = boards["home"].board_no + " " + boards["home"].board_status
         else:
-            loaned_home_board = "No home loan board assigned"
+            loaned_home_board = "No home loan board assigned. You can loan a board (12-16) to work at home."
     else:
         session_student = ""
         loaned_lab_board = ""
@@ -26,9 +26,12 @@ def render_session(session):
     scanned_board = session.get_active_board()
     if scanned_board is not None:
         session_board = scanned_board.board_no
+        operation = "Got board number!"
+
     else:
-        session_board = "Please scan board"
+        session_board = ""
+        operation = "Please scan board"
 
     session_dict = {"state": session_state, "student": session_student, "scanned_board": session_board,
-                    "loaned_lab_board": loaned_lab_board, "loaned_home_board": loaned_home_board}
+                    "loaned_lab_board": loaned_lab_board, "loaned_home_board": loaned_home_board, "operation": operation}
     return session_dict

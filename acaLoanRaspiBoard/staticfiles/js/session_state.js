@@ -13,17 +13,23 @@ function handle_session_event(body) {
             $("#place_board").show()
             $("#scan_card").hide()
             $("#welcome_student").show()
-            $("#loaned_board_info").show()
-            $("#loaned_board_info").text(body.loaned_board)
+            $("#loaned_lab_board_info").show()
+            $("#loaned_lab_board_info").text(body.loaned_lab_board)
+            $("#loaned_home_board_info").show()
+            $("#loaned_home_board_info").text(body.loaned_home_board)
+            $("#operation_info").show()
+            $("#operation_info").text(body.operation)
     }
 
     if (body.state == "valid_rfid") {
             $("#student_name").text(body.student)
-            $("#place_board").show()
+            $("#place_board").hide()
             $("#scan_card").hide()
-            $("#welcome_student").show()
             $("#scanned_board_info").show()
             $("#scanned_board_info").text(body.scanned_board)
+            $("#operation_info").text(body.operation)
+
+
     }
 }
 
