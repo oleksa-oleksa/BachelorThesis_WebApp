@@ -12,10 +12,10 @@ def render_session(session):
         if boards["lab"] == "":
             loaned_lab_board = "No lab boards assigned. You can take a board (1-11) to work during exercise time in lab."
         else:
-            loaned_lab_board = boards["lab"].board_no + " " + boards["lab"].board_status
+            loaned_lab_board = str(boards["lab"].board_no) + " " + str(boards["lab"].board_status)
 
         if boards["home"] == "":
-            loaned_home_board = boards["home"].board_no + " " + boards["home"].board_status
+            loaned_home_board = str(boards["home"].board_no) + " " + str(boards["home"].board_status)
         else:
             loaned_home_board = "No home loan board assigned. You can loan a board (12-16) to work at home."
     else:
