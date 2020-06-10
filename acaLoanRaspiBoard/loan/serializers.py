@@ -1,3 +1,6 @@
+import datetime
+
+
 def render_session(session):
     session_state = session.state
 
@@ -9,15 +12,16 @@ def render_session(session):
 
         boards = student.get_student_boards()
 
-        if boards["lab"] == "":
+        if "lab" not in boards:
             loaned_lab_board = "No lab boards assigned. You can take a board (1-11) to work during exercise time in lab."
         else:
             loaned_lab_board = str(boards["lab"].board_no) + " " + str(boards["lab"].board_status)
 
-        if boards["home"] == "":
-            loaned_home_board = str(boards["home"].board_no) + " " + str(boards["home"].board_status)
-        else:
+        if "home" not in boards:
             loaned_home_board = "No home loan board assigned. You can loan a board (12-16) to work at home."
+        else:
+            loaned_home_board = str(boards["home"].board_no) + " " + str(boards["home"].board_status)
+
     else:
         session_student = ""
         loaned_lab_board = ""
@@ -25,8 +29,8 @@ def render_session(session):
 
     scanned_board = session.get_active_board()
     if scanned_board is not None:
-        session_board = scanned_board.board_no
-        operation = "Got board number!"
+        session_board = "RaspiBoard " + str(scanned_board.board_no) + ' ' + str(scanned_board.board_type)
+        operation = "Board ID is scanned."
 
     else:
         session_board = ""
