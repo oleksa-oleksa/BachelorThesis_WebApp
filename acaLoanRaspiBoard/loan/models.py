@@ -107,7 +107,8 @@ class Student(models.Model):
 		return self.first_name + ' ' + self.second_name
 
 	def get_student_boards(self):
-		boards = {"lab": "", "home": ""}
+		# boards = {"lab": "", "home": ""}
+		boards = {}
 		lab_board_action = self.action_set.filter(operation=Operation.LAB_LOAN).last()
 		home_board_action = self.action_set.filter(operation=Operation.HOME_LOAN).last()
 
