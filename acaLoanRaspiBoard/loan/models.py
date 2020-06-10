@@ -7,7 +7,6 @@ from django_fsm import FSMField, transition
 from django.core.exceptions import ValidationError
 
 
-
 class ATRCardType(enum.Enum):
 	"""Constant values for ATR ot student card and RFID tags on the Raspberry Pi"""
 	STUDENT_CARD_ATR = 1
