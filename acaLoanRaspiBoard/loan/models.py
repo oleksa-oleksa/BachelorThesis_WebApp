@@ -159,6 +159,11 @@ class Action(models.Model):
 	class Meta:
 		ordering = ['timestamp']
 
+	@staticmethod
+	def return_lab_board(student, board, timestamp=datetime.datetime.now, operation=Operation.RETURN_BOARD):
+		returned_board = Action(student, board, timestamp, operation)
+		returned_board.save()
+
 
 class Session(models.Model):
 	"""
@@ -209,9 +214,25 @@ class Session(models.Model):
 		tag = RaspiTag.objects.get(uid=uid)
 		self.raspi_tag = tag
 
+	# @transition(field=state, source='valid_rfid', target='finished')
+	# def loaned(self):
+	# 	pass
+
 	@transition(field=state, source='valid_rfid', target='finished')
-	def loaned(self):
-		pass
+	def returned(self):
+		student = self.get_active_student()
+		boards = self.student_card.student.get_student_boards()
+		scanned_board = self.get_active_board()
+
+		# return loaned board that is assigned on student- OK
+		if scanned_board in boards.values():
+			# create action in Action model with returning operation and timestamp
+			Action.return_lab_board(student, scanned_board)
+			# returning by setting the status of the board to be "active"
+			scanned_board.board_status = BoardStatus.ACTIVE
+
+
+		# try to return board that is not assigned on the student - Error
 
 	@transition(field=state, source='*', target='timeout')
 	def timeout(self):
