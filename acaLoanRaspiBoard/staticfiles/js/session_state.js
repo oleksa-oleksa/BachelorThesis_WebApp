@@ -58,6 +58,10 @@ function session_started(body) {
 
 $(document).ready(function() {
     console.log("ready!");
+    $("#cancel_button").click(function(){
+        $.ajax({url: "api/sessions/"+active_session_id, method: "POST"})
+        .done(handle_session_event)
+    })
     $.ajax({url: "api/sessions", method: "POST"})
         .done(session_started)
         .fail(function(){
