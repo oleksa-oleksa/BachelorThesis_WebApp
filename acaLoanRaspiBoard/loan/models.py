@@ -218,8 +218,7 @@ class Session(models.Model):
 	# def loaned(self):
 	# 	pass
 
-	@transition(field=state, source='valid_rfid', target='finished')
-	def returned(self):
+	def is_returned(self):
 		student = self.get_active_student()
 		boards = self.student_card.student.get_student_boards()
 		scanned_board = self.get_active_board()
@@ -230,9 +229,13 @@ class Session(models.Model):
 			Action.return_lab_board(student, scanned_board)
 			# returning by setting the status of the board to be "active"
 			scanned_board.board_status = BoardStatus.ACTIVE
+			return True
+		else:
+			return False
 
-
-		# try to return board that is not assigned on the student - Error
+	@transition(field=state, source='valid_rfid', target='finished', conditions=[is_returned])
+	def board_returned(self):
+		pass
 
 	@transition(field=state, source='*', target='timeout')
 	def timeout(self):
