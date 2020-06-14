@@ -13,7 +13,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
 from django.core.exceptions import ValidationError
 from django_fsm import TransitionNotAllowed
-from django_fsm import FSMField, transition, RETURN_VALUE, GET_STATE
 from .models import StudentCard, Student, Operation, Board, Action, RaspiTag, ATRCardType, Session
 from .constraint import *
 from .serializers import render_session
@@ -66,7 +65,6 @@ def reader_event(request):
     session.save()
 
     return JsonResponse(model_to_dict(session), status=201, safe=False)
-
 
 
 @csrf_exempt

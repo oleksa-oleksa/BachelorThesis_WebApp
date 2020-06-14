@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from django_enumfield import enum
 from django.core.exceptions import ValidationError
 import datetime
-from django_fsm import FSMField, transition
+from django_fsm import FSMField, transition, RETURN_VALUE, GET_STATE
 from django.core.exceptions import ValidationError
 
 
@@ -196,6 +196,21 @@ class Session(models.Model):
 			return None
 		return self.student_card.student
 
+	def is_board_returned(self):
+		student = self.get_active_student()
+		boards = self.student_card.student.get_student_boards()
+		scanned_board = self.get_active_board()
+
+		# return loaned board that is assigned on student- OK
+		if scanned_board in boards.values():
+			# create action in Action model with returning operation and timestamp
+			Action.return_lab_board(student, scanned_board)
+			# returning by setting the status of the board to be "active"
+			scanned_board.board_status = BoardStatus.ACTIVE
+			return True
+		else:
+			return False
+
 	def clean(self):
 		open_session = Session.objects.exclude(state__in=Session.TERMINAL_STATES).count()
 		if open_session != 0:
@@ -214,35 +229,22 @@ class Session(models.Model):
 		tag = RaspiTag.objects.get(uid=uid)
 		self.raspi_tag = tag
 
-	# @transition(field=state, source='valid_rfid', target='finished')
-	# def loaned(self):
-	# 	pass
-
-	def is_returned(self):
-		student = self.get_active_student()
-		boards = self.student_card.student.get_student_boards()
-		scanned_board = self.get_active_board()
-
-		# return loaned board that is assigned on student- OK
-		if scanned_board in boards.values():
-			# create action in Action model with returning operation and timestamp
-			Action.return_lab_board(student, scanned_board)
-			# returning by setting the status of the board to be "active"
-			scanned_board.board_status = BoardStatus.ACTIVE
-			return True
+	@transition(field=state, source='valid_rfid', target=RETURN_VALUE('loaned', 'returned'))
+	def action_created(self):
+		if self.is_board_returned():
+			return 'returned'
 		else:
-			return False
-
-	@transition(field=state, source='valid_rfid', target='finished', conditions=[is_returned])
-	def board_returned(self):
-		pass
+			return 'loaned'
 
 	@transition(field=state, source='*', target='timeout')
 	def timeout(self):
 		pass
 
+	@transition(field=state, source='*', target='canceled')
+	def cancel(self):
+		pass
+
 	@transition(field=state, source=['unknown_student_card', 'banned_student',
-									'valid_lab_board', 'valid_home_board', 'unknown_rfid'],
-				target='finished')
-	def finish(self):
+									'returned', 'loaned', 'unknown_rfid'], target='finish')
+	def finished(self):
 		pass
