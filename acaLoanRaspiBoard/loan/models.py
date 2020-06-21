@@ -153,14 +153,15 @@ class Action(models.Model):
 	"""
 	student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
 	board = models.ForeignKey(Board, on_delete=models.SET_NULL, blank=True, null=True)
-	timestamp = models.DateTimeField(default=datetime.datetime.now)
+	timestamp = models.DateTimeField(auto_now=True)
 	operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
 
 	class Meta:
 		ordering = ['timestamp']
 
-	def return_lab_board(self, student, board, timestamp=datetime.datetime.now, operation=Operation.RETURN_BOARD):
-		returned_board_action = self.Action(student, board, timestamp, operation)
+	@staticmethod
+	def return_lab_board(student, board, timestamp=datetime.datetime.now, operation=Operation.RETURN_BOARD):
+		returned_board_action = Action(student=student, board=board, operation=operation)
 		returned_board_action.save()
 
 
@@ -203,7 +204,7 @@ class Session(models.Model):
 		# return loaned board that is assigned on student- OK
 		if scanned_board in boards.values():
 			# create action in Action model with returning operation and timestamp
-			Action.return_lab_board(student, scanned_board)
+			Action.return_lab_board(student=student, board=scanned_board)
 			# returning by setting the status of the board to be "active"
 			scanned_board.board_status = BoardStatus.ACTIVE
 			return True
