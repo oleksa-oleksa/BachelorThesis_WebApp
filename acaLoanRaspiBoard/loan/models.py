@@ -171,7 +171,7 @@ class Session(models.Model):
 	Primary key = default django primary key
 	"""
 
-	TERMINAL_STATES = ['timeout', 'finished']
+	TERMINAL_STATES = ['timeout', 'finished', 'canceled']
 
 	start_time = models.DateTimeField(default=datetime.datetime.now)
 	state = FSMField(default='session_started')
@@ -217,7 +217,7 @@ class Session(models.Model):
 			raise ValidationError('Active session already exists!')
 		super().clean()
 
-	# =================== Django Final State Machine ===================================
+	# =================== Django Finite State Machine ===================================
 
 	@transition(field=state, source='session_started', target='valid_student_card', on_error='unknown_student_card')
 	def student_card_inserted(self, card_uid):
@@ -241,7 +241,7 @@ class Session(models.Model):
 		pass
 
 	@transition(field=state, source='*', target='canceled')
-	def cancel(self):
+	def session_canceled(self):
 		pass
 
 	@transition(field=state, source=['unknown_student_card', 'banned_student',

@@ -44,9 +44,15 @@ function refresh_session_state() {
     .done(handle_session_event)
     .fail(function() {
         clearInterval(session_refresh_timer)
-        alert("Timeout. Please start again!")
+        alert("Timeout/Canceled. Please start again!")
         window.location.replace("/loan")
         })
+
+}
+
+function session_cancel() {
+    var message = {"type": "cancel_button"}
+    $.ajax({url: "api/events", method: "POST", data: JSON.stringify(message), dataType: "json"})
 
 }
 
@@ -58,14 +64,11 @@ function session_started(body) {
 
 $(document).ready(function() {
     console.log("ready!");
-    $("#cancel_button").click(function(){
-        $.ajax({url: "api/sessions/"+active_session_id, method: "POST"})
-        .done(handle_session_event)
-    })
+    $("#cancel_button").click(session_cancel)
     $.ajax({url: "api/sessions", method: "POST"})
         .done(session_started)
         .fail(function(){
-            alert("Can not start new session, try again later")
+            alert("Active session found. Can not start new session, try again later or finish current session")
             window.location.replace("/loan")
         })
 })

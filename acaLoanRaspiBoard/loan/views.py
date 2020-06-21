@@ -30,7 +30,7 @@ def sessions_list(request):
 
 
 @csrf_exempt
-def reader_event(request):
+def events(request):
     if request.method != "POST":
         return HttpResponseNotFound()
 
@@ -38,27 +38,33 @@ def reader_event(request):
 
     if session is None:
         return HttpResponseBadRequest()
-
+    print(request.body)
     # type, uid
-
     try:
         body = json.loads(request.body)
         input_type = body['type']
-        uid = body['uid']
+        print("type:", input_type)
+
     except (KeyError, json.JSONDecodeError):
         return HttpResponseBadRequest()
 
-    if input_type not in ["card", "tag"]:
+    if input_type not in ["card", "tag", "cancel_button"]:
         return HttpResponseBadRequest()
 
     try:
         if input_type == "card":
             try:
+                uid = body['uid']
                 session.student_card_inserted(uid)
             except StudentCard.DoesNotExist:
                 pass
         elif input_type == "tag":
+            uid = body['uid']
             session.rfid_inserted(uid)
+
+        elif input_type == "cancel_button":
+            session.session_canceled()
+
     except TransitionNotAllowed:
         return HttpResponseNotAllowed()
 
