@@ -37,7 +37,7 @@ def render_session(session):
     if scanned_board is not None:
         session_board = "RaspiBoard " + str(scanned_board.board_no) + ' ' + str(scanned_board.board_type)
         operation = "Board ID is scanned."
-
+        session.action_created()
     else:
         session_board = ""
         operation = "Please scan board"

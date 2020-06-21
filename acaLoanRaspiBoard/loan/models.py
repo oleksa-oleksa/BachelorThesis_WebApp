@@ -159,10 +159,9 @@ class Action(models.Model):
 	class Meta:
 		ordering = ['timestamp']
 
-	@staticmethod
-	def return_lab_board(student, board, timestamp=datetime.datetime.now, operation=Operation.RETURN_BOARD):
-		returned_board = Action(student, board, timestamp, operation)
-		returned_board.save()
+	def return_lab_board(self, student, board, timestamp=datetime.datetime.now, operation=Operation.RETURN_BOARD):
+		returned_board_action = self.Action(student, board, timestamp, operation)
+		returned_board_action.save()
 
 
 class Session(models.Model):
@@ -238,10 +237,12 @@ class Session(models.Model):
 
 	@transition(field=state, source='*', target='timeout')
 	def timeout(self):
+		# transition into final state
 		pass
 
 	@transition(field=state, source='*', target='canceled')
 	def session_canceled(self):
+		# transition into final state
 		pass
 
 	@transition(field=state, source=['unknown_student_card', 'banned_student',
