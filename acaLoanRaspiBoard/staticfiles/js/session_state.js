@@ -33,8 +33,13 @@ function handle_session_event(body) {
             $("#scanned_board_info").show()
             $("#scanned_board_info").text(body.scanned_board)
             $("#operation_info").text(body.operation)
+    }
 
-
+       if (body.state == "rfid_state_loaned") {
+            $("#student_name").text(body.student)
+            $("#scanned_board_info").text(body.scanned_board)
+            $("#operation_info").text(body.operation)
+            $("#return_button_div").show()
     }
 }
 
@@ -50,22 +55,26 @@ function refresh_session_state() {
 
 }
 
+
+function get_rfid_status() {
+    var message = {"type": "get_rfid_status"}
+    $.ajax({url: "api/events", method: "POST", data: JSON.stringify(message), dataType: "json"})
+}
+
+
 function session_cancel() {
     var message = {"type": "cancel_button"}
     $.ajax({url: "api/events", method: "POST", data: JSON.stringify(message), dataType: "json"})
-
 }
 
 function return_scanned_board() {
     var message = {"type": "return_scanned_board_button"}
     $.ajax({url: "api/events", method: "POST", data: JSON.stringify(message), dataType: "json"})
-
 }
 
 function loan_scanned_board() {
     var message = {"type": "loan_scanned_board_button"}
     $.ajax({url: "api/events", method: "POST", data: JSON.stringify(message), dataType: "json"})
-
 }
 
 function session_started(body) {

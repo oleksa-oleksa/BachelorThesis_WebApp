@@ -145,6 +145,11 @@ class Board(models.Model):
 		else:
 			return 'Board ' + str(self.board_no)
 
+	@staticmethod
+	def return_board(raspi_tag):
+		# Update tge status of the board with raspi_tag
+		Board.objects.filter(raspi_tag=raspi_tag).update(board_status=BoardStatus.ACTIVE)
+
 
 class Action(models.Model):
 	"""
@@ -196,7 +201,7 @@ class Session(models.Model):
 			return None
 		return self.student_card.student
 
-	def is_board_returned(self):
+	def board_returned(self):
 		student = self.get_active_student()
 		boards = self.student_card.student.get_student_boards()
 		scanned_board = self.get_active_board()
@@ -205,8 +210,6 @@ class Session(models.Model):
 		if scanned_board in boards.values():
 			# create action in Action model with returning operation and timestamp
 			Action.return_lab_board(student=student, board=scanned_board)
-			# returning by setting the status of the board to be "active"
-			scanned_board.board_status = BoardStatus.ACTIVE
 			return True
 		else:
 			return False
@@ -229,12 +232,35 @@ class Session(models.Model):
 		tag = RaspiTag.objects.get(uid=uid)
 		self.raspi_tag = tag
 
+	'''
 	@transition(field=state, source='valid_rfid', target=RETURN_VALUE('loaned', 'returned'))
 	def action_created(self):
 		if self.is_board_returned():
+			Board.return_board(self.raspi_tag)
 			return 'returned'
 		else:
 			return 'loaned'
+	'''
+	@transition(field=state, source='valid_rfid',
+				target=RETURN_VALUE('rfid_state_loaned', 'rfid_state_active', 'error'))
+	def get_rfid_status(self):
+		board = self.get_active_board()
+		if board.board_status == BoardStatus.LOANED:
+			return 'rfid_state_loaned'
+		elif board.board_status == BoardStatus.ACTIVE:
+			return 'rfid_state_active'
+		else:
+			return 'error'
+
+	@transition(field=state, source='rfid_state_loaned', target=RETURN_VALUE('returned', 'error'))
+	def loaned_board_returned(self):
+		if self.board_returned():
+			# After the new Action in DB was created with board_returned()
+			# # the board_status will be set to Active again
+			Board.return_board(self.raspi_tag)
+			return 'returned'
+		else:
+			return 'error'
 
 	@transition(field=state, source='*', target='timeout')
 	def timeout(self):
