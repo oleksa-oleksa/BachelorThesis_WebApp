@@ -147,8 +147,13 @@ class Board(models.Model):
 
 	@staticmethod
 	def return_board(raspi_tag):
-		# Update tge status of the board with raspi_tag
+		# Update the status of the board with raspi_tag
 		Board.objects.filter(raspi_tag=raspi_tag).update(board_status=BoardStatus.ACTIVE)
+
+	@staticmethod
+	def loan_board(raspi_tag):
+		# Update the status of the board with raspi_tag
+		Board.objects.filter(raspi_tag=raspi_tag).update(board_status=BoardStatus.LOANED)
 
 
 class Action(models.Model):
@@ -165,9 +170,19 @@ class Action(models.Model):
 		ordering = ['timestamp']
 
 	@staticmethod
-	def return_lab_board(student, board, timestamp=datetime.datetime.now, operation=Operation.RETURN_BOARD):
+	def return_board_action(student, board, timestamp=datetime.datetime.now, operation=Operation.RETURN_BOARD):
 		returned_board_action = Action(student=student, board=board, operation=operation)
 		returned_board_action.save()
+
+	@staticmethod
+	def loan_board_action(student, board, timestamp=datetime.datetime.now):
+
+		if board.board_type == BoardType.LAB_LOAN:
+			operation = Operation.LAB_LOAN
+		else:
+			operation = Operation.HOME_LOAN
+		loaned_board_action = Action(student=student, board=board, operation=operation)
+		loaned_board_action.save()
 
 
 class Session(models.Model):
@@ -209,10 +224,17 @@ class Session(models.Model):
 		# return loaned board that is assigned on student- OK
 		if scanned_board in boards.values():
 			# create action in Action model with returning operation and timestamp
-			Action.return_lab_board(student=student, board=scanned_board)
+			Action.return_board_action(student=student, board=scanned_board)
 			return True
 		else:
 			return False
+
+	def board_loaned(self, board):
+		student = self.get_active_student()
+
+		# create action in Action model with loan operation and timestamp
+		Action.loan_board_action(student=student, board=board)
+		return True
 
 	def clean(self):
 		open_session = Session.objects.exclude(state__in=Session.TERMINAL_STATES).count()
@@ -232,15 +254,6 @@ class Session(models.Model):
 		tag = RaspiTag.objects.get(uid=uid)
 		self.raspi_tag = tag
 
-	'''
-	@transition(field=state, source='valid_rfid', target=RETURN_VALUE('loaned', 'returned'))
-	def action_created(self):
-		if self.is_board_returned():
-			Board.return_board(self.raspi_tag)
-			return 'returned'
-		else:
-			return 'loaned'
-	'''
 	@transition(field=state, source='valid_rfid',
 				target=RETURN_VALUE('rfid_state_loaned', 'rfid_state_active', 'error'))
 	def get_rfid_status(self):
@@ -259,6 +272,16 @@ class Session(models.Model):
 			# # the board_status will be set to Active again
 			Board.return_board(self.raspi_tag)
 			return 'returned'
+		else:
+			return 'error'
+
+	@transition(field=state, source='rfid_state_active', target=RETURN_VALUE('loaned', 'error'))
+	def active_board_loaned(self):
+		if self.board_loaned():
+			# After the new Action in DB was created with board_returned()
+			# # the board_status will be set to Active again
+			Board.loan_board(self.raspi_tag)
+			return 'loaned'
 		else:
 			return 'error'
 
