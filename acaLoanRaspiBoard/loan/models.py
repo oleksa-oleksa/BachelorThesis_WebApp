@@ -179,31 +179,9 @@ class Action(models.Model):
 		returned_board_action.save()
 
 	@staticmethod
-	def loan_board_action(student, board, timestamp=datetime.datetime.now):
-
-		if board.board_status != BoardStatus.ACTIVE:
-			return 'error'
-
-		# if student has 2 boards, they can not loan one more
-		boards = student.get_student_boards()
-		if len(boards) == 2:
-			return 'maximum_boards_reached'
-		elif len(boards) == 1:
-			loaned_type = boards[0].board_type
-		else:
-			loaned_type = 'empty'
-
-		if board.board_type == BoardType.LAB_LOAN and (loaned_type != BoardType.LAB_LOAN or loaned_type == 'empty'):
-			operation = Operation.LAB_LOAN
-		elif board.board_type == BoardType.HOME_LOAN and (loaned_type != BoardType.HOME_LOAN or loaned_type == 'empty'):
-			operation = Operation.HOME_LOAN
-			if not student.is_home_loan_enabled():
-				return 'home_loan_disabled'
-		else:
-			return 'same_bord_type'
+	def loan_board_action(student, board, operation, timestamp=datetime.datetime.now):
 		loaned_board_action = Action(student=student, board=board, operation=operation)
 		loaned_board_action.save()
-		return 'loaned'
 
 
 class Session(models.Model):
@@ -251,11 +229,31 @@ class Session(models.Model):
 			return False
 
 	def board_loaned(self, board):
+		if board.board_status != BoardStatus.ACTIVE:
+			return 'error'
+
 		student = self.get_active_student()
+		# if student has 2 boards, they can not loan one more
+		boards = student.get_student_boards()
+		if len(boards) == 2:
+			return 'maximum_boards_reached'
+		elif len(boards) == 1:
+			loaned_type = boards[0].board_type
+		else:
+			loaned_type = 'empty'
+
+		if board.board_type == BoardType.LAB_LOAN and (loaned_type != BoardType.LAB_LOAN or loaned_type == 'empty'):
+			operation = Operation.LAB_LOAN
+		elif board.board_type == BoardType.HOME_LOAN and (loaned_type != BoardType.HOME_LOAN or loaned_type == 'empty'):
+			operation = Operation.HOME_LOAN
+			if not student.is_home_loan_enabled():
+				return 'home_loan_disabled'
+		else:
+			return 'same_bord_type'
 
 		# create action in Action model with loan operation and timestamp
-		result = Action.loan_board_action(student=student, board=board)
-		return result
+		Action.loan_board_action(student=student, board=board, operation=operation)
+		return 'loaned'
 
 	def clean(self):
 		open_session = Session.objects.exclude(state__in=Session.TERMINAL_STATES).count()
