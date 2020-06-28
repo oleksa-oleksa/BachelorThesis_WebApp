@@ -39,8 +39,13 @@ def render_session(session):
         operation = "Board ID is scanned."
 
         if session_state == "valid_rfid":
-            session.action_created()
+            session.get_rfid_status()
+
+        if session_state == "rfid_state_loaned":
             operation = "Scanned board is equal to a loaned board that is already assigned to you!"
+
+        if session_state == "rfid_state_active":
+            operation = "Scanned board is ready for loan!"
     else:
         session_board = ""
         operation = "Please scan board"

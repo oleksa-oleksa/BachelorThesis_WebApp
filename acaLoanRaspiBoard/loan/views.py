@@ -66,6 +66,9 @@ def events(request):
         elif input_type == "cancel_button":
             session.session_canceled()
 
+        elif input_type == "return_scanned_board_button":
+            session.loaned_board_returned()
+
     except TransitionNotAllowed:
         return HttpResponseNotAllowed()
 
