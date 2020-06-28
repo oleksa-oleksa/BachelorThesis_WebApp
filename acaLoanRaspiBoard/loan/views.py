@@ -72,6 +72,12 @@ def events(request):
         elif input_type == "return_scanned_board_button":
             session.loaned_board_returned()
 
+        elif input_type == "loan_scanned_board_button":
+            session.active_board_loaned
+
+        elif input_type == "terminate_button":
+            session.error_terminated()
+
     except TransitionNotAllowed:
         return HttpResponseNotAllowed()
 
