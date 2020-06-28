@@ -48,7 +48,7 @@ def events(request):
     except (KeyError, json.JSONDecodeError):
         return HttpResponseBadRequest()
 
-    if input_type not in ["card", "tag", "cancel_button", "get_rfid_status",
+    if input_type not in ["card", "tag", "cancel_button", "terminate_button", "get_rfid_status",
                           "return_scanned_board_button", "loan_scanned_board_button"]:
         return HttpResponseBadRequest()
 
@@ -76,7 +76,7 @@ def events(request):
             session.active_board_loaned
 
         elif input_type == "terminate_button":
-            session.error_terminated()
+            session.session_terminated()
 
     except TransitionNotAllowed:
         return HttpResponseNotAllowed()

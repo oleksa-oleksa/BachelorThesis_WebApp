@@ -254,7 +254,8 @@ class Session(models.Model):
 		student = self.get_active_student()
 
 		# create action in Action model with loan operation and timestamp
-		return Action.loan_board_action(student=student, board=board)
+		result = Action.loan_board_action(student=student, board=board)
+		return result
 
 	def clean(self):
 		open_session = Session.objects.exclude(state__in=Session.TERMINAL_STATES).count()
@@ -317,11 +318,11 @@ class Session(models.Model):
 
 	# SUCCESS FINISH
 	@transition(field=state, source=['returned', 'loaned'], target='finished')
-	def finished(self):
+	def session_finished(self):
 		pass
 
 	# ERROR TERMINATION
 	@transition(field=state, source=['unknown_student_card', 'unknown_rfid', 'status_error', 'home_loan_disabled',
 									 'maximum_boards_reached', 'same_bord_type'], target='error_terminated')
-	def error_terminated(self):
+	def session_terminated(self):
 		pass
