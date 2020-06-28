@@ -121,6 +121,10 @@ class Student(models.Model):
 
 		return boards
 
+	@staticmethod
+	def is_home_loan_enabled(student):
+		return student.is_home_loan_enabled
+
 
 class Board(models.Model):
 	"""
@@ -177,12 +181,29 @@ class Action(models.Model):
 	@staticmethod
 	def loan_board_action(student, board, timestamp=datetime.datetime.now):
 
-		if board.board_type == BoardType.LAB_LOAN:
-			operation = Operation.LAB_LOAN
+		if board.board_status != BoardStatus.ACTIVE:
+			return 'error'
+
+		# if student has 2 boards, they can not loan one more
+		boards = student.get_student_boards()
+		if len(boards) == 2:
+			return 'maximum_boards_reached'
+		elif len(boards) == 1:
+			loaned_type = boards[0].board_type
 		else:
+			loaned_type = 'empty'
+
+		if board.board_type == BoardType.LAB_LOAN and (loaned_type != BoardType.LAB_LOAN or loaned_type == 'empty'):
+			operation = Operation.LAB_LOAN
+		elif board.board_type == BoardType.HOME_LOAN and (loaned_type != BoardType.HOME_LOAN or loaned_type == 'empty'):
 			operation = Operation.HOME_LOAN
+			if not student.is_home_loan_enabled():
+				return 'home_loan_disabled'
+		else:
+			return 'same_bord_type'
 		loaned_board_action = Action(student=student, board=board, operation=operation)
 		loaned_board_action.save()
+		return 'loaned'
 
 
 class Session(models.Model):
@@ -191,7 +212,7 @@ class Session(models.Model):
 	Primary key = default django primary key
 	"""
 
-	TERMINAL_STATES = ['timeout', 'finished', 'canceled']
+	TERMINAL_STATES = ['timeout', 'finished', 'canceled', 'error_terminated']
 
 	start_time = models.DateTimeField(default=datetime.datetime.now)
 	state = FSMField(default='session_started')
@@ -233,8 +254,7 @@ class Session(models.Model):
 		student = self.get_active_student()
 
 		# create action in Action model with loan operation and timestamp
-		Action.loan_board_action(student=student, board=board)
-		return True
+		return Action.loan_board_action(student=student, board=board)
 
 	def clean(self):
 		open_session = Session.objects.exclude(state__in=Session.TERMINAL_STATES).count()
@@ -255,7 +275,7 @@ class Session(models.Model):
 		self.raspi_tag = tag
 
 	@transition(field=state, source='valid_rfid',
-				target=RETURN_VALUE('rfid_state_loaned', 'rfid_state_active', 'error'))
+				target=RETURN_VALUE('rfid_state_loaned', 'rfid_state_active', 'status_error'))
 	def get_rfid_status(self):
 		board = self.get_active_board()
 		if board.board_status == BoardStatus.LOANED:
@@ -263,9 +283,9 @@ class Session(models.Model):
 		elif board.board_status == BoardStatus.ACTIVE:
 			return 'rfid_state_active'
 		else:
-			return 'error'
+			return 'status_error'
 
-	@transition(field=state, source='rfid_state_loaned', target=RETURN_VALUE('returned', 'error'))
+	@transition(field=state, source='rfid_state_loaned', target=RETURN_VALUE('returned', 'return_error'))
 	def loaned_board_returned(self):
 		if self.board_returned():
 			# After the new Action in DB was created with board_returned()
@@ -273,17 +293,17 @@ class Session(models.Model):
 			Board.return_board(self.raspi_tag)
 			return 'returned'
 		else:
-			return 'error'
+			return 'return_error'
 
-	@transition(field=state, source='rfid_state_active', target=RETURN_VALUE('loaned', 'error'))
+	@transition(field=state, source='rfid_state_active', target=RETURN_VALUE('loaned', 'home_loan_disabled', 'error',
+																			'maximum_boards_reached', 'same_bord_type'))
 	def active_board_loaned(self):
-		if self.board_loaned():
+		result = self.board_loaned()
+		if result == 'loaned':
 			# After the new Action in DB was created with board_returned()
 			# # the board_status will be set to Active again
 			Board.loan_board(self.raspi_tag)
-			return 'loaned'
-		else:
-			return 'error'
+		return result
 
 	@transition(field=state, source='*', target='timeout')
 	def timeout(self):
@@ -295,7 +315,13 @@ class Session(models.Model):
 		# transition into final state
 		pass
 
-	@transition(field=state, source=['unknown_student_card', 'banned_student',
-									'returned', 'loaned', 'unknown_rfid'], target='finish')
+	# SUCCESS FINISH
+	@transition(field=state, source=['returned', 'loaned'], target='finished')
 	def finished(self):
+		pass
+
+	# ERROR TERMINATION
+	@transition(field=state, source=['unknown_student_card', 'unknown_rfid', 'status_error', 'home_loan_disabled',
+									 'maximum_boards_reached', 'same_bord_type'], target='error_terminated')
+	def error_terminated(self):
 		pass

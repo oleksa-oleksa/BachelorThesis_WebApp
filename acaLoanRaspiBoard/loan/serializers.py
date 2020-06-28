@@ -47,6 +47,10 @@ def render_session(session):
         session_board = ""
         operation = "Please scan board"
 
+    if session_state == "status_error":
+        session_board = "RaspiBoard " + str(scanned_board.board_no) + ' ' + str(scanned_board.board_type) \
+                        + ' status is: ' + str(scanned_board.board_status)
+
     session_dict = {"state": session_state, "student": session_student, "scanned_board": session_board,
                     "loaned_lab_board": loaned_lab_board, "loaned_lab_board_operation": loaned_lab_board_operation,
                     "loaned_home_board": loaned_home_board, "loaned_home_board_operation": loaned_home_board_operation,

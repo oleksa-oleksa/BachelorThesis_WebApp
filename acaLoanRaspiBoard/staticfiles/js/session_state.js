@@ -1,6 +1,15 @@
 var session_refresh_timer
 var active_session_id
 
+function decorate_terminate_state(body) {
+            $("#scanned_board_info").text(body.scanned_board)
+            $("#terminate_error_button_div").show()
+            $("#return_button_div").hide()
+            $("#loan_button_div").hide()
+            $("#cancel_button_div").hide()
+            $("#welcome_student").hide()
+}
+
 function handle_session_event(body) {
     console.log(body);
 
@@ -8,6 +17,63 @@ function handle_session_event(body) {
            $("#student_name").text("Unknown student card. You are not registered on this course." +
             "Please contact teaching assistant or administrator! Session is terminated")
     }
+
+    if (body.state == "status_error") {
+            $("#student_name").text("This board can not be loaned or returned." +
+            "Try to loan another board or ask teaching assistant/administrator for a help.")
+            $("#operation_info").text("Board status error")
+
+            $("#scanned_board_info").text(body.scanned_board)
+            $("#terminate_error_button_div").show()
+            $("#return_button_div").hide()
+            $("#loan_button_div").hide()
+            $("#cancel_button_div").hide()
+            $("#welcome_student").hide()
+    }
+
+    if (body.state == "unknown_rfid") {
+            $("#student_name").text("Board ID is not detected. Ask teaching assistant/administrator for a help.")
+            $("#operation_info").text("Board ID error")
+
+            $("#scanned_board_info").text(body.scanned_board)
+            $("#terminate_error_button_div").show()
+            $("#return_button_div").hide()
+            $("#loan_button_div").hide()
+            $("#cancel_button_div").hide()
+            $("#welcome_student").hide()
+    }
+
+
+    if (body.state == "home_loan_disabled") {
+            $("#student_name").text("You can not loan board to work a home. Ask teaching assistant/administrator for a help.")
+            $("#operation_info").text("Home loan error")
+
+            $("#scanned_board_info").text(body.scanned_board)
+            $("#terminate_error_button_div").show()
+            $("#return_button_div").hide()
+            $("#loan_button_div").hide()
+            $("#cancel_button_div").hide()
+            $("#welcome_student").hide()
+    }
+
+    if (body.state == "maximum_boards_reached") {
+            $("#student_name").text("Maximum amount of board is reached. You have to return a board first!")
+            $("#operation_info").text("Too much board loaned!")
+
+            $("#scanned_board_info").text(body.scanned_board)
+            $("#terminate_error_button_div").show()
+            $("#return_button_div").hide()
+            $("#loan_button_div").hide()
+            $("#cancel_button_div").hide()
+            $("#welcome_student").hide()
+    }
+
+    if (body.state == "same_board_type") {
+            $("#student_name").text("You can not loan two boards of the same type (lab/home). Try with another board")
+            $("#operation_info").text("Same board type!")
+
+    }
+
     if (body.state == "valid_student_card") {
             $("#student_name").text(body.student)
             $("#place_board").show()
@@ -37,12 +103,23 @@ function handle_session_event(body) {
             get_rfid_status()
     }
 
-       if (body.state == "rfid_state_loaned") {
+    if (body.state == "rfid_state_loaned") {
             $("#student_name").text(body.student)
             $("#scanned_board_info").text(body.scanned_board)
             $("#operation_info").text(body.operation)
             $("#return_button_div").show()
+            $("#loan_button_div").hide()
     }
+
+    if (body.state == "rfid_state_active") {
+            $("#student_name").text(body.student)
+            $("#scanned_board_info").text(body.scanned_board)
+            $("#operation_info").text(body.operation)
+            $("#return_button_div").hide()
+            $("#loan_button_div").show()
+    }
+
+
 }
 
 function refresh_session_state() {
@@ -69,6 +146,11 @@ function session_cancel() {
     $.ajax({url: "api/events", method: "POST", data: JSON.stringify(message), dataType: "json"})
 }
 
+function session_terminate() {
+    var message = {"type": "terminate_button"}
+    $.ajax({url: "api/events", method: "POST", data: JSON.stringify(message), dataType: "json"})
+}
+
 function return_scanned_board() {
     var message = {"type": "return_scanned_board_button"}
     $.ajax({url: "api/events", method: "POST", data: JSON.stringify(message), dataType: "json"})
@@ -88,6 +170,7 @@ function session_started(body) {
 $(document).ready(function() {
     console.log("ready!");
     $("#cancel_button").click(session_cancel)
+    $("#terminate_error_button").click(session_terminate)
     $("#return_button").click(return_scanned_board)
     $("#loan_button").click(loan_scanned_board)
     $.ajax({url: "api/sessions", method: "POST"})
