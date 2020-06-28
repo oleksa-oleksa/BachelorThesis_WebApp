@@ -48,7 +48,7 @@ def events(request):
     except (KeyError, json.JSONDecodeError):
         return HttpResponseBadRequest()
 
-    if input_type not in ["card", "tag", "cancel_button",
+    if input_type not in ["card", "tag", "cancel_button", "get_rfid_status",
                           "return_scanned_board_button", "loan_scanned_board_button"]:
         return HttpResponseBadRequest()
 
@@ -65,6 +65,9 @@ def events(request):
 
         elif input_type == "cancel_button":
             session.session_canceled()
+
+        elif input_type == "get_rfid_status":
+            session.get_rfid_status()
 
         elif input_type == "return_scanned_board_button":
             session.loaned_board_returned()
