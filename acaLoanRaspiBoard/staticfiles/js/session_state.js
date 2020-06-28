@@ -33,6 +33,8 @@ function handle_session_event(body) {
             $("#scanned_board_info").show()
             $("#scanned_board_info").text(body.scanned_board)
             $("#operation_info").text(body.operation)
+
+            get_rfid_status()
     }
 
        if (body.state == "rfid_state_loaned") {

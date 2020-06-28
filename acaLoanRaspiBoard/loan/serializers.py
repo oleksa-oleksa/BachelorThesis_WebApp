@@ -38,9 +38,6 @@ def render_session(session):
         session_board = "RaspiBoard " + str(scanned_board.board_no) + ' ' + str(scanned_board.board_type)
         operation = "Board ID is scanned."
 
-        if session_state == "valid_rfid":
-            session.get_rfid_status()
-
         if session_state == "rfid_state_loaned":
             operation = "Scanned board is equal to a loaned board that is already assigned to you!"
 
