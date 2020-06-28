@@ -56,6 +56,18 @@ function session_cancel() {
 
 }
 
+function return_scanned_board() {
+    var message = {"type": "return_scanned_board_button"}
+    $.ajax({url: "api/events", method: "POST", data: JSON.stringify(message), dataType: "json"})
+
+}
+
+function loan_scanned_board() {
+    var message = {"type": "loan_scanned_board_button"}
+    $.ajax({url: "api/events", method: "POST", data: JSON.stringify(message), dataType: "json"})
+
+}
+
 function session_started(body) {
     console.log("Started session with id " + body.id)
     active_session_id = body.id
@@ -65,6 +77,8 @@ function session_started(body) {
 $(document).ready(function() {
     console.log("ready!");
     $("#cancel_button").click(session_cancel)
+    $("#return_button").click(return_scanned_board)
+    $("#loan_button").click(loan_scanned_board)
     $.ajax({url: "api/sessions", method: "POST"})
         .done(session_started)
         .fail(function(){

@@ -48,7 +48,8 @@ def events(request):
     except (KeyError, json.JSONDecodeError):
         return HttpResponseBadRequest()
 
-    if input_type not in ["card", "tag", "cancel_button"]:
+    if input_type not in ["card", "tag", "cancel_button",
+                          "return_scanned_board_button", "loan_scanned_board_button"]:
         return HttpResponseBadRequest()
 
     try:

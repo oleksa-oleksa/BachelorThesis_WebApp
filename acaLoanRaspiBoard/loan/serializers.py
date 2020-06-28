@@ -37,7 +37,10 @@ def render_session(session):
     if scanned_board is not None:
         session_board = "RaspiBoard " + str(scanned_board.board_no) + ' ' + str(scanned_board.board_type)
         operation = "Board ID is scanned."
-        session.action_created()
+
+        if session_state == "valid_rfid":
+            session.action_created()
+            operation = "Scanned board is equal to a loaned board that is already assigned to you!"
     else:
         session_board = ""
         operation = "Please scan board"
