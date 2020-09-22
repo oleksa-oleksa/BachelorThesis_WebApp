@@ -324,4 +324,5 @@ class Session(models.Model):
 									'maximum_boards_reached', 'same_bord_type', 'return_error'],
 									target='error_terminated')
 	def session_terminated(self):
+		# change error state to terminated state to allow new session to be started
 		pass
