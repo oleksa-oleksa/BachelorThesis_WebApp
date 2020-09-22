@@ -321,6 +321,7 @@ class Session(models.Model):
 
 	# ERROR TERMINATION
 	@transition(field=state, source=['unknown_student_card', 'unknown_rfid', 'status_error', 'home_loan_disabled',
-									 'maximum_boards_reached', 'same_bord_type'], target='error_terminated')
+									'maximum_boards_reached', 'same_bord_type', 'return_error'],
+									target='error_terminated')
 	def session_terminated(self):
 		pass
