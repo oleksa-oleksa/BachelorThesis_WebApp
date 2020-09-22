@@ -122,7 +122,7 @@ class Student(models.Model):
 		return boards
 
 	@staticmethod
-	def is_home_loan_enabled(student):
+	def home_loan_enabled(student):
 		return student.is_home_loan_enabled
 
 
