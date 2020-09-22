@@ -39,10 +39,13 @@ def render_session(session):
         operation = "Board ID is scanned."
 
         if session_state == "rfid_state_loaned":
-            operation = "Scanned board is equal to a loaned board that is already assigned to you!"
+            operation = "Scanned board has been loaned. It can be returned now."
 
         if session_state == "rfid_state_active":
             operation = "Scanned board is ready for loan!"
+
+        if session_state == "return_error":
+            operation = "Error during return process. Please contact administrator or teacher assistant."
     else:
         session_board = ""
         operation = "Please scan board"

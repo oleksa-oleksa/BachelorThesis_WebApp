@@ -2,7 +2,6 @@ var session_refresh_timer
 var active_session_id
 
 function decorate_terminate_state(body) {
-            $("#scanned_board_info").text(body.scanned_board)
             $("#cancel_button_div").hide()
             $("#terminate_error_button_div").show()
             $("#return_button_div").hide()
@@ -10,6 +9,7 @@ function decorate_terminate_state(body) {
             $("#welcome_student").hide()
             $("#place_board").hide()
             $("#scan_card").hide()
+            $("#use_reader").hide()
 }
 
 function handle_session_event(body) {
@@ -97,6 +97,18 @@ function handle_session_event(body) {
             $("#operation_info").text(body.operation)
             $("#return_button_div").hide()
             $("#loan_button_div").show()
+    }
+
+    if (body.state == "return_error") {
+            $("#student_name").text(body.student)
+            $("#scanned_board_info").text("You can not return board " + body.scanned_board)
+            $("#operation_info").text(body.operation)
+            $("#return_button_div").hide()
+            $("#loan_button_div").hide()
+            $("#warning_picture").show()
+            $("#scanned_board_text").hide()
+            decorate_terminate_state(body)
+
     }
 
 

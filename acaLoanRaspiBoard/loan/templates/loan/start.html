@@ -11,7 +11,13 @@
 {% endblock %}
 
 {% block info %}
-Use the card reader near the monitor.
+<div id="use_reader">
+    Use the card reader near the monitor.
+</div>
+
+<div id="warning_picture" style="display: none;">
+    <img src="{% static "warning.png" %}">
+</div>
 {% endblock %}
 
 {% block invitation %}
