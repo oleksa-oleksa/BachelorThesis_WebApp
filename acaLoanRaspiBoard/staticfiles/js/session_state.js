@@ -10,6 +10,19 @@ function decorate_terminate_state(body) {
             $("#place_board").hide()
             $("#scan_card").hide()
             $("#use_reader").hide()
+            $("#ok_picture").hide()
+}
+
+function decorate_success_state(body) {
+            $("#cancel_button_div").hide()
+            $("#terminate_error_button_div").hide()
+            $("#return_button_div").hide()
+            $("#loan_button_div").hide()
+            $("#welcome_student").hide()
+            $("#place_board").hide()
+            $("#scan_card").hide()
+            $("#use_reader").hide()
+            $("#warning_picture").hide()
 }
 
 function handle_session_event(body) {
