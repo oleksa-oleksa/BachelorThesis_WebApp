@@ -77,6 +77,13 @@ body {
     margin-bottom: 5px;
 }
 
+
+.body_img {
+    width: 128px;
+    height: auto;
+    margin-bottom: 5px;
+}
+
 .right_header_img_admin {
     width: 96px;
     height: 96px;
