@@ -242,14 +242,15 @@ class Session(models.Model):
 		else:
 			loaned_type = 'empty'
 
-		if board.board_type == BoardType.LAB_LOAN and (loaned_type != BoardType.LAB_LOAN or loaned_type == 'empty'):
+		if board.board_type == loaned_type:
+			return 'same_bord_type'
+
+		if board.board_type == BoardType.LAB_LOAN:
 			operation = Operation.LAB_LOAN
-		elif board.board_type == BoardType.HOME_LOAN and (loaned_type != BoardType.HOME_LOAN or loaned_type == 'empty'):
-			operation = Operation.HOME_LOAN
+		elif board.board_type == BoardType.HOME_LOAN:
 			if not student.is_home_loan_enabled():
 				return 'home_loan_disabled'
-		else:
-			return 'same_bord_type'
+			operation = Operation.HOME_LOAN
 
 		# create action in Action model with loan operation and timestamp
 		Action.loan_board_action(student=student, board=board, operation=operation)
@@ -294,9 +295,10 @@ class Session(models.Model):
 		else:
 			return 'return_error'
 
-	@transition(field=state, source='rfid_state_active', target=RETURN_VALUE('loaned', 'home_loan_disabled', 'error',
-																			'maximum_boards_reached', 'same_bord_type'))
+	@transition(field=state, source='rfid_state_active', target='loaned',
+				on_error=RETURN_VALUE('home_loan_disabled', 'error', 'maximum_boards_reached', 'same_bord_type'))
 	def active_board_loaned(self):
+		return "loaned"
 		result = self.board_loaned()
 		if result == 'loaned':
 			# After the new Action in DB was created with board_returned()
