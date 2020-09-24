@@ -73,7 +73,7 @@ def events(request):
             session.loaned_board_returned()
 
         elif input_type == "loan_scanned_board_button":
-            session.active_board_loaned
+            session.loan_active_board()
 
         elif input_type == "terminate_button":
             session.session_terminated()

@@ -228,8 +228,10 @@ class Session(models.Model):
 		else:
 			return False
 
-	def board_loaned(self, board):
-		if board.board_status != BoardStatus.ACTIVE:
+	def board_loaned(self):
+		scanned_board = self.get_active_board()
+
+		if scanned_board.board_status != BoardStatus.ACTIVE:
 			return 'error'
 
 		student = self.get_active_student()
@@ -242,18 +244,18 @@ class Session(models.Model):
 		else:
 			loaned_type = 'empty'
 
-		if board.board_type == loaned_type:
+		if scanned_board.board_type == loaned_type:
 			return 'same_bord_type'
 
-		if board.board_type == BoardType.LAB_LOAN:
+		if scanned_board.board_type == BoardType.LAB_LOAN:
 			operation = Operation.LAB_LOAN
-		elif board.board_type == BoardType.HOME_LOAN:
+		elif scanned_board.board_type == BoardType.HOME_LOAN:
 			if not student.is_home_loan_enabled():
 				return 'home_loan_disabled'
 			operation = Operation.HOME_LOAN
 
 		# create action in Action model with loan operation and timestamp
-		Action.loan_board_action(student=student, board=board, operation=operation)
+		Action.loan_board_action(student=student, board=scanned_board, operation=operation)
 		return 'loaned'
 
 	def clean(self):
@@ -295,10 +297,11 @@ class Session(models.Model):
 		else:
 			return 'return_error'
 
-	@transition(field=state, source='rfid_state_active', target='loaned',
-				on_error=RETURN_VALUE('home_loan_disabled', 'error', 'maximum_boards_reached', 'same_bord_type'))
-	def active_board_loaned(self):
-		return "loaned"
+	# @transition(field=state, source='rfid_state_active', target='loaned',
+	#			on_error=RETURN_VALUE('home_loan_disabled', 'error', 'maximum_boards_reached',
+	#			'same_bord_type'))
+	@transition(field=state, source='rfid_state_active', target='loaned')
+	def loan_active_board(self):
 		result = self.board_loaned()
 		if result == 'loaned':
 			# After the new Action in DB was created with board_returned()
