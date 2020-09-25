@@ -49,7 +49,7 @@ def events(request):
         return HttpResponseBadRequest()
 
     if input_type not in ["card", "tag", "cancel_button", "terminate_button", "get_rfid_status",
-                          "return_scanned_board_button", "loan_scanned_board_button"]:
+                          "return_scanned_board_button", "loan_scanned_board_button", "finish_button"]:
         return HttpResponseBadRequest()
 
     try:
@@ -65,6 +65,9 @@ def events(request):
 
         elif input_type == "cancel_button":
             session.session_canceled()
+
+        elif input_type == "finish_button":
+            session.session_finished()
 
         elif input_type == "get_rfid_status":
             session.get_rfid_status()

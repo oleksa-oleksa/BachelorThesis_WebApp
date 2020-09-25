@@ -46,6 +46,9 @@ def render_session(session):
 
         if session_state == "return_error":
             operation = "Error during return process. Please contact administrator or teacher assistant."
+
+        if session_state == "loaned":
+            operation = "Scanned board is assigned on you now"
     else:
         session_board = ""
         operation = "Please scan board"

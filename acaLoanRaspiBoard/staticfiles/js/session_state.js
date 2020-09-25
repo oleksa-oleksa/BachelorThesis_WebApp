@@ -14,6 +14,7 @@ function decorate_terminate_state(body) {
 }
 
 function decorate_success_state(body) {
+            $("#finish_button_div").show()
             $("#cancel_button_div").hide()
             $("#terminate_error_button_div").hide()
             $("#return_button_div").hide()
@@ -121,8 +122,33 @@ function handle_session_event(body) {
             $("#warning_picture").show()
             $("#scanned_board_text").hide()
             decorate_terminate_state(body)
-
     }
+
+    if (body.state == "loaned") {
+            $("#student_name").text(body.student)
+            $("#scanned_board_info").text(body.scanned_board + " is successfully assigned on you")
+            $("#operation_info").text(body.operation)
+            $("#return_button_div").hide()
+            $("#loan_button_div").hide()
+            $("#scanned_board_text").hide()
+            $("#ok_picture").show()
+            decorate_success_state(body)
+    }
+
+    if (body.state == "returned") {
+            $("#student_name").text(body.student)
+            $("#scanned_board_info").text(body.scanned_board + " is returned. Place the board at it's numbered place on a shelf.")
+            $("#operation_info").text(body.operation)
+            $("#return_button_div").hide()
+            $("#loan_button_div").hide()
+            $("#scanned_board_text").hide()
+            $("#ok_picture").show()
+            decorate_success_state(body)
+    }
+
+
+
+
 
 
 }
@@ -156,6 +182,11 @@ function session_terminate() {
     $.ajax({url: "api/events", method: "POST", data: JSON.stringify(message), dataType: "json"})
 }
 
+function session_finish() {
+    var message = {"type": "finish_button"}
+    $.ajax({url: "api/events", method: "POST", data: JSON.stringify(message), dataType: "json"})
+}
+
 function return_scanned_board() {
     var message = {"type": "return_scanned_board_button"}
     $.ajax({url: "api/events", method: "POST", data: JSON.stringify(message), dataType: "json"})
@@ -175,6 +206,7 @@ function session_started(body) {
 $(document).ready(function() {
     console.log("ready!");
     $("#cancel_button").click(session_cancel)
+    $("#finish_button").click(session_finish)
     $("#terminate_error_button").click(session_terminate)
     $("#return_button").click(return_scanned_board)
     $("#loan_button").click(loan_scanned_board)
