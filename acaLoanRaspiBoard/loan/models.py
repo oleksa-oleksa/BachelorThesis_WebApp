@@ -321,6 +321,7 @@ class Session(models.Model):
 	# SUCCESS FINISH
 	@transition(field=state, source=['returned', 'loaned'], target='finished')
 	def session_finished(self):
+		# finish session, terminal state
 		pass
 
 	# ERROR TERMINATION
