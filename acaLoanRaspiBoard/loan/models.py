@@ -250,7 +250,7 @@ class Session(models.Model):
 		if scanned_board.board_type == BoardType.LAB_LOAN:
 			operation = Operation.LAB_LOAN
 		elif scanned_board.board_type == BoardType.HOME_LOAN:
-			if not student.is_home_loan_enabled():
+			if not student.is_home_loan_enabled:
 				return 'home_loan_disabled'
 			operation = Operation.HOME_LOAN
 
@@ -297,10 +297,9 @@ class Session(models.Model):
 		else:
 			return 'return_error'
 
-	# @transition(field=state, source='rfid_state_active', target='loaned',
-	#			on_error=RETURN_VALUE('home_loan_disabled', 'error', 'maximum_boards_reached',
-	#			'same_bord_type'))
-	@transition(field=state, source='rfid_state_active', target='loaned')
+	@transition(field=state, source='rfid_state_active', target='loaned',
+				on_error=RETURN_VALUE('home_loan_disabled', 'error', 'maximum_boards_reached', 'same_bord_type'))
+	#@transition(field=state, source='rfid_state_active', target='loaned')
 	def loan_active_board(self):
 		result = self.board_loaned()
 		if result == 'loaned':
