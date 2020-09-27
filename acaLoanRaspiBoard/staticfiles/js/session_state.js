@@ -35,35 +35,37 @@ function handle_session_event(body) {
     }
 
     if (body.state == "status_error") {
-            $("#student_name").text("This board can not be loaned or returned." +
-            " Try to loan another board or ask teaching assistant/administrator for a help.")
-            $("#operation_info").text("Board status error")
+            $("#student_name").text("This board can not be loaned or returned.")
+            $("#operation_info").text("Board status error. Ask teaching assistant or administrator for a help")
             decorate_terminate_state(body)
     }
 
     if (body.state == "unknown_rfid") {
-            $("#student_name").text("Board ID is not detected. Ask teaching assistant/administrator for a help.")
-            $("#operation_info").text("Board ID error")
+            $("#student_name").text("Board ID is not detected.")
+            $("#operation_info").text("Board ID error. Ask teaching assistant or administrator for a help")
             decorate_terminate_state(body)
 
     }
 
 
     if (body.state == "home_loan_disabled") {
-            $("#student_name").text("You can not loan board to work a home. Ask teaching assistant/administrator for a help.")
-            $("#operation_info").text("Home loan error")
+            $("#student_name").text("You can not loan board to work a home")
+            $("#operation_info").text("Home loan is disabled. Ask teaching assistant or administrator for a help")
+            $("#warning_picture").show()
             decorate_terminate_state(body)
     }
 
     if (body.state == "maximum_boards_reached") {
             $("#student_name").text("Maximum amount of board is reached. You have to return a board first!")
             $("#operation_info").text("Too much board loaned!")
+            $("#warning_picture").show()
             decorate_terminate_state(body)
     }
 
     if (body.state == "same_board_type") {
-            $("#student_name").text("You can not loan two boards of the same type (lab/home). Try with another board")
+            $("#student_name").text("You can not loan two boards of the same type (lab/home).")
             $("#operation_info").text("Same board type!")
+            $("#warning_picture").show()
             decorate_terminate_state(body)
 
     }
@@ -93,7 +95,6 @@ function handle_session_event(body) {
             $("#scanned_board_info").show()
             $("#scanned_board_info").text(body.scanned_board)
             $("#operation_info").text(body.operation)
-
             get_rfid_status()
     }
 
@@ -121,6 +122,7 @@ function handle_session_event(body) {
             $("#loan_button_div").hide()
             $("#warning_picture").show()
             $("#scanned_board_text").hide()
+            $("#warning_picture").show()
             decorate_terminate_state(body)
     }
 
@@ -145,11 +147,6 @@ function handle_session_event(body) {
             $("#ok_picture").show()
             decorate_success_state(body)
     }
-
-
-
-
-
 
 }
 
