@@ -8,7 +8,7 @@ from .models import StudentCard, Student, ATRCardType, RaspiTag, Board, Semester
 class FuzzyUid(factory.fuzzy.BaseFuzzyAttribute):
     def __init__(self, length):
         self.length = length
-        self().__init__()
+        super().__init__()
 
     def _segment(self):
         x = randgen.randint(0, 255)
@@ -29,9 +29,7 @@ class StudentCardFactory(DjangoModelFactory):
 class StudentFactory(DjangoModelFactory):
     class Meta:
         model = Student
-
     student_card = factory.SubFactory(StudentCardFactory)
-    semester = Semester.objects.get_or_create(semester="WS20/21")
     first_name = factory.Faker('first_name')
     second_name = factory.Faker('last_name')
     matricul_no = factory.Faker('random_int', min=850000, max=950000)

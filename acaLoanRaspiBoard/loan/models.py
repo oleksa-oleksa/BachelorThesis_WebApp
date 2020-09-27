@@ -297,9 +297,8 @@ class Session(models.Model):
 		else:
 			return 'return_error'
 
-	@transition(field=state, source='rfid_state_active', target='loaned',
-				on_error=RETURN_VALUE('home_loan_disabled', 'error', 'maximum_boards_reached', 'same_bord_type'))
-	#@transition(field=state, source='rfid_state_active', target='loaned')
+	@transition(field=state, source='rfid_state_active', target=RETURN_VALUE('loaned', 'home_loan_disabled', 'error',
+																			 'maximum_boards_reached', 'same_bord_type'))
 	def loan_active_board(self):
 		result = self.board_loaned()
 		if result == 'loaned':
