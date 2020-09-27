@@ -31,11 +31,11 @@ class StudentFactory(DjangoModelFactory):
         model = Student
 
     student_card = factory.SubFactory(StudentCardFactory)
-    semester = Semester.objects.create(semester="WS20/21")
-    first_name = "Alexandra"
-    second_name = "Baga"
+    semester = Semester.objects.get_or_create(semester="WS20/21")
+    first_name = factory.Faker('first_name')
+    second_name = factory.Faker('last_name')
     matricul_no = factory.Faker('random_int', min=850000, max=950000)
-    hrz_no = "s65556"
+    hrz_no = factory.Faker('random_int', min=65000, max=69000)
     group = StudentGroup.A_GROUP
     is_home_loan_enabled = True
 
