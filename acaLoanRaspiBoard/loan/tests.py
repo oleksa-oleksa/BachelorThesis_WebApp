@@ -1,28 +1,10 @@
 from django.test import TestCase
-from .models import StudentCard, Student, RaspiTag, Board, ATRCardType, Semester, StudentGroup, BoardType, BoardStatus
+from .models import StudentCard, Student, RaspiTag, Board, ATRCardType, Semester, StudentGroup, BoardType, BoardStatus, Session
 from . import factories
 
 
 # Create your tests here.
 class TestHomeLoanBoard(TestCase):
-
-    '''
-    def setUp(self):
-        semester = Semester.objects.create(semester="WS20/21")
-        card = StudentCard.objects.create(uid="04 3B 5E CA 9D 56 80")
-        student_home_enabled = Student.objects.create(student_card=card, semester=semester, first_name="Alexandra",
-                                                    second_name="Baga", matricul_no="849852", hrz_no="s65556",
-                                                     group=StudentGroup.A_GROUP, is_home_loan_enabled=True)
-        student_home_disabled= Student.objects.create(student_card=card, semester=semester, first_name="Alexandra",
-                                                     second_name="Baga", matricul_no="849852", hrz_no="s65556",
-                                                     group=StudentGroup.A_GROUP, is_home_loan_enabled=False)
-        raspi_tag = RaspiTag.objects.create(uid="EC B8 89 30")
-        raspi_tag = RaspiTag.objects.create(uid="EC B8 89 30")
-        board_active = Board.objects.create(raspi_tag=raspi_tag, board_no=14, board_type=BoardType.HOME_LOAN,
-                                            board_status=BoardStatus.ACTIVE)
-
-    '''
-
     def setUp(self):
         self.student_home_enabled = factories.StudentFactory()
         self.student_home_disabled = factories.StudentFactory(is_home_loan_enabled=False)
@@ -31,6 +13,6 @@ class TestHomeLoanBoard(TestCase):
         self.home_board_active = factories.BoardHomeFactory()
         self.home_board_loaned = factories.BoardHomeFactory(board_status=BoardStatus.LOANED)
 
-    def test_home_loan(self):
-        #self.assertEqual(student.student_card, card)
-        #self.assertEqual(board.raspi_tag, raspi_tag)
+    def test_home_loan_enabled(self):
+        session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_enabled.student_card, raspi_tag=self.home_board_active)
+        self.assertEqual(session.board_loaned(), 'loaned')
