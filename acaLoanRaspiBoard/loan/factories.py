@@ -42,7 +42,7 @@ class RaspiTagFactory(DjangoModelFactory):
     class Meta:
         model = RaspiTag
 
-    atr_hex = ATRCardType.STUDENT_CARD_ATR
+    atr_hex = ATRCardType.RASPI_TAG_ATR
     uid = FuzzyUid(length=4)
 
 

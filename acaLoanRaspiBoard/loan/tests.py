@@ -41,9 +41,9 @@ class TestHomeLoanBoard(TestCase):
     def test_home_return(self):
         session = Session.objects.create(state='rfid_state_loaned', student_card=self.student_home_enabled.student_card,
                                          raspi_tag=self.home_board_loaned.raspi_tag)
-        Action.loan_board_action(student=self.student_home_enabled, board=self.home_board_active,
+        # lind student and and board
+        Action.loan_board_action(student=self.student_home_enabled, board=self.home_board_loaned,
                                  operation=Operation.HOME_LOAN)
-        self.home_board_active.loan_board(self.home_board_active.raspi_tag)
         self.assertEqual(session.loaned_board_returned(), 'returned')
 
     def test_loan_second_board_same_type(self):
@@ -81,9 +81,24 @@ class TestHomeLoanBoard(TestCase):
         self.assertEqual(session.loaned_board_returned(), 'return_error')
 
     def test_home_loan_third_board(self):
-        pass
+        # create record about first loan
+        Action.loan_board_action(student=self.student_home_enabled, board=self.home_board_loaned,
+                                 operation=Operation.HOME_LOAN)
+        # create record about second loan
+        Action.loan_board_action(student=self.student_home_enabled, board=self.lab_board_loaned,
+                                 operation=Operation.LAB_LOAN)
+
+        # scan student card and third active board
+        session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_active.raspi_tag)
+
+        # try to loan
+        self.assertEqual(session.board_loaned(), 'maximum_boards_reached')
 
     def test_home_loan_non_existing_board(self):
-        pass
+        rand_rfid = factories.RaspiTagFactory()
+        session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=rand_rfid)
+        self.assertRaises(RaspiTag.board.RelatedObjectDoesNotExist, session.board_loaned())
 
 
