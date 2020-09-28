@@ -240,7 +240,12 @@ class Session(models.Model):
 		if len(boards) == 2:
 			return 'maximum_boards_reached'
 		elif len(boards) == 1:
-			loaned_type = boards[0].board_type
+			if "lab" in boards:
+				loaned_type = BoardType.LAB_LOAN
+			elif "home" in boards:
+				loaned_type = BoardType.HOME_LOAN
+			else:
+				return 'status_error'
 		else:
 			loaned_type = 'empty'
 
