@@ -48,6 +48,30 @@ class TestFSMTransitions(TestCase):
         session.rfid_inserted(rand_rfid.uid)
         self.assertEqual(session.state, 'unknown_rfid')
 
+    def test_empty_rfid_inserted(self):
+        session = Session.objects.create(state='valid_student_card', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=None)
+        session.rfid_inserted(None)
+        self.assertEqual(session.state, 'unknown_rfid')
+
+    def test_get_rfid_status_loaned(self):
+        session = Session.objects.create(state='valid_rfid', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.lab_board_loaned.raspi_tag)
+        session.get_rfid_status()
+        self.assertEqual(session.state, 'rfid_state_loaned')
+
+    def test_get_rfid_status_active(self):
+        session = Session.objects.create(state='valid_rfid', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.lab_board_active.raspi_tag)
+        session.get_rfid_status()
+        self.assertEqual(session.state, 'rfid_state_active')
+
+    def test_get_rfid_status_none(self):
+        session = Session.objects.create(state='valid_rfid', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=None)
+        session.get_rfid_status()
+        self.assertEqual(session.state, 'status_error')
+
 
 
 
