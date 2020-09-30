@@ -5,6 +5,23 @@ from . import factories
 
 
 # Create your tests here.
+class TestFSMTransitions(TestCase):
+    def setUp(self):
+        semester = Semester.objects.create(semester="WS20/21")
+        self.student_home_enabled = factories.StudentFactory(semester=semester)
+        self.student_home_enabled_second = factories.StudentFactory(semester=semester)
+        self.student_home_disabled = factories.StudentFactory(semester=semester, is_home_loan_enabled=False)
+        self.lab_board_active = factories.BoardLabFactory(board_no=3)
+        self.lab_board_loaned = factories.BoardLabFactory(board_no=4, board_status=BoardStatus.LOANED)
+        self.home_board_active = factories.BoardHomeFactory(board_no=13)
+        self.home_board_loaned = factories.BoardHomeFactory(board_no=14, board_status=BoardStatus.LOANED)
+
+    def test_student_card_inserted(self):
+        session = Session.objects.create(state='session_started', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=None)
+        uid = self.student_home_enabled.student_card.uid
+        self.assertEqual(session.student_card_inserted(uid), 'valid_student_card')
+
 
 class TestLabLoanBard(TestCase):
     def setUp(self):
