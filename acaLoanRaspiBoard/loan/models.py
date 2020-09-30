@@ -275,24 +275,24 @@ class Session(models.Model):
 	def student_card_inserted(self, card_uid):
 		try:
 			card = StudentCard.objects.get(uid=card_uid)
-		except StudentCard.DoesNotExist:
-			return 'unknown_student_card'
-		try:
 			if card.student is not None:
 				self.student_card = card
 				return 'valid_student_card'
 		except StudentCard.student.RelatedObjectDoesNotExist:
 			return 'unknown_student_card'
+		except StudentCard.DoesNotExist:
+			return 'unknown_student_card'
 
 	@transition(field=state, source='valid_student_card', target=RETURN_VALUE('valid_rfid', 'unknown_rfid'))
 	def rfid_inserted(self, uid):
-		tag = RaspiTag.objects.get(uid=uid)
-
 		try:
+			tag = RaspiTag.objects.get(uid=uid)
 			if tag.board is not None:
 				self.raspi_tag = tag
 				return 'valid_rfid'
 		except RaspiTag.board.RelatedObjectDoesNotExist:
+			return 'unknown_rfid'
+		except RaspiTag.DoesNotExist:
 			return 'unknown_rfid'
 
 	@transition(field=state, source='valid_rfid',
