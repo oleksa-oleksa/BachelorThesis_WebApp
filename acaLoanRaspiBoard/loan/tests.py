@@ -16,11 +16,39 @@ class TestFSMTransitions(TestCase):
         self.home_board_active = factories.BoardHomeFactory(board_no=13)
         self.home_board_loaned = factories.BoardHomeFactory(board_no=14, board_status=BoardStatus.LOANED)
 
-    def test_student_card_inserted(self):
-        session = Session.objects.create(state='session_started', student_card=self.student_home_enabled.student_card,
+    def test_valid_student_card_inserted(self):
+        session = Session.objects.create(state='session_started', student_card=None,
                                          raspi_tag=None)
-        uid = self.student_home_enabled.student_card.uid
-        self.assertEqual(session.student_card_inserted(uid), 'valid_student_card')
+        session.student_card_inserted(self.student_home_enabled.student_card.uid)
+        self.assertEqual(session.state, 'valid_student_card')
+
+    def test_unknown_student_card_inserted(self):
+        rand_student = factories.StudentCardFactory()
+        session = Session.objects.create(state='session_started', student_card=None,
+                                         raspi_tag=None)
+        session.student_card_inserted(rand_student.uid)
+        self.assertEqual(session.state, 'unknown_student_card')
+
+    def test_empty_student_card_inserted(self):
+        session = Session.objects.create(state='session_started', student_card=None,
+                                         raspi_tag=None)
+        session.student_card_inserted(None)
+        self.assertEqual(session.state, 'unknown_student_card')
+
+    def test_valid_rfid_inserted(self):
+        session = Session.objects.create(state='valid_student_card', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=None)
+        session.rfid_inserted(self.lab_board_active.raspi_tag.uid)
+        self.assertEqual(session.state, 'valid_rfid')
+
+    def test_unknown_rfid_inserted(self):
+        rand_rfid = factories.RaspiTagFactory()
+        session = Session.objects.create(state='valid_student_card', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=None)
+        session.rfid_inserted(rand_rfid.uid)
+        self.assertEqual(session.state, 'unknown_rfid')
+
+
 
 
 class TestLabLoanBard(TestCase):
@@ -179,7 +207,7 @@ class TestHomeLoanBoard(TestCase):
         rand_rfid = factories.RaspiTagFactory()
         session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_enabled.student_card,
                                          raspi_tag=rand_rfid)
-        with  self.assertRaises(RaspiTag.board.RelatedObjectDoesNotExist):
+        with self.assertRaises(RaspiTag.board.RelatedObjectDoesNotExist):
             session.board_loaned()
 
 

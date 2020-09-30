@@ -271,15 +271,29 @@ class Session(models.Model):
 
 	# =================== Django Finite State Machine ===================================
 
-	@transition(field=state, source='session_started', target='valid_student_card', on_error='unknown_student_card')
+	@transition(field=state, source='session_started', target=RETURN_VALUE('valid_student_card', 'unknown_student_card'))
 	def student_card_inserted(self, card_uid):
-		card = StudentCard.objects.get(uid=card_uid)
-		self.student_card = card
+		try:
+			card = StudentCard.objects.get(uid=card_uid)
+		except StudentCard.DoesNotExist:
+			return 'unknown_student_card'
+		try:
+			if card.student is not None:
+				self.student_card = card
+				return 'valid_student_card'
+		except StudentCard.student.RelatedObjectDoesNotExist:
+			return 'unknown_student_card'
 
-	@transition(field=state, source='valid_student_card', target='valid_rfid', on_error='unknown_rfid')
+	@transition(field=state, source='valid_student_card', target=RETURN_VALUE('valid_rfid', 'unknown_rfid'))
 	def rfid_inserted(self, uid):
 		tag = RaspiTag.objects.get(uid=uid)
-		self.raspi_tag = tag
+
+		try:
+			if tag.board is not None:
+				self.raspi_tag = tag
+				return 'valid_rfid'
+		except RaspiTag.board.RelatedObjectDoesNotExist:
+			return 'unknown_rfid'
 
 	@transition(field=state, source='valid_rfid',
 				target=RETURN_VALUE('rfid_state_loaned', 'rfid_state_active', 'status_error'))
