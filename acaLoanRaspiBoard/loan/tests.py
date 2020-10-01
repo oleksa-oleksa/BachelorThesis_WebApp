@@ -83,6 +83,31 @@ class TestFSMTransitions(TestCase):
         session.loaned_board_returned()
         self.assertEqual(session.state, 'returned')
 
+    def test_loaned_board_returned_no_student(self):
+        session = Session.objects.create(state='rfid_state_loaned', student_card=None,
+                                         raspi_tag=self.lab_board_loaned.raspi_tag)
+        # link student and and board
+        Action.loan_board_action(student=self.student_home_enabled, board=self.lab_board_loaned,
+                                 operation=Operation.LAB_LOAN)
+        session.loaned_board_returned()
+        self.assertEqual(session.state, 'return_error')
+
+    def test_loaned_board_returned_no_board(self):
+        session = Session.objects.create(state='rfid_state_loaned', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=None)
+        # link student and and board
+        Action.loan_board_action(student=self.student_home_enabled, board=self.lab_board_loaned,
+                                 operation=Operation.LAB_LOAN)
+        session.loaned_board_returned()
+        self.assertEqual(session.state, 'return_error')
+
+    def test_loaned_board_returned_no_board_no_record(self):
+        session = Session.objects.create(state='rfid_state_loaned', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=None)
+        # link student and and board
+        session.loaned_board_returned()
+        self.assertEqual(session.state, 'return_error')
+
     def test_unassigned_board_returned(self):
         session = Session.objects.create(state='rfid_state_loaned', student_card=self.student_home_enabled.student_card,
                                          raspi_tag=self.home_board_loaned.raspi_tag)
@@ -116,6 +141,12 @@ class TestFSMTransitions(TestCase):
         session.loan_active_board()
         self.assertEqual(session.state, 'loaned')
 
+    def test_loan_loaned_board(self):
+        session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.lab_board_loaned.raspi_tag)
+        session.loan_active_board()
+        self.assertEqual(session.state, 'error')
+
     def test_loan_second_active_board(self):
         # link student and and board
         Action.loan_board_action(student=self.student_home_enabled, board=self.lab_board_loaned,
@@ -136,6 +167,19 @@ class TestFSMTransitions(TestCase):
                                          raspi_tag=self.lab_board_active_second.raspi_tag)
         session.loan_active_board()
         self.assertEqual(session.state, 'maximum_boards_reached')
+
+    def test_loan_unknown_active_board(self):
+        rand_rfid = factories.RaspiTagFactory()
+        session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=rand_rfid)
+        with self.assertRaises(RaspiTag.board.RelatedObjectDoesNotExist):
+            session.loan_active_board()
+
+    def test_loan_active_board_no_student(self):
+        session = Session.objects.create(state='rfid_state_active', student_card=None,
+                                         raspi_tag=self.lab_board_active.raspi_tag)
+        session.loan_active_board()
+        self.assertEqual(session.state, 'error')
 
     def test_loan_same_lab_type_board(self):
         # link student and and board
