@@ -217,8 +217,12 @@ class Session(models.Model):
 		return self.student_card.student
 
 	def board_returned(self):
-		student = self.get_active_student()
-		boards = self.student_card.student.get_student_boards()
+		try:
+			student = self.get_active_student()
+			boards = self.student_card.student.get_student_boards()
+		except AttributeError:
+			return False
+
 		scanned_board = self.get_active_board()
 
 		# return loaned board that is assigned on student- OK
@@ -234,10 +238,13 @@ class Session(models.Model):
 
 		if scanned_board.board_status != BoardStatus.ACTIVE:
 			return 'error'
+		try:
+			student = self.get_active_student()
+			boards = student.get_student_boards()
+		except AttributeError:
+			return "error"
 
-		student = self.get_active_student()
 		# if student has 2 boards, they can not loan one more
-		boards = student.get_student_boards()
 		if len(boards) == 2:
 			return 'maximum_boards_reached'
 		elif len(boards) == 1:
