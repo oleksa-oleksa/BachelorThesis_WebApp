@@ -299,10 +299,13 @@ class Session(models.Model):
 				target=RETURN_VALUE('rfid_state_loaned', 'rfid_state_active', 'status_error'))
 	def get_rfid_status(self):
 		board = self.get_active_board()
-		if board.board_status == BoardStatus.LOANED:
-			return 'rfid_state_loaned'
-		elif board.board_status == BoardStatus.ACTIVE:
-			return 'rfid_state_active'
+		if board is not None:
+			if board.board_status == BoardStatus.LOANED:
+				return 'rfid_state_loaned'
+			elif board.board_status == BoardStatus.ACTIVE:
+				return 'rfid_state_active'
+			else:
+				return 'status_error'
 		else:
 			return 'status_error'
 
