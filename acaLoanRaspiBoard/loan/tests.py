@@ -72,6 +72,12 @@ class TestFSMTransitions(TestCase):
         session.get_rfid_status()
         self.assertEqual(session.state, 'status_error')
 
+    def test_loaned_board_returned(self):
+        session = Session.objects.create(state='rfid_state_loaned', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.lab_board_loaned.raspi_tag)
+        session.loaned_board_returned()
+        self.assertEqual(session.state, 'returned')
+
 
 
 
