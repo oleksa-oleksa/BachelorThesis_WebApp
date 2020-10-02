@@ -1,4 +1,5 @@
 .DS_Store
+**/db_copy
 **/.DS_Store
 Add-Ons
 **/__pycache__
