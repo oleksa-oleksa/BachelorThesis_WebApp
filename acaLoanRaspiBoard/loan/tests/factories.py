@@ -2,7 +2,7 @@ import factory
 import factory.fuzzy
 from factory.random import randgen
 from factory.django import DjangoModelFactory
-from .models import StudentCard, Student, ATRCardType, RaspiTag, Board, Semester, StudentGroup, BoardType, BoardStatus
+from acaLoanRaspiBoard.loan.models import StudentCard, Student, ATRCardType, RaspiTag, Board, Semester, StudentGroup, BoardType, BoardStatus
 
 
 class FuzzyUid(factory.fuzzy.BaseFuzzyAttribute):
