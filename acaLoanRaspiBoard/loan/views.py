@@ -17,6 +17,7 @@ from .models import StudentCard, Student, Operation, Board, Action, RaspiTag, AT
 from .constraint import *
 from .serializers import render_session
 
+
 @csrf_exempt
 def sessions_list(request):
     if request.method == "POST":
