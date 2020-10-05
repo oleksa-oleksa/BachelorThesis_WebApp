@@ -13,8 +13,10 @@ class TestAPI(TestCase):
         self.student_home_enabled_second = factories.StudentFactory(semester=semester)
         self.student_home_disabled = factories.StudentFactory(semester=semester, is_home_loan_enabled=False)
         self.lab_board_active = factories.BoardLabFactory(board_no=3)
+        self.lab_board_active_second = factories.BoardLabFactory(board_no=5)
         self.lab_board_loaned = factories.BoardLabFactory(board_no=4, board_status=BoardStatus.LOANED)
         self.home_board_active = factories.BoardHomeFactory(board_no=13)
+        self.home_board_active_second = factories.BoardHomeFactory(board_no=15)
         self.home_board_loaned = factories.BoardHomeFactory(board_no=14, board_status=BoardStatus.LOANED)
         self.csrf_client = Client(enforce_csrf_checks=True)
 
@@ -216,10 +218,290 @@ class TestAPI(TestCase):
         self.assertEqual(session.state, 'return_error')
 
     def test_unlinked_active_board_returned(self):
-        pass
+        session = Session.objects.create(state='rfid_state_loaned', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.lab_board_active.raspi_tag)
+        # link student and and board
+        Action.loan_board_action(student=self.student_home_enabled, board=None,
+                                 operation=Operation.LAB_LOAN)
+        payload = {"type": "return_scanned_board_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'return_error')
 
     def test_linked_active_board_returned(self):
-        pass
+        session = Session.objects.create(state='rfid_state_loaned', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.lab_board_active.raspi_tag)
+        # link student and and board
+        Action.loan_board_action(student=self.student_home_enabled, board=self.lab_board_active,
+                                 operation=Operation.LAB_LOAN)
+        payload = {"type": "return_scanned_board_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'return_error')
+
+    def test_loan_first_active_board(self):
+        session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.lab_board_active.raspi_tag)
+        payload = {"type": "loan_scanned_board_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'loaned')
+
+    def test_loan_loaned_board(self):
+        session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.lab_board_loaned.raspi_tag)
+        payload = {"type": "loan_scanned_board_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'error')
+
+    def test_loan_second_active_board(self):
+        # link student and and board
+        Action.loan_board_action(student=self.student_home_enabled, board=self.lab_board_loaned,
+                                 operation=Operation.LAB_LOAN)
+        session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_active.raspi_tag)
+        payload = {"type": "loan_scanned_board_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'loaned')
+
+    def test_loan_third_active_board(self):
+        # link student and and board
+        Action.loan_board_action(student=self.student_home_enabled, board=self.lab_board_loaned,
+                                 operation=Operation.LAB_LOAN)
+        # link student and and board
+        Action.loan_board_action(student=self.student_home_enabled, board=self.home_board_loaned,
+                                 operation=Operation.HOME_LOAN)
+        session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.lab_board_active_second.raspi_tag)
+        payload = {"type": "loan_scanned_board_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'maximum_boards_reached')
+
+    def test_loan_unknown_active_board(self):
+        rand_rfid = factories.RaspiTagFactory()
+        session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=rand_rfid)
+        payload = {"type": "loan_scanned_board_button"}
+
+        with self.assertRaises(RaspiTag.board.RelatedObjectDoesNotExist):
+            response = self.csrf_client.post(reverse('events'),
+                                             content_type="application/json",
+                                             data=payload)
+            self.assertEqual(response.status_code, 201)
+            session.refresh_from_db()
+
+    def test_loan_active_board_no_student(self):
+        session = Session.objects.create(state='rfid_state_active', student_card=None,
+                                         raspi_tag=self.lab_board_active.raspi_tag)
+        payload = {"type": "loan_scanned_board_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'error')
+
+    def test_loan_same_lab_type_board(self):
+        # link student and and board
+        Action.loan_board_action(student=self.student_home_enabled, board=self.lab_board_loaned,
+                                 operation=Operation.LAB_LOAN)
+        session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.lab_board_active_second.raspi_tag)
+        payload = {"type": "loan_scanned_board_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'same_bord_type')
+
+    def test_loan_same_home_type_board(self):
+        # link student and and board
+        Action.loan_board_action(student=self.student_home_enabled, board=self.home_board_loaned,
+                                 operation=Operation.HOME_LOAN)
+        session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_active_second.raspi_tag)
+        payload = {"type": "loan_scanned_board_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'same_bord_type')
+
+    def test_loan_lab_active_board_no_home_loan_enabled(self):
+        session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_disabled.student_card,
+                                         raspi_tag=self.lab_board_active.raspi_tag)
+        payload = {"type": "loan_scanned_board_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'loaned')
+
+    def test_loan_home_active_board_no_home_loan_enabled(self):
+        session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_disabled.student_card,
+                                         raspi_tag=self.home_board_active.raspi_tag)
+        payload = {"type": "loan_scanned_board_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'home_loan_disabled')
+
+    def test_session_finished_after_loan(self):
+        session = Session.objects.create(state='loaned', student_card=self.student_home_disabled.student_card,
+                                         raspi_tag=self.home_board_active.raspi_tag)
+        payload = {"type": "finish_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'finished')
+
+    def test_session_finished_after_return(self):
+        session = Session.objects.create(state='returned', student_card=self.student_home_disabled.student_card,
+                                         raspi_tag=self.home_board_loaned.raspi_tag)
+        payload = {"type": "finish_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'finished')
+
+    def test_session_terminated_student(self):
+        session = Session.objects.create(state='unknown_student_card',
+                                         student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_loaned.raspi_tag)
+        payload = {"type": "terminate_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'error_terminated')
+
+    def test_session_terminated_rfid(self):
+        session = Session.objects.create(state='unknown_rfid', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_loaned.raspi_tag)
+        payload = {"type": "terminate_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'error_terminated')
+
+    def test_session_terminated_status(self):
+        session = Session.objects.create(state='status_error', student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_loaned.raspi_tag)
+        payload = {"type": "terminate_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'error_terminated')
+
+    def test_session_terminated_maximum(self):
+        session = Session.objects.create(state='maximum_boards_reached',
+                                         student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_loaned.raspi_tag)
+        payload = {"type": "terminate_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'error_terminated')
+
+    def test_session_terminated_home_loan(self):
+        session = Session.objects.create(state='home_loan_disabled',
+                                         student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_loaned.raspi_tag)
+        payload = {"type": "terminate_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'error_terminated')
+
+    def test_session_terminated_return_error(self):
+        session = Session.objects.create(state='return_error',
+                                         student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_loaned.raspi_tag)
+        payload = {"type": "terminate_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'error_terminated')
+
+    def test_session_terminated_same_type(self):
+        session = Session.objects.create(state='same_bord_type',
+                                         student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_loaned.raspi_tag)
+        payload = {"type": "terminate_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'error_terminated')
+
+    def test_session_canceled_1(self):
+        session = Session.objects.create(state='session_started',
+                                         student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_loaned.raspi_tag)
+        payload = {"type": "cancel_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'canceled')
+
+    def test_session_canceled_2(self):
+        session = Session.objects.create(state='valid_student_card',
+                                         student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_loaned.raspi_tag)
+        payload = {"type": "cancel_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'canceled')
+
+
+
 
 
 
