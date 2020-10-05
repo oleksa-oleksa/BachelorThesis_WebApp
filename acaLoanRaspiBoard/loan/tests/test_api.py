@@ -478,8 +478,8 @@ class TestAPI(TestCase):
 
     def test_session_canceled_1(self):
         session = Session.objects.create(state='session_started',
-                                         student_card=self.student_home_enabled.student_card,
-                                         raspi_tag=self.home_board_loaned.raspi_tag)
+                                         student_card=None,
+                                         raspi_tag=None)
         payload = {"type": "cancel_button"}
         response = self.csrf_client.post(reverse('events'),
                                          content_type="application/json",
@@ -491,7 +491,43 @@ class TestAPI(TestCase):
     def test_session_canceled_2(self):
         session = Session.objects.create(state='valid_student_card',
                                          student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=None)
+        payload = {"type": "cancel_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'canceled')
+
+    def test_session_canceled_3(self):
+        session = Session.objects.create(state='valid_rfid',
+                                         student_card=self.student_home_enabled.student_card,
                                          raspi_tag=self.home_board_loaned.raspi_tag)
+        payload = {"type": "cancel_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'canceled')
+
+    def test_session_canceled_4(self):
+        session = Session.objects.create(state='rfid_state_loaned',
+                                         student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_loaned.raspi_tag)
+        payload = {"type": "cancel_button"}
+        response = self.csrf_client.post(reverse('events'),
+                                         content_type="application/json",
+                                         data=payload)
+        self.assertEqual(response.status_code, 201)
+        session.refresh_from_db()
+        self.assertEqual(session.state, 'canceled')
+
+    def test_session_canceled_5(self):
+        session = Session.objects.create(state='rfid_state_active',
+                                         student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_active.raspi_tag)
         payload = {"type": "cancel_button"}
         response = self.csrf_client.post(reverse('events'),
                                          content_type="application/json",
