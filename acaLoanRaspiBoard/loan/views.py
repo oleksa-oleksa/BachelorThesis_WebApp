@@ -39,12 +39,12 @@ def events(request):
 
     if session is None:
         return HttpResponseBadRequest()
-    print(request.body)
+    # print(request.body)
     # type, uid
     try:
         body = json.loads(request.body)
         input_type = body['type']
-        print("type:", input_type)
+        # print("type:", input_type)
 
     except (KeyError, json.JSONDecodeError):
         return HttpResponseBadRequest()
