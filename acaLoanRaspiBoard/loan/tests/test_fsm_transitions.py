@@ -103,7 +103,6 @@ class TestFSMTransitions(TestCase):
     def test_loaned_board_returned_no_board_no_record(self):
         session = Session.objects.create(state='rfid_state_loaned', student_card=self.student_home_enabled.student_card,
                                          raspi_tag=None)
-        # link student and and board
         session.loaned_board_returned()
         self.assertEqual(session.state, 'return_error')
 
