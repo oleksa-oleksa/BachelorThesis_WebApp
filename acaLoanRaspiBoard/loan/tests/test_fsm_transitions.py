@@ -264,3 +264,38 @@ class TestFSMTransitions(TestCase):
                                          raspi_tag=self.home_board_loaned.raspi_tag)
         session.session_terminated()
         self.assertEqual(session.state, 'error_terminated')
+
+    def test_session_canceled_1(self):
+        session = Session.objects.create(state='session_started',
+                                         student_card=None,
+                                         raspi_tag=None)
+        session.session_canceled()
+        self.assertEqual(session.state, 'canceled')
+
+    def test_session_canceled_2(self):
+        session = Session.objects.create(state='valid_student_card',
+                                         student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=None)
+        session.session_canceled()
+        self.assertEqual(session.state, 'canceled')
+
+    def test_session_canceled_3(self):
+        session = Session.objects.create(state='valid_rfid',
+                                         student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_loaned.raspi_tag)
+        session.session_canceled()
+        self.assertEqual(session.state, 'canceled')
+
+    def test_session_canceled_4(self):
+        session = Session.objects.create(state='rfid_state_loaned',
+                                         student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_loaned.raspi_tag)
+        session.session_canceled()
+        self.assertEqual(session.state, 'canceled')
+
+    def test_session_canceled_5(self):
+        session = Session.objects.create(state='rfid_state_active',
+                                         student_card=self.student_home_enabled.student_card,
+                                         raspi_tag=self.home_board_active.raspi_tag)
+        session.session_canceled()
+        self.assertEqual(session.state, 'canceled')
