@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
 from django.core.exceptions import ValidationError
 from django_fsm import TransitionNotAllowed
-from .models import StudentCard, Student, Operation, Board, Action, RaspiTag, ATRCardType, Session
+from .models import StudentCard, Student, Operation, Board, Action, RaspiTag, ATRCardType, Session, BoardStatus
 from .constraint import *
 from .serializers import render_session
 
@@ -111,9 +111,17 @@ def session_state(request, session_id):
 
 
 def index(request):
+    deadlines = {}
     queryset = Board.objects.filter(board_no__gte=HOME_LOAN_MINIMAL_NO)
+    loaned = Action.objects.select_related('board').filter(board__board_status=BoardStatus.LOANED)
+
+    for action in loaned:
+        deadlines[action.board.board_no] = action.timestamp + MAX_HOME_LOAN_LIMIT
+
+
+    print(deadlines)
     template_name = "loan/index.html"
-    context = {"home_boards_list": queryset}
+    context = {"home_boards_list": queryset, "loaned": loaned, "deadlines": deadlines}
     return render(request, template_name, context)
 
 

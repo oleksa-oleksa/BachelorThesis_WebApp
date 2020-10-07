@@ -63,7 +63,14 @@ Your tiny desktop computer to learn programming,<br> sensors and others awesome 
             <tr>
                 <td>{{ object.board_no }}</td>
                 <td>{{ object.board_status }}</td>
-                <td>untill 23.04</td>
+                <td>
+                    {% if object.board_status == 1 %}
+                        Ready to loan
+                    {% endif %}
+                    {% if object.board_status == 2 %}
+                        bla
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </table>
