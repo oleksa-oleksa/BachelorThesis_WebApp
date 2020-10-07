@@ -68,7 +68,11 @@ Your tiny desktop computer to learn programming,<br> sensors and others awesome 
                         Ready to loan
                     {% endif %}
                     {% if object.board_status == 2 %}
-                        bla
+                        {% for key, value in deadlines.items %}
+                            {% if object.board_no == key %}
+                                    Loaned till {{ value }}
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
                 </td>
             </tr>

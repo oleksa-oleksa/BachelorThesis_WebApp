@@ -118,8 +118,8 @@ def index(request):
     for action in loaned:
         deadlines[action.board.board_no] = action.timestamp + MAX_HOME_LOAN_LIMIT
 
+    # print(type(k) for k in deadlines.values())
 
-    print(deadlines)
     template_name = "loan/index.html"
     context = {"home_boards_list": queryset, "loaned": loaned, "deadlines": deadlines}
     return render(request, template_name, context)
