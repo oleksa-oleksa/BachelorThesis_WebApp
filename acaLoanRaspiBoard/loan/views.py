@@ -111,17 +111,22 @@ def session_state(request, session_id):
 
 
 def index(request):
-    deadlines = {}
-    queryset = Board.objects.filter(board_no__gte=HOME_LOAN_MINIMAL_NO)
-    loaned = Action.objects.select_related('board').filter(board__board_status=BoardStatus.LOANED)
 
-    for action in loaned:
-        deadlines[action.board.board_no] = action.timestamp + MAX_HOME_LOAN_LIMIT
+    now = datetime.datetime.now()
+    loans = []
+    for b in Board.objects.filter(board_no__gte=HOME_LOAN_MINIMAL_NO):
 
-    # print(type(k) for k in deadlines.values())
+        if b.board_status == BoardStatus.LOANED:
+            action = b.action_set.order_by("-timestamp").first()
+            deadline = action.timestamp + MAX_HOME_LOAN_LIMIT
+
+            if deadline > now:
+                loans.append({'board': b, 'deadline': deadline})
+        else:
+            loans.append({'board': b, 'deadline': None})
 
     template_name = "loan/index.html"
-    context = {"home_boards_list": queryset, "loaned": loaned, "deadlines": deadlines}
+    context = {"loans": loans}
     return render(request, template_name, context)
 
 

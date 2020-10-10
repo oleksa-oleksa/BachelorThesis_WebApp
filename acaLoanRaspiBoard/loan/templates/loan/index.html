@@ -59,24 +59,24 @@ Your tiny desktop computer to learn programming,<br> sensors and others awesome 
                 <th>Info</th>
             </tr>
 
-            {% for object in home_boards_list %}
+            {% for loan in loans %}
             <tr>
-                <td>{{ object.board_no }}</td>
-                <td>{{ object.board_status }}</td>
+                <td>{{ loan.board.board_no }}</td>
+                <td>{{ loan.board.board_status }}</td>
                 <td>
-                    {% if object.board_status == 1 %}
+                    {% if loan.board.board_status == 1 %}
                         Ready to loan
                     {% endif %}
-                    {% if object.board_status == 2 %}
-                        {% for key, value in deadlines.items %}
-                            {% if object.board_no == key %}
-                                    Loaned till {{ value }}
-                            {% endif %}
-                        {% endfor %}
+                    {% if loan.board.board_status == 2 %}
+                        {% if loan.deadline %}
+                            Loaned till {{ loan.deadline }}
+                        {% endif %}
                     {% endif %}
+
                 </td>
             </tr>
             {% endfor %}
+
         </table>
     </div>
 {% endblock %}

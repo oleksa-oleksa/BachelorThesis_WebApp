@@ -132,14 +132,15 @@ TIME_ZONE = 'Europe/Berlin'
 
 TIME_INPUT_FORMATS = ['%H:%M:%S']
 TIME_FORMAT = '%H:%M:%S'
+DATETIME_FORMAT = "d.m.Y H:m"
 
-
+DATE_FORMAT = "Y-m-d"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
 
-from django.conf.locale.de import formats as de_formats
-de_formats.TIME_FORMAT = "H:i:s"
-de_formats.DATETIME_FORMAT = "c"
+# from django.conf.locale.de import formats as de_formats
+# de_formats.TIME_FORMAT = "H:i:s"
+# de_formats.DATETIME_FORMAT = "c"
