@@ -1,6 +1,9 @@
 from django.contrib import admin
+from django.db import models
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 
-from .models import Student, Board, Action, StudentCard, RaspiTag, Semester, Session
+from .models import Student, Board, Action, StudentCard, RaspiTag, Semester, Session, BoardStatus
 
 
 class StudentAdmin(admin.ModelAdmin):
@@ -48,6 +51,20 @@ class SessionAdmin(admin.ModelAdmin):
         return "{}".format(obj.raspi_tag.board.board_no)
 
 
+class LoanStatus(Board):
+    class Meta:
+        proxy = True
+        verbose_name = 'Loan status'
+        verbose_name_plural = 'Loan statuses'
+
+
+class Dashboard(admin.ModelAdmin):
+    change_list_template = "change_list.html"
+
+    def get_queryset(self, request):
+        return Board.objects.filter(board_status=BoardStatus.LOANED)
+
+
 # Register your models here.
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Board, BoardAdmin)
@@ -56,6 +73,7 @@ admin.site.register(StudentCard, StudentCardAdmin)
 admin.site.register(RaspiTag, RaspiTagAdmin)
 admin.site.register(Semester, SemesterAdmin)
 admin.site.register(Session, SessionAdmin)
+admin.site.register(LoanStatus, Dashboard)
 
 
 
