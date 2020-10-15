@@ -1,23 +1,21 @@
 % !TeX spellcheck = de
 \chapter{Einleitung}
 \label{sec:intro}
-\section{Vorstellung des PSE-Labors}
-\label{sec:intro:about_lab}
-Im Labor laufen mittlerweile sehr viele von den beiden Mitarbeitern, Andreas, in eigener Regie geführte und nicht Da diese Projekte formal von den offiziellen Labor-Tätigkeiten und -Schwerpunkten des Labors unterschieden werden müssen und diesen auch nicht zugerechnet werden dürfen, reden wir hier von den Projekten
-
 \begin{itemize}
 	\item \textbf{Röst-Mahl-Koch-Kaffeemaschine:} Integration von Connectivity und Entwicklung von IoT-Services für Röst-Mahl-Koch-Kaffeemaschine für Bonaverde\footnote{https://www.bonaverde.com/}. 
 \end{itemize}  
 
 \section{Motivation und Aufgabestellung}
 \label{sec:intro:motivation}
-Im Labor laufen mittlerweile sehr viele von den beiden Mitarbeitern, Andreas, in eigener Regie geführte und nicht Da diese Projekte formal von den offiziellen Labor-Tätigkeiten und -Schwerpunkten des Labors unterschieden werden müssen und diesen auch nicht zugerechnet werden dürfen, reden wir hier von den Projekten
-
-Meine Aufgaben waren in folgende Teilbereiche gegliedert:: 
+Die vorliegende Arbeit beschäftigt sich mit der Einwicklung einer Datenbank-Applikation für das PSE-Labor (Labor für Pervasive Systems Engineering), das sich an der Beuth Hoschschule für Technik Berlin befindet und seit fast 5 Jahre ein wichtiger Teil des Studiums im Studiengänge Technische Informatik und Medieninformatik ist. Während im PSE-Labor stattfindenden Übungsveranstaltungen im Studiengang Technische Informatik werden vorhandene im PSE-Labor die Raspberry Pi Minicomputers (kurz: Raspi)  an die Studierenden verliehen. Zu Beginn einer Laborübung werden die Raspi Boards den Studierenden vom Lehrkraft, der die Übung betreut, übergeben und am Ende der Laborübung zurückgezogen.
+Nachweislich ist das Vorgehen oft mit Reihe von Problemen verknüpft, die sich jedes Semester und fast jedes Mal wiederholen. Die folgenden Problemen wurden von Mitarbeitern des Labors bereits festgestellt und verlangsamen den Prozess der Verleihung und Übungsführung: 
 \begin{itemize}
-	\item Den Schwellenwert für Noise Click Board berechnen und ihn durch SPI Bus entsprechend programmieren. 
-	\subitem * einen automatischen Alarm mit Hilfe von Summer erzeugen.
-	\subitem * einen LED anschalten.
+	\item Studierende kennen ihre am Semesteranfang zugewiesene Gruppennummer auch nach mehreren Wochen nicht und geben den Lehrkraft einen Board mit einer falschen Registriernummer, der einer anderen Gruppe früher zugewiesen wurde und nur von der zugewiesenen Gruppe benutzt werden darf. 
+	\item Studierende versuchen  einen Board nach Hause auszuleihen, der zu den Lab-Boards gehört und nur im Labor während der Übungszeit verliert werden darf. Außerplanmäßig von Studierenden darf Lab-Board nicht ausgeliehen und auch mit nach Hause (home-loan) nicht genommen werden.
+	\item Es gibt ein Verwaltungsaufwand für die ausleihbaren Home-Boards, die von den Studierenden für jeweils eine Woche mit nach Hause genommen werden können. Die Mitarbeiter müssen handlich die Studentenname, Matrikelnummer, Board und Zeit am Zettel registrieren und in einer Woche überprüfen, ob alle ausgeliehenen Boards pünktlich ins Labor zurückgekommen sind. 
+	\item Erfahrungsgemäß können Studierende nach Ablauf der Frist ein Ausleihgerät in einem sehr üblen Zustand der Verschmutzung oder Zerstörung zurückgeben, dass es besteht eine Notwendigkeit den Zustand des Gerätes stets zu kontrollieren, damit es immer bekannt wird, zum welchen Zeitraum Raspi Board zum letzten Mal funktionsfähig war und von wem ausgeliehen wurde.  
+	\item Falls gilt ein Raspi Board als verloren, es sollte eine Möglichkeit geben, alle vorherigen Ausleihen anzuschauen und festzustellen, von welchem Studierende es ausgeliehen und nicht zurückgegeben wurde. Mit den Zettelchen, auf denen den Name von Studierende und Board Nummer gemerkt werden, ist es zu aufwändig nachvollziehen.
+	
 \end{itemize}
 
 \section{Technische Basis und Themengebiet}
