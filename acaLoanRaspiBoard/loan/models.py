@@ -5,6 +5,8 @@ from django.core.exceptions import ValidationError
 import datetime
 from django_fsm import FSMField, transition, RETURN_VALUE, GET_STATE
 from django.core.exceptions import ValidationError
+from .constraint import MAX_LAB_LOAN_LIMIT, MAX_HOME_LOAN_LIMIT
+
 
 
 class ATRCardType(enum.Enum):
@@ -159,6 +161,21 @@ class Board(models.Model):
 	def loan_board(raspi_tag):
 		# Update the status of the board with raspi_tag
 		Board.objects.filter(raspi_tag=raspi_tag).update(board_status=BoardStatus.LOANED)
+
+	def last_action(self):
+		return self.action_set.last()
+
+	def loan_expires_at(self):
+		if self.board_status != BoardStatus.LOANED:
+			return None
+
+		last_action = self.last_action().timestamp
+		if self.board_type == BoardType.LAB_LOAN:
+			return last_action + MAX_LAB_LOAN_LIMIT
+		elif self.board_type == BoardType.HOME_LOAN:
+			return last_action + MAX_HOME_LOAN_LIMIT
+
+		return None
 
 
 class Action(models.Model):

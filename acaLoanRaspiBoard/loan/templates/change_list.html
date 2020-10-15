@@ -1,0 +1,30 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls static admin_list %}
+
+{% block content %}
+
+<table>
+    <tr>
+        <th>Board Number</th>
+        <th>Student</th>
+        <th>Loaned at</th>
+        <th>Expected return</th>
+        <th>Loan expired</th>
+    </tr>
+
+{% for board in cl.queryset %}
+    <tr>
+        <td>{{board.board_no}}</td>
+        <td>
+            {{board.last_action.student.first_name }} {{board.last_action.student.second_name }}
+        </td>
+        <td>{{ board.last_action.timestamp }}</td>
+        <td>{{ board.loan_expires_at }}</td>
+        <td>{% if board.loan_expires_at < now %} YES {% else %} - {% endif %} </td>
+    </tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}
