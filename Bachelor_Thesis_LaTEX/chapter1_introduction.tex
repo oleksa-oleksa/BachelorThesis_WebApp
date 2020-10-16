@@ -1,23 +1,24 @@
 % !TeX spellcheck = de
 \chapter{Einleitung}
 \label{sec:intro}
-\begin{itemize}
-	\item \textbf{Röst-Mahl-Koch-Kaffeemaschine:} Integration von Connectivity und Entwicklung von IoT-Services für Röst-Mahl-Koch-Kaffeemaschine für Bonaverde\footnote{https://www.bonaverde.com/}. 
-\end{itemize}  
-
 \section{Motivation und Aufgabestellung}
 \label{sec:intro:motivation}
-Die vorliegende Arbeit beschäftigt sich mit der Einwicklung einer Datenbank-Applikation für das PSE-Labor (Labor für Pervasive Systems Engineering), das sich an der Beuth Hoschschule für Technik Berlin befindet und seit fast 5 Jahre ein wichtiger Teil des Studiums im Studiengänge Technische Informatik und Medieninformatik ist. Während im PSE-Labor stattfindenden Übungsveranstaltungen im Studiengang Technische Informatik werden vorhandene im PSE-Labor die Raspberry Pi Minicomputers (kurz: Raspi)  an die Studierenden verliehen. Zu Beginn einer Laborübung werden die Raspi Boards den Studierenden vom Lehrkraft, der die Übung betreut, übergeben und am Ende der Laborübung zurückgezogen.
-Nachweislich ist das Vorgehen oft mit Reihe von Problemen verknüpft, die sich jedes Semester und fast jedes Mal wiederholen. Die folgenden Problemen wurden von Mitarbeitern des Labors bereits festgestellt und verlangsamen den Prozess der Verleihung und Übungsführung: 
+Die vorliegende Arbeit beschäftigt sich mit der Einwicklung einer Datenbank-Applikation für das PSE-Labor\footnote{https://www.http://labor.beuth-hochschule.de/pse} (Labor für Pervasive Systems Engineering), das sich an der Beuth Hoschschule für Technik Berlin befindet und seit fast 5 Jahre ein wichtiger Teil des Studiums im Studiengänge Technische Informatik\footnote{https://www.beuth-hochschule.de/b-ti} und Medieninformatik ist. Während im PSE-Labor stattfindenden Übungsveranstaltungen im Studiengang Technische Informatik werden vorhandene im PSE-Labor die Raspberry Pi Minicomputers (kurz: Raspi)  an die Studierenden verliehen. Zu Beginn einer Laborübung werden die Raspi Boards den Studierenden vom Lehrkraft, der die Übung betreut, übergeben und am Ende der Laborübung zurückgezogen. Aus 16 vorhandenen im Labor Raspis, die markierte mit den Nummern 12-16 von Studierenden nach Hause (home-loan) genommen werden können.\\\\
+Nachweislich ist das Vorgehen oft mit Reihe von Problemen verknüpft, die sich jedes Semester und fast jedes Mal wiederholen. Die folgenden Problemen wurden von Mitarbeitern des Labors bereits festgestellt und regelmäßig verlangsamen den Prozess der Verleihung und Übungsführung: 
 \begin{itemize}
 	\item Studierende kennen ihre am Semesteranfang zugewiesene Gruppennummer auch nach mehreren Wochen nicht und geben den Lehrkraft einen Board mit einer falschen Registriernummer, der einer anderen Gruppe früher zugewiesen wurde und nur von der zugewiesenen Gruppe benutzt werden darf. 
 	\item Studierende versuchen  einen Board nach Hause auszuleihen, der zu den Lab-Boards gehört und nur im Labor während der Übungszeit verliert werden darf. Außerplanmäßig von Studierenden darf Lab-Board nicht ausgeliehen und auch mit nach Hause (home-loan) nicht genommen werden.
 	\item Es gibt ein Verwaltungsaufwand für die ausleihbaren Home-Boards, die von den Studierenden für jeweils eine Woche mit nach Hause genommen werden können. Die Mitarbeiter müssen handlich die Studentenname, Matrikelnummer, Board und Zeit am Zettel registrieren und in einer Woche überprüfen, ob alle ausgeliehenen Boards pünktlich ins Labor zurückgekommen sind. 
 	\item Erfahrungsgemäß können Studierende nach Ablauf der Frist ein Ausleihgerät in einem sehr üblen Zustand der Verschmutzung oder Zerstörung zurückgeben, dass es besteht eine Notwendigkeit den Zustand des Gerätes stets zu kontrollieren, damit es immer bekannt wird, zum welchen Zeitraum Raspi Board zum letzten Mal funktionsfähig war und von wem ausgeliehen wurde.  
-	\item Falls gilt ein Raspi Board als verloren, es sollte eine Möglichkeit geben, alle vorherigen Ausleihen anzuschauen und festzustellen, von welchem Studierende es ausgeliehen und nicht zurückgegeben wurde. Mit den Zettelchen, auf denen den Name von Studierende und Board Nummer gemerkt werden, ist es zu aufwändig nachvollziehen.
-	
+	\item Falls gilt ein Raspi Board als verloren, es sollte eine Möglichkeit geben, alle vorherigen Ausleihen anzuschauen und festzustellen, von welchem Studierende es ausgeliehen und nicht zurückgegeben wurde. Mit den Zettelchen, auf denen einen Name von Studierende und eine Board Nummer gemerkt werden, ist es zu aufwändig nachvollziehen.	
 \end{itemize}
+
+Somit ist schlusszufolgern, dass eine Notwendigkeit das Verleihprozedere für die Loan-Boards (Lab und Home) mit modernen Mitteln der Technischen Informatik zu lösen schon dringend besteht und eine lohnenswerte Aufgabe für zukünftige Abschlussarbeit ist. 
 
 \section{Technische Basis und Themengebiet}
 \label{sec:intro:themengebiet}
-Im PSE-Labor laufen mittlerweile sehr viele von den beiden Mitarbeitern, Andreas und Brian, in eigener Regie geführte und nicht. Da diese Projekte formal von den offiziellen Labor-Tätigkeiten und -Schwerpunkten des Labors unterschieden werden müssen und diesen auch nicht zugerechnet werden dürfen.
+Obwohl das Thema der Bachelorarbeit "Entwicklung eine Datenbank-Applikation" lautet, ist es keine einzige Aufgabe nur eine Datenbank zur Ausleihverwaltung zu schrieben ist. Es lässt sich die folgenden Struktur definieren, indem drei verteilte Teilen zu entwickeln ist.\\\\
+Erstens wird an einem uComputer ein sogenannten Register-Client realisiert. Dafür ein RFID-Leser an uComputer angeschlossen wird. Register-Klient ist neben dem Eingangstür eines kleinen Lagerraums des PSE-Labors zu platzieren ist, wo Raspi-Boards aufbewahrt werden. Es ist geplant, dass Studierende einen Board selbst aus dem Fach nehmen könnte und dann mit Hilfe des Register-Clients den genommenen Board auf sich oder seine Gruppe registrieren lassen. Der Register-Client hat selbst keinen Zugriff zur Datenbank und sollte nur die abgelesene Daten von der Smartcard der Studierende zur Server schicken. \\\\
+Zweitens ist ein Display-Klient zu entwickeln, der den Studierenden es zulässt, die Begrüßung des System und die notwendigen Schritten für die Ausleihe zu sehen. Es sollte in einem Browser-Fenster die aktuelle Server-Kommunikation angezeigt wird, wovon es den Studierenden wird bekannt gegeben, ob die Ausleihe gelang oder ein Fehler aufgetreten war.  wurde.  HIER KOMMIUNIKATION \\\
+Drittens 
+ 
