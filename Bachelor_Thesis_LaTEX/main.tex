@@ -23,8 +23,6 @@
 	captions=tableabove,		% display table captions above the float env
 	draft=false,				% value for draft version
 ]{scrreprt}%
-\usepackage[backend=biber, style=alphabetic]{biblatex}
-\addbibresource{lib-refs.bib}
 \usepackage{hyperref}
 \usepackage{wrapfig}
 \usepackage[export]{adjustbox}
@@ -107,8 +105,8 @@
 	colorize=full,%
 	colortheme=bluegreen,%
 % LLT: Use biber if using UTF8 encoding
-% 	bibsys=bibtex,%
-	bibsys=biber,%
+	bibsys=bibtex,
+%	bibsys=biber,%
 	bibfile=bib-refs,%
 	bibstyle=alphabetic,%
 ]{cleanthesis}
@@ -161,7 +159,6 @@
 \input{chapter5_application}
 \input{chapter6_results_conclusion}
 \input{chapter7_appendix}
-\printbibliography
 
 \cleardoublepage
 
@@ -173,9 +170,7 @@
 \renewcommand{\bibfont}{\normalfont\small}
 \setlength{\biblabelsep}{0pt}
 \setlength{\bibitemsep}{0.5\baselineskip plus 0.5\baselineskip}
-\printbibliography[nottype=online]
-\printbibliography[heading=subbibliography,title={Online-Quellen},type=online,prefixnumbers={@}]
-}
+
 \cleardoublepage
 
 %\listoffigures
