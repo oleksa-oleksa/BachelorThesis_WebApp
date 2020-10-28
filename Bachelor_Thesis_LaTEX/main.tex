@@ -23,7 +23,8 @@
 	captions=tableabove,		% display table captions above the float env
 	draft=false,				% value for draft version
 ]{scrreprt}%
-
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\addbibresource{lib-refs.bib}
 \usepackage{hyperref}
 \usepackage{wrapfig}
 \usepackage[export]{adjustbox}
@@ -160,6 +161,7 @@
 \input{chapter5_application}
 \input{chapter6_results_conclusion}
 \input{chapter7_appendix}
+\printbibliography
 
 \cleardoublepage
 
