@@ -104,11 +104,6 @@
 	hangsubsection=true,%
 	colorize=full,%
 	colortheme=bluegreen,%
-% LLT: Use biber if using UTF8 encoding
-	bibsys=bibtex,%
-	%bibsys=biber,%
-	bibfile=bib-refs,%
-	bibstyle=alphabetic,%
 ]{cleanthesis}
 
 \hypersetup{					% setup the hyperref-package options
@@ -125,14 +120,20 @@
 % **************************************************
 % Document CONTENT
 % **************************************************
+\usepackage[backend=bibtex,
+style=alphabetic,
+]{biblatex}
+
+\addbibresource{bib-refs.bib}
+
 \begin{document}
 
 % --------------------------
 % rename document parts
 % --------------------------
-\renewcaptionname{english}{\figurename}{Pic.}
+\renewcaptionname{english}{\figurename}{Abb.}
 \renewcaptionname{english}{\tablename}{Tab.}
-% --------------------------
+% -------------------------
 % Front matter
 % --------------------------
 \pagenumbering{roman}			% roman page numbing (invisible for empty page style)
@@ -156,21 +157,11 @@
 \input{chapter2_theorie}
 \input{chapter3_design}
 \input{chapter4_Implementation}
-\input{chapter5_application}
-\input{chapter6_results_conclusion}
+\input{chapter5_results_conclusion}
 \input{chapter7_appendix}
 
 \cleardoublepage
 
-% --------------------------
-% Back matter
-% --------------------------
-{%
-
-%\printbibliography[nottype=online]
-%\printbibliography[heading=subbibliography,title={Online-Quellen},type=online,prefixnumbers={@}]
-}
-\cleardoublepage
 
 %\listoffigures
 %\cleardoublepage
@@ -180,5 +171,5 @@
 % **************************************************
 % End of Document CONTENT
 % **************************************************
-%\printbibliography[title={Literaturverzeichnis}]
+\printbibliography[title={Literaturverzeichnis}]
 \end{document}
