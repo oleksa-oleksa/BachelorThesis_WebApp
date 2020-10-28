@@ -11,18 +11,18 @@
 	paper=A4,					% paper size --> A4 is default in Germany
 %	twoside=true,				% onesite or twoside printing
     oneside=true,
-%	twoside=false,				% onesite or twoside printing
+	twoside=false,				% onesite or twoside printing
 	openright,					% doublepage cleaning ends up right side
 	parskip=full,				% spacing value / method for paragraphs
 	chapterprefix=true,			% prefix for chapter marks
 	11pt,						% font size
 	headings=normal,			% size of headings
-	bibliography=totoc,			% include bib in toc
 	listof=totoc,				% include listof entries in toc
 	titlepage=on,				% own page for each title page
 	captions=tableabove,		% display table captions above the float env
 	draft=false,				% value for draft version
 ]{scrreprt}%
+
 \usepackage{hyperref}
 \usepackage{wrapfig}
 \usepackage[export]{adjustbox}
@@ -105,8 +105,8 @@
 	colorize=full,%
 	colortheme=bluegreen,%
 % LLT: Use biber if using UTF8 encoding
-	bibsys=bibtex,
-%	bibsys=biber,%
+	bibsys=bibtex,%
+	%bibsys=biber,%
 	bibfile=bib-refs,%
 	bibstyle=alphabetic,%
 ]{cleanthesis}
@@ -166,11 +166,10 @@
 % Back matter
 % --------------------------
 {%
-\setstretch{1.1}
-\renewcommand{\bibfont}{\normalfont\small}
-\setlength{\biblabelsep}{0pt}
-\setlength{\bibitemsep}{0.5\baselineskip plus 0.5\baselineskip}
 
+%\printbibliography[nottype=online]
+%\printbibliography[heading=subbibliography,title={Online-Quellen},type=online,prefixnumbers={@}]
+}
 \cleardoublepage
 
 %\listoffigures
@@ -181,4 +180,5 @@
 % **************************************************
 % End of Document CONTENT
 % **************************************************
+%\printbibliography[title={Literaturverzeichnis}]
 \end{document}
