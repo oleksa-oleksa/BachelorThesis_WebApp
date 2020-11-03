@@ -56,6 +56,14 @@ In diesem Kapitel wurden die Grundlagen der Webanwendungen und des HTTP-Protokol
 \end{wrapfigure}
 Raspberry Pi ist ein Einplatinencomputer, wobei die verschiedene Teile des Computers, die sich normalerweise auf separaten Platinen befinden, werden hier nur auf einer dargestellt. Wie die meisten Einplatinencomputer ist der Raspberry Pi so klein wie eine Kreditkarte. Jedoch bedeutet das nicht, dass er nicht leistungsstark ist: Ein Raspberry Pi kann alles, was ein größerer und leistungsfähiger Computer kann, aber nicht unbedingt gleich schnell. Der Produktname kombiniert Raspberry-Himbeer- und Pi- die Kraiszahl Pi. Das Himbeerbild wurde zum Logo des Projekts. Der Raspberry Pi ist eine kostengünstige Plattform - sein empfohlener Verkaufspreis beträgt weniger als 50€. Ein Mikrocomputer verfügt über alle Funktionen eines Personal Computer (PC): Prozessor, Speicher, Betriebssystem, Anschluss an einen Monitor (TV), die Vernetzung. Der Raspberry Pi verfügt im Gegensatz zu einem PC über zusätzliche Peripheriegeräte wie GPIO-Ports (General Purpose Input / Output). Über diese Pins kann der Mikrocomputer mit der elektronischen Welt der Sensoren, Bildschirmen und Aktoren interagieren. In Abbildung \ref{fig:rasp}\cite{website:3} sind die Anschlüsse schematisch dargestellt.
 
+\begin{wrapfigure}{l}{0.45\textwidth}
+	\fbox{\includegraphics[width=0.42\textwidth]{gfx/system-on-chip.png}}
+	\caption{The Raspberry Pi’s system-on-chip (SoC)}
+	\label{fig:rasp_soc}
+\end{wrapfigure}
+
+Wie jeder Computer besteht der Raspberry Pi aus verschiedenen Komponenten, von denen jede eine Rolle in der Zusammenarbeit spielt. Die erste und wohl wichtigste davon befindet sich direkt über dem Mittelpunkt auf der Oberseite der Platine (Abbildung 1-2) und ist mit einer Metallkappe bedeckt: dem System-on-Chip (SoC). Der Name System-on-Chip ist ein guter Indikator dafür, was wird gefunden, wenn die Metallabdeckung abgenommen wird: einen Siliziumchip, der eine integrierte Schaltung ist und den Großteil des Raspberry Pi-Systems enthält. Dazu gehören die Zentraleinheit (CPU), die gemeinhin als „Gehirn“ eines Computers bezeichnet wird, und die Grafikverarbeitungseinheit (GPU), die die visuelle Seite der Dinge übernimmt.\cite[p. 11]{gareth:raspi} Für die Entwicklung der Abschlussarbeit und die Verwendung im Labor wird Raspberry Pi 3 Model B+ benutzt, an dem der RFID Leser angeschlossen wird. 
+
 \section{Kontaktlose Chipkartentechnik MIFARE}
 \label{sec:theorie:mifare}
 
