@@ -17,7 +17,7 @@ sudo apt-get install --reinstall pcmanfm
 Installation CyberJack RFID basis
 Ich habe den cyberJack RFID basis erfolgreich am Raspberry Pi 3 B mit Raspbian Jessie Lite zum Laufen gebraucht. Es war lediglich nötig, den PC/SC Daemon zu installieren:
 
-https://de.wikipedia.org/wiki/Chipkartenleser (about PC/SC  fot thesis)
+https://de.wikipedia.org/wiki/Chipkartenleser (about PC/SC for thesis)
 sudo apt-get install pcscd
 sudo apt-get install libpcsclite-dev
 sudo apt-get install libusb-1.0-0-dev
