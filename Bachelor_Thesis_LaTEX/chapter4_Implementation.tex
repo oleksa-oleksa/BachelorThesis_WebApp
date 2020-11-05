@@ -52,6 +52,7 @@ Dann laden wir die Open-Source-Bibliothek libnfc für Near Field Communication (
 
 \subsection{Spannungsproblem und Lösung}
 \label{sec:register_client:voltage_issue}
+Nachdem der RFID-Leser angeschlossen wurde, tritt es ein weiteres Problem, das die freie Benutzung der Raspberry Pi unmöglich macht. Es wird unabhängig von der Zeit und vorherigen Geschehen eine Fehlermeldung "under voltage detected (0x000050000000)". Es wird zuerst versucht die kabellose USB-Tastatur und -Maus abzuschalten. USB eine aktive Abfrage seine Ports (Polling) benötigt, was bedeutet, dass die Anzahl der für andere Aufgaben verfügbaren CPU Zyklen geringer ist. Dies kann dazu führen, dass die CPU-Frequenz ansteigt, wodurch der Stromverbrauch höher wäre. Es wurde festgestellt, dass mit unverbundenen USB-Tastatur und -Maus die Fehlermeldung trotzt vorkommt. Nur wenn der RFID-Leser angeschaltet wurde, kam es keine neue Fehlermeldung. 
 Das offizielle Raspberry Pi-Netzteil ist die empfohlene Wahl, da es den schnell wechselnden Strombedarf des Raspberry Pi bewältigen kann.  KEYBOARD bwohl einige Tastaturen im Gaming-Stil mit bunten Lichtern möglicherweise zu viel Strom verbrauchen, um zuverlässig verwendet zu werden.
 
 \section{Server}
