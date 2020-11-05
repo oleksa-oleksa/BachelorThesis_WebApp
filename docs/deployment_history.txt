@@ -2,7 +2,7 @@ Choose the hardware:
 Reiner CyberJack RFID basis for student card (MIFARE contactless smart cards)
 RFID-RC522 for RFID Tags on Raspberry Pi Boards
 Raspbery Pi Board
-Anker USB charger to avoid "under voltage" problem
+	 to avoid "under voltage" problem
 
 Choose language: Python for Raspberry Pi and Django web framework
 
