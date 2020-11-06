@@ -69,7 +69,7 @@ Die Besonderheiten des Raspberry Pi 3 ist, dass WLAN nach IEEE 802.11 b/g/n und 
 
 Die ARMv8-Architektur enthält Cortex-A53-Rechenkerne, die bei gleichem Takt schneller sind als die alten Cortex-A7-Kerne des Raspberry Pi 2 B. Von der 64-Bit-Fähigkeiten der ARMv8-Architektur profitiert allerdings nur neue Software, da 64 Bit auf der Hardware-Seite allerdings vom Betriebssystem und der Software auch unterstützt werden muss. Die folgende Liste gibt es eine kurzen Ansicht auf die Architektur des Mikrocomputers.
 \begin{itemize}
-	\item System-on-Chip: BCM2837 64 Bit ARMv8 von Broadcom
+\item System-on-Chip: BCM2837 64 Bit ARMv8 von Broadcom
 \item Prozessor: Quad-Core-Prozessor mit 1,2 GHz
 \item GPU: Dual-Core-GPU VideoCore IV mit OpenGL ES 2.0 und OpenVG mit Hardwarebeschleunigung und 1080p30 H.264 High-Profile-Decoding
 \item Arbeitsspeicher: 1 GByte LPDDR2-SDRAM
@@ -83,6 +83,29 @@ Nach der kurzen Beschreibung der Raspberry Pi Architektur und sein Betriebssyste
 
 \section{Kontaktlose Chipkartentechnik MIFARE}
 \label{sec:theorie:mifare}
+Anfänglich war die Smartcard eine Plastikkarte im ID-1-Format mit einer Größe von 85,60 × 53,98 mm und abgerundeten Ecken (eine Standardbank / Kreditkarte hat die gleiche Form und Abmessungen). Darin ist ein Mikrochip eingebettet, dessen Kommunikationskontakte zu einer Seite herausgeführt werden. Später erschienen Smartcards im ID-000-Format, sie wurden in Mobiltelefonen verwendet und sind uns als SIM-Karten bekannt. Dann erschienen Smartcards ohne externes Kontaktfeld, und sie begannen, einen Funkkanal für die Kommunikation und Energieübertragung zu verwenden. Smartcards haben keine eigene Stromquelle und sind auf eine externe angewiesen. Der Hauptvorteil einer Smartcard ist die physische Sicherheit der darauf gespeicherten Daten. Der Mikrochip ist sehr klein und alles notwendiges befindet sich darauf, ohne dass interne Kontakte hergestellt werden müssen, an die es sich zum Abfangen angeschlossen werden kann. 
+
+Der ungefähre Lebenszyklus einer Smartcard (z. B. einer Bankkarte mit Chip) besteht aus mehreren Phasen. Daran sind der Chiphersteller, der Smartcard-Hersteller, der Kunde und der Kunde beteiligt:
+
+\begin{itemize}
+	\item \textbf{Herstellung von Chips/Prozessoren}. Zu diesem Zeitpunkt schreibt der direkte Hersteller des Chips nach der physischen Produktion die vom Hersteller der Smartcards bereitgestellte universelle und für alle Karten des gleichen Typs dieselbe Firmware auf.
+\item \textbf{Initialisierung der Smartcard}. Die Chips werden an den Kartenhersteller gesendet. Er ändert die Firmware nach Bedarf. Beispielsweise schreibt er eine eindeutige Seriennummer in jede Karte. Anschließend deaktiviert er die Möglichkeit, diese mit einer speziellen Anforderung zu ändern.
+\item \textbf{Smartcard-Herstellung}. Der Hersteller legt den Chip in Karten des gewünschten Formats ein und sendet diese an den Kunden, beispielsweise eine Bank.
+\item \textbf{Personalisierung}. Der Kunde schreibt unter Verwendung der Methoden der Firmware auf der Karte seine Anwendungen darauf, z. B. Bankgeschäfte. sowie zusätzliche Daten, z. B. Kundenname, Kontonummer usw. Danach wird die Karte durch eine spezielle Anfrage finalisiert, wonach beispielsweise die Aufzeichnung neuer Anträge eingeschränkt wird.
+\item \textbf{Ausgabe}. Die Karte wird dem Kunden ausgegeben und vom Kunden verwendet.
+\item \textbf{Zerstörung}. Die Karte wird weggeworfen.
+\end{itemize}
+
+Einer der größten Hersteller von Smartcards ist die Firma NXP Semiconductors mit Hauptsitz in den Niederlanden. Mit einer großen Produktvielfalt schafft diese Lösungen für kontaktlose Zugangs-und Zeitkontrollen und sichere kontaktlose Automobilzugangskontrollen. Die welt-weit meistgenutzte kontaktlose Chipkartentechnik „MIFARE“wurde von NXP Semiconductors entwickelt und die Produktfamilie umfasst mittlerweile vier Produktreihen.(siehe Abbildung \ref{fig:mifare})\cite{website:9} Alle MIFARE-ICs sind konform zur Norm ISO/IEC 14443 und erfüllen somit die Standards für die kontaktlose Kommunikation zwischen Chipkarten. Sie arbeiten mit 13,56 MHz und ihre Leseentfernung ist bis 10 cm möglich. Kontaktlose MIFARE-Smartcards verfügen über einen 1-KByte-Speicher, der in 16 Sektoren mit jeweils 16 Byte unterteilt ist. Die Datenspeicherdauer beträgt bis zu 10 Jahre. Die Anzahl der Umschreibzyklen beträgt 100.000 Zyklen.
+
+\begin{figure}
+	\centering
+	\fbox{\includegraphics[width=1\textwidth]{gfx/mifare.png}}
+	\caption{Mifareproduktfamilie}
+	\label{fig:mifare}
+\end{figure}
+
+
 
 \section{Sender-Empfänger-System mit RFID}
 \label{sec:theorie:rfid}
