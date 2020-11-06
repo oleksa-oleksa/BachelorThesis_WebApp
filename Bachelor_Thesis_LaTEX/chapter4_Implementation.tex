@@ -67,7 +67,19 @@ from smartcard.ATR import ATR
 from smartcard.CardMonitoring import CardMonitor, CardObserver
 from smartcard.CardRequest import CardRequest
 \end{lstlisting}
-Wann eine RFID-Leser über USB angeschlossen wird, kann es eine Verbindung zur PC/ SC-Bibliothek hergestellt und eine Liste der verfügbaren Terminals abgerufen werden. Alle API-Funktionen geben einen Statuscode zurück. Wenn die Funktion erfolgreich ist, wird die Konstante  $SCARD\_S\_SUCCESS$  zurückgegeben. Alle anderen Daten werden über Funktionsargumente zurückgegeben, in denen die Adresse der gewünschten Variablen übergeben wird. Die Verbindung (Initialisierung) erfolgt über die Funktion $SCardEstablishContext()$. Die Adresse der Variablen $sc\_context$ vom Typ $SCARDCONTEXT$ wird an sie übergeben. Als Nächstes müssen Sie eine Liste der Terminals abrufen. Dies erfolgt über die Funktion $SCardListReaders()$.
+Wann eine RFID-Leser über USB angeschlossen wird, kann es eine Verbindung zur PC/ SC-Bibliothek hergestellt und eine Liste der verfügbaren Terminals abgerufen werden. Alle API-Funktionen geben einen Statuscode zurück. Wenn die Funktion erfolgreich ist, wird die Konstante  $SCARD\_S\_SUCCESS$  zurückgegeben. Alle anderen Daten werden über Funktionsargumente zurückgegeben, in denen die Adresse der gewünschten Variablen übergeben wird. Die Verbindung (Initialisierung) erfolgt über die Funktion $SCardEstablishContext()$. Die Adresse der Variablen $sc\_context$ vom Typ $SCARDCONTEXT$ wird an sie übergeben. Als Nächstes müssen Sie eine Liste der Terminals abrufen. Dies erfolgt über die Funktion $SCardListReaders()$. Dann muss die Liste der angeschlossenen Lesers erhalten und gelesen. Es ist eine Reihe von Zeichenfolgen, die durch ein Nullbyte getrennt sind. Dies ist ein Windows-Format zur Darstellung von Zeichenfolgenlisten und wird üblicherweise als Zeichenfolge mit doppelter Nullterminierung bezeichnet. Durch Aufrufen der Funktion $SCardListReaders()$ erhalten wir eine Liste aller Namen. Da in Abschlussarbeit es ist vorgesehen, dass nur ein RFID-Leser über USB am Register-Client angeschlossen werden darf, wird nur ein Name nach der Funktionsausruf zurückgegeben:
+\begin{lstlisting}
+Found readers: ['ACS ACR122U']
+\end{lstlisting}
+Wie die weitere Entwicklung darf einfach den ersten gefundenen RFID-Leser genommen werden. Wenn keine Terminals angeschlossen sind, wird das Programm beendet und eine entsprechende Meldung der PSE-Labor Mitarbeiter ausgegeben. Dann muss mit dem ausgewählten Terminal verbunden werden. Dies erfolgt durch Aufrufen der Funktion $SCardConnect()$. Beim Aufruf von $SCardConnect()$ geben wir den gemeinsam genutzten Modus $(SCARD\_SHARE\_SHARED)$, das bevorzugte Kommunikationsprotokoll (in unserem Fall $SCARD\_PROTOCOL\_T0$ und $SCARD\_PROTOCOL\_T1$) an, übergeben die Adresse der Variablen, in die das Handle für weitere Operationen mit der Karte gespeichert wird, und die Adresse der Variablen $active\_protocol$. in der gewählten Kommunikationsprotokoll gespeichert wird. Auf Anwendungsebene interessiert es uns nicht besonders, welches Protokoll zum Herstellen der Verbindung ausgewählt wurde, aber diese Informationen müssen während der Programmierung gespeichert werden - sie werden später zum Senden von Befehlen benötigt.
+\begin{lstlisting}
+hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
+	if hresult == SCARD_S_SUCCESS:
+		hresult, readers = SCardListReaders(hcontext, [])
+		if len(readers) > 0:
+			reader = readers[0]
+			hresult, hcard, dwActiveProtocol = SCardConnect(hcontext, reader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
+\end{lstlisting}
 
 \section{Server}
 \label{sec:server}
