@@ -111,6 +111,8 @@ Einer der größten Hersteller von Smartcards ist die Firma NXP Semiconductors m
 \label{sec:theorie:rfid}
 Eines der Transportprotokolle wird zur Kommunikation zwischen dem Terminal und der Smartcard (oder NFC-Karte) verwendet: T = 1 oder T = 0. T = 0 ist historisch das erste und byteorientiert. T = 1 ist moderner, es ist blockorientiert. Beide Protokolle sind asynchron halbduplex. Anstelle von T = 0 kann T0 geschrieben werden und umgekehrt. Ähnliches gilt für T1 / T = 1. 
 
+Der Initialisierungsprozess für eine kontaktlose Karte ist viel komplizierter als für eine Kontaktkarte. Das meiste davon wird vom sogenannten Antikollisionszyklus besetzt. Eine Kollision tritt auf, wenn mehr als eine Karte gleichzeitig auf das elektromagnetische Feld der PCD trifft und die PCD diese Karten voneinander unterscheiden muss. Der Algorithmus dieses Prozesses ist sehr komplex und umfasst mehrere zehn Seiten Beschreibung in den Normen ISO/IEC 14443-2 und ISO / IEC 14443-3. Daher werde ich ihn hier nicht angeben, da es nicht wirklich benötigt wird - das Terminal und der RFID-Leser sind voll damit beschäftigt.
+
 \section{Datenbanken mit Python und SQLite}
 \label{sec:theorie:db}
 

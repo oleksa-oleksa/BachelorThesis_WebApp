@@ -67,11 +67,17 @@ from smartcard.ATR import ATR
 from smartcard.CardMonitoring import CardMonitor, CardObserver
 from smartcard.CardRequest import CardRequest
 \end{lstlisting}
-Wann eine RFID-Leser über USB angeschlossen wird, kann es eine Verbindung zur PC/ SC-Bibliothek hergestellt und eine Liste der verfügbaren Terminals abgerufen werden. Alle API-Funktionen geben einen Statuscode zurück. Wenn die Funktion erfolgreich ist, wird die Konstante  $SCARD\_S\_SUCCESS$  zurückgegeben. Alle anderen Daten werden über Funktionsargumente zurückgegeben, in denen die Adresse der gewünschten Variablen übergeben wird. Die Verbindung (Initialisierung) erfolgt über die Funktion $SCardEstablishContext()$. Die Adresse der Variablen $sc\_context$ vom Typ $SCARDCONTEXT$ wird an sie übergeben. Als Nächstes müssen Sie eine Liste der Terminals abrufen. Dies erfolgt über die Funktion $SCardListReaders()$. Dann muss die Liste der angeschlossenen Lesers erhalten und gelesen. Es ist eine Reihe von Zeichenfolgen, die durch ein Nullbyte getrennt sind. Dies ist ein Windows-Format zur Darstellung von Zeichenfolgenlisten und wird üblicherweise als Zeichenfolge mit doppelter Nullterminierung bezeichnet. Durch Aufrufen der Funktion $SCardListReaders()$ erhalten wir eine Liste aller Namen. Da in Abschlussarbeit es ist vorgesehen, dass nur ein RFID-Leser über USB am Register-Client angeschlossen werden darf, wird nur ein Name nach der Funktionsausruf zurückgegeben:
+Wann eine RFID-Leser über USB angeschlossen wird, kann es eine Verbindung zur PC/ SC-Bibliothek hergestellt und eine Liste der verfügbaren Terminals abgerufen werden. Alle API-Funktionen geben einen Statuscode zurück. Wenn die Funktion erfolgreich ist, wird die Konstante  $SCARD\_S\_SUCCESS$  zurückgegeben. Alle anderen Daten werden über Funktionsargumente zurückgegeben, in denen die Adresse der gewünschten Variablen übergeben wird. Die Verbindung (Initialisierung) erfolgt über die Funktion $SCardEstablishContext()$\cite[p. 101]{chirico:smart_card}. Die Adresse der Variablen $sc\_context$ vom Typ $SCARDCONTEXT$ wird an sie übergeben. Als Nächstes müssen Sie eine Liste der Terminals abrufen. Dies erfolgt über die Funktion $SCardListReaders()$. Dann muss die Liste der angeschlossenen Lesers erhalten und gelesen. Es ist eine Reihe von Zeichenfolgen, die durch ein Nullbyte getrennt sind. Dies ist ein Windows-Format zur Darstellung von Zeichenfolgenlisten und wird üblicherweise als Zeichenfolge mit doppelter Nullterminierung bezeichnet. Durch Aufrufen der Funktion $SCardListReaders()$ erhalten wir eine Liste aller Namen\cite[p. 102]{chirico:smart_card}. Da in Abschlussarbeit es ist vorgesehen, dass nur ein RFID-Leser über USB am Register-Client angeschlossen werden darf, wird nur ein Name nach der Funktionsausruf zurückgegeben:
 \begin{lstlisting}
 Found readers: ['ACS ACR122U']
 \end{lstlisting}
-Wie die weitere Entwicklung darf einfach den ersten gefundenen RFID-Leser genommen werden. Wenn keine Terminals angeschlossen sind, wird das Programm beendet und eine entsprechende Meldung der PSE-Labor Mitarbeiter ausgegeben. Dann muss mit dem ausgewählten Terminal verbunden werden. Dies erfolgt durch Aufrufen der Funktion $SCardConnect()$. Beim Aufruf von $SCardConnect()$ geben wir den gemeinsam genutzten Modus $(SCARD\_SHARE\_SHARED)$, das bevorzugte Kommunikationsprotokoll (in unserem Fall $SCARD\_PROTOCOL\_T0$ und $SCARD\_PROTOCOL\_T1$) an, übergeben die Adresse der Variablen, in die das Handle für weitere Operationen mit der Karte gespeichert wird, und die Adresse der Variablen $active\_protocol$. in der gewählten Kommunikationsprotokoll gespeichert wird. Auf Anwendungsebene interessiert es uns nicht besonders, welches Protokoll zum Herstellen der Verbindung ausgewählt wurde, aber diese Informationen müssen während der Programmierung gespeichert werden - sie werden später zum Senden von Befehlen benötigt.
+
+\begin{wrapfigure}{l}{0.45\textwidth}
+	\fbox{\includegraphics[width=0.42\textwidth]{gfx/baga_stud.jpg}}
+	\caption{RFID-Leser mit der Studentenkarte der Autorin und RFID-Transponders}
+	\label{fig:baga_stud}
+\end{wrapfigure} 
+Wie die weitere Entwicklung darf einfach den ersten gefundenen RFID-Leser genommen werden. Wenn keine Terminals angeschlossen sind, wird das Programm beendet und eine entsprechende Meldung der PSE-Labor Mitarbeiter ausgegeben. Dann muss mit dem ausgewählten Terminal verbunden werden. Dies erfolgt durch Aufrufen der Funktion $SCardConnect()$. Beim Aufruf von $SCardConnect()$ geben wir den gemeinsam genutzten Modus $(SHARE\_SHARED)$, das bevorzugte Kommunikationsprotokoll (in unserem Fall T0 und T1) an, übergeben die Adresse der Variablen, in die das Handle für weitere Operationen mit der Karte gespeichert wird, und die Adresse der Variablen $active\_protocol$. in der gewählten Kommunikationsprotokoll gespeichert wird. Auf Anwendungsebene interessiert es uns nicht besonders, welches Protokoll zum Herstellen der Verbindung ausgewählt wurde, aber diese Informationen müssen während der Programmierung gespeichert werden - sie werden später zum Senden von Befehlen benötigt\cite[p. 104]{chirico:smart_card}.
 \begin{lstlisting}
 hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 	if hresult == SCARD_S_SUCCESS:
@@ -79,6 +85,47 @@ hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 		if len(readers) > 0:
 			reader = readers[0]
 			hresult, hcard, dwActiveProtocol = SCardConnect(hcontext, reader, SCARD_SHARE_SHARED, SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1)
+\end{lstlisting}
+
+ATR (Answer-To-Reset) ist ein kurzes (nicht mehr als 33) Byte-Array, das die Karte beim Anschließen an das Terminal senden muss. Wenn die Karte dies nicht innerhalb einer bestimmten Zeit tut, wird davon ausgegangen, dass sie nicht richtig funktioniert. ATR enthält grundlegende Informationen über die Karte und die technischen Parameter der Verbindung. Das Format ist jedoch recht kompliziert und hängt vom Hersteller des Kartenchips, den darauf installierten „Anwendungen“ usw. ab. ATR wird im Terminal gespeichert, solange die Karte angeschlossen ist. Es lässt sich die zwei verschiedenen RFID-Transponder (MIFARE Smart-Studentenkarte und RFID-Tag) mit Hilfe ATR voneinander unterscheiden. Das folgendes wird z.B. von der Studentenkarte zurückbekommen, wann Autorin ihre eigene Studentenkarte am RFID-Leser ablesen lässt (siehe Abbildung \ref{fig:baga_stud}):
+\begin{lstlisting}
++Inserted:  3B 81 80 01 80 80
+Student card added
+uid 04 2F 75 7A 30 40 80
+\end{lstlisting}
+
+Das anderes wird aber angezeigt, wann den RFID-Transponder am RFID-Leser präsentiert wird, den in der Zukunft am im PSE-Labor vorhandenen Raspi-Boards angeklebt wird:
+\begin{lstlisting}
++Inserted:  3B8F8001804F0CA000000306030001000000006A
+Raspi board added
+uid 5C E7 87 30
+\end{lstlisting}
+
+Klasse $DetectionObserver$ mit der Vererbung vom der Klasse $CardObserver$ wird benutzt, um zu erkennen, wann eine Karte dem Kartenleser vorgelegt wurde, und dann die eindeutige Kennung (UID) von einer Karte zu lesen. Es wird mithilfe der Klasse $ CardMonitor$ getan, die das Einsetzen / Entfernen von Smartcards überwacht und den $CardObserver$ benachrichtigt. 
+\begin{lstlisting}
+def update(self, observable, actions):
+	(addedcards, removedcards) = actions
+	for card in addedcards:
+		atr = toHexString(card.atr)
+		added_card = self.get_cardtype(toHexString(card.atr), "added")
+		self.read_uid(added_card)
+\end{lstlisting}
+
+Sobald eine korrekte Studentenkarte oder RFID-Transponder am RFID-Leser erscheint und ohne Kollision mit anderen in der Nähe bleibenden elektromagnetische Felde abgelesen wird, wird abhängig vom dem Typ der Karte eine JSON-Datei erstellt und von einem acaLoan-client zum Server geschickt. Der acaLoan-client selbst ist ein kleinen Python-Script, der die korrekte Erstellung der JSON-Datei erlaubt und eine Verbindung mittels HTTP-Protokoll zum Server bedient. 
+\begin{lstlisting}
+class AcaLoanClient:
+	def __init__(self, base_url):
+		self.base_url = base_url
+	
+	def send_event(self, type, uid):
+		endpoint = "{}/loan/api/events".format(self.base_url)
+		payload = {"type": type, "uid": uid}
+		r = requests.post(endpoint, json=payload)
+\end{lstlisting}
+
+Es wird weiteres von Register-Client auf keine Antwort vom Server erwartet, ob der abgelesenen Studentenkarte die Ausleihe des Raspi-Boards erlaubt ist oder ob gehaltenen in der Hand Raspi-Board ausgeliehen oder zurückgegeben darf. Sobald die Verbindung zum Server erfolgreich hergestellt wurde und eine JSON-Datei geschickt, wird der RFID-Leser wieder zum Ablesen der nächsten RFID-Transponder freigegeben. Der Python-Script für RFID-Leser muss am Register-Client mit der Verwendung der Umgebungsvariable $LOAN_SERVER$. Während der Entwicklung der Abschlussarbeit geschieht es mit dem Name des Django Entwicklungsservers. Mehr darüber ist in folgenden Kapitel \ref{sec:server} nachzulesen.
+\begin{lstlisting}
+LOAN_SERVER_URL=http://127.0.0.1:8000 python reader.py
 \end{lstlisting}
 
 \section{Server}
