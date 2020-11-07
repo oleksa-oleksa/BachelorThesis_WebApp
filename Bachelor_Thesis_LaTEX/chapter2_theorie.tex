@@ -81,7 +81,7 @@ Eines der beliebtesten Betriebssysteme für den Raspberry Pi ist das Raspbian-Be
 Nach der kurzen Beschreibung der Raspberry Pi Architektur und sein Betriebssystem Raspbian ist schlusszufolgern, dass die Verwendung eines Raspberry Pi Mikrocomputers für die Implementierung des Register-Klient mit dem angeschlossenen RFID Leser ist eine lohnenswerte Entscheidung für in dieser Abschlussarbeit geschriebenen Aufgabe.  
 
 
-\section{Kontaktlose Chipkartentechnik MIFARE}
+\section{Kontaktlose Smartcards MIFARE}
 \label{sec:theorie:mifare}
 Anfänglich war die Smartcard eine Plastikkarte im ID-1-Format mit einer Größe von 85,60 × 53,98 mm und abgerundeten Ecken (eine Standardbank / Kreditkarte hat die gleiche Form und Abmessungen). Darin ist ein Mikrochip eingebettet, dessen Kommunikationskontakte zu einer Seite herausgeführt werden. Später erschienen Smartcards im ID-000-Format, sie wurden in Mobiltelefonen verwendet und sind uns als SIM-Karten bekannt. Dann erschienen Smartcards ohne externes Kontaktfeld, und sie begannen, einen Funkkanal für die Kommunikation und Energieübertragung zu verwenden. Smartcards haben keine eigene Stromquelle und sind auf eine externe angewiesen. Der Hauptvorteil einer Smartcard ist die physische Sicherheit der darauf gespeicherten Daten. Der Mikrochip ist sehr klein und alles notwendiges befindet sich darauf, ohne dass interne Kontakte hergestellt werden müssen, an die es sich zum Abfangen angeschlossen werden kann. 
 
@@ -96,8 +96,6 @@ Der ungefähre Lebenszyklus einer Smartcard (z. B. einer Bankkarte mit Chip) bes
 \item \textbf{Zerstörung}. Die Karte wird weggeworfen.
 \end{itemize}
 
-Einer der größten Hersteller von Smartcards ist die Firma NXP Semiconductors mit Hauptsitz in den Niederlanden. Mit einer großen Produktvielfalt schafft diese Lösungen für kontaktlose Zugangs-und Zeitkontrollen und sichere kontaktlose Automobilzugangskontrollen. Die welt-weit meistgenutzte kontaktlose Chipkartentechnik „MIFARE“wurde von NXP Semiconductors entwickelt und die Produktfamilie umfasst mittlerweile vier Produktreihen.(siehe Abbildung \ref{fig:mifare})\cite{website:9} Alle MIFARE-ICs sind konform zur Norm ISO/IEC 14443 und erfüllen somit die Standards für die kontaktlose Kommunikation zwischen Chipkarten. Sie arbeiten mit 13,56 MHz und ihre Leseentfernung ist bis 10 cm möglich. Kontaktlose MIFARE-Smartcards verfügen über einen 1-KByte-Speicher, der in 16 Sektoren mit jeweils 16 Byte unterteilt ist. Die Datenspeicherdauer beträgt bis zu 10 Jahre. Die Anzahl der Umschreibzyklen beträgt 100.000 Zyklen.
-
 \begin{figure}
 	\centering
 	\fbox{\includegraphics[width=1\textwidth]{gfx/mifare.png}}
@@ -105,6 +103,12 @@ Einer der größten Hersteller von Smartcards ist die Firma NXP Semiconductors m
 	\label{fig:mifare}
 \end{figure}
 
+
+Einer der größten Hersteller von Smartcards ist die Firma NXP Semiconductors mit Hauptsitz in den Niederlanden. Mit einer großen Produktvielfalt schafft diese Lösungen für kontaktlose Zugangs-und Zeitkontrollen und sichere kontaktlose Automobilzugangskontrollen. Die welt-weit meistgenutzte kontaktlose Chipkartentechnik „MIFARE“wurde von NXP Semiconductors entwickelt und die Produktfamilie umfasst mittlerweile vier Produktreihen.(siehe Abbildung \ref{fig:mifare})\cite{website:9} Alle MIFARE-ICs sind konform zur Norm ISO/IEC 14443 und erfüllen somit die Standards für die kontaktlose Kommunikation zwischen Chipkarten. Sie arbeiten mit 13,56 MHz und ihre Leseentfernung ist bis 10 cm möglich. Kontaktlose MIFARE-Smartcards verfügen über einen 1-KByte-Speicher, der in 16 Sektoren mit jeweils 16 Byte unterteilt ist. Die Datenspeicherdauer beträgt bis zu 10 Jahre. Die Anzahl der Umschreibzyklen beträgt 100.000 Zyklen.
+
+Neben NXP Semiconductors werden Chips für Mifare-Smartcards von der deutschen Firma Infineon im Rahmen einer Lizenzvereinbarung hergestellt. Nur Smartcards mit Chips von NXP Semiconductors und Infineon dürfen die Marke Mifare in ihrem Namen tragen. Nur Karten mit diesen Chips können als "Original" bezeichnet werden.
+
+Die Studentenkarte der Beuth Hochschule Bei den wurden mit Mifare DESfire EV1 Kartenchip hergestellt. MIFARE DESFire EV1 ist die nächste Generation von Mifare Desfire mit einigen verbesserten Funktionen der Sicherheit und Verschlüsselung\cite[p.83]{chirico:smart_card}. Unberechtigte können sie aufgrund der AES-Verschlüsselung nicht auslesen. Zudem enthalten die Karten elektronisch keine persönlichen Daten. Alle auf der Karte gespeicherte Daten werden kodiert, z.B. mit der UID der einzelnen Karte verschlüsselt. MIFARE DESFire wird in vielen NFC- und RFID-Anwendungen verwendet, da er als sicherer Transponder mit einem von drei verschiedenen Typen von Verschlüsselung gesichert ist: Single DES, Triple DES oder AES. Im Allgemeinen wird AES als die sicherste Verschlüsselungsstufe der oben aufgeführten Methoden angesehen\cite{website:10}.
 
 
 \section{Sender-Empfänger-System mit RFID}
