@@ -137,8 +137,33 @@ Zu Zweck Definition der Struktur wird das Schlüsselwort "items" mit einem Array
 
 \section{Server}
 \label{sec:server}
-Als er wurde im Kapitel \ref{sec:register_client:smart} erwähnt, während der Implementierung der Aufgabe der Abschlussarbeit wurde mit dem Entwicklungsserver gearbeitet. Ein Entwicklungsserver ist ein Servertyp, der die Entwicklung und das Testen von Programmen, Websites, Software oder Anwendungen für Softwareprogrammierer erleichtert. Der bietet eine Laufzeitumgebung sowie alle Hardware- / Software-Dienstprogramme, die für das Debuggen und die Entwicklung von Programmen unerlässlich sind. Django ist eines der effizientesten modernen Frameworks für die Entwicklung von Webprojekten. Der Grund für diese Effizienz ist ein klarer Mechanismus für die Arbeit mit einem Projekt, ein praktisches ORM - ein Modellsystem zur Vereinfachung der Verwendung der Datenbank, eine integrierte funktionale Vorlagen-Engine.
+Als er wurde im Kapitel \ref{sec:register_client:smart} erwähnt, während der Implementierung der Aufgabe der Abschlussarbeit wurde mit dem Entwicklungsserver gearbeitet. Ein Entwicklungsserver ist ein Servertyp, der die Entwicklung und das Testen von Programmen, Websites, Software oder Anwendungen für Softwareprogrammierer erleichtert. Der bietet eine Laufzeitumgebung sowie alle Hardware- / Software-Dienstprogramme, die für das Debuggen und die Entwicklung von Programmen unerlässlich sind. Django ist eines der effizientesten modernen Frameworks für die Entwicklung von Webprojekten. Der Grund für diese Effizienz ist ein klarer Mechanismus für die Arbeit mit einem Projekt, ein praktisches ORM (Object Relational Mapping Layer), mit der mit Anwendungsdaten aus verschiedenen relationalen Datenbanken wie SQLite, PostgreSQL und MySQL interagiert werden kann.
 
+\subsection{Erstellung acaLoan Django-Projekts}
+\label{sec:server:install}
+Glücklicherweise ist der Installationsprozess für Django unkompliziert, sodass das Einrichten Ihrer Entwicklungsumgebung schnell und einfach ist. Django ist vollständig in Python geschrieben, daher muss zuerst Python installiert werden, um Django zu installieren. Weil die Autorin für die Implementierung des Servers ihren eignen Mac OS Rechner verwendet, ist Python bereits Computer installiert. Wenn "Python" in die Befehlszeile eingegeben (mithilfe der Terminal.app auf meinem Mac), wurde folgendes angezeigt werden:
+\begin{lstlisting}
+$ python
+Python 3.8.1 (default, Feb 17 2020, 23:55:16) 
+[Clang 11.0.0 (clang-1100.0.33.17)] on darwin
+\end{lstlisting}
+
+Sobald Python auf Computer installiert ist, kann Django auch installiert werden. Es gibt drei Möglichkeiten: Installation der offizielle Django-Version, Verwendung eines verteilungsspezifisches Installationsprogramm oder Herunterladen der Version, die derzeit immer noch entwickelt wird. In der Abschlussarbeit wird nur die Installation der offiziellen Version verwendet. Der Installation wird mit "venv"-Tool geschieht, das isolierte Python-Umgebungen bietet, die somit praktischer sind als die systemweite Installation von Paketen. 
+
+\subsection{Datenbankeinrichtung}
+\label{sec:server:database}
+
+\subsection{Einführung in das Django Admin}
+\label{sec:server:admin}
+
+\subsection{Start des Entwicklungsservers}
+\label{sec:server:server}
+
+\subsection{Erstellen der öffentlichen Schnittstelle - "Views"}
+\label{sec:server:views}
+
+\subsection{Templates und Design der acaLoan-Website}
+\label{sec:server:design}
 
 
 \section{Display-Client}
@@ -146,3 +171,7 @@ Als er wurde im Kapitel \ref{sec:register_client:smart} erwähnt, während der I
 
 \subsection{Clientseitiges JavaScript}
 \label{sec:display_client:js}
+
+
+\section{Automatisierten Tests}
+\label{sec:testing}
