@@ -127,6 +127,26 @@ Es wird weiteres von Register-Client auf keine Antwort vom Server erwartet, ob d
 \begin{lstlisting}
 LOAN_SERVER_URL=http://127.0.0.1:8000 python reader.py
 \end{lstlisting}
+Als letztes für die Implementierung des Register-Clients ist wichtig, die kurze Beschreibung der entwickelte von Autorin JSON-Datei zu geben. Definieren der Struktur, des Inhalts und der Semantik von JSON-Objekten geschieht mithilfe von der Grammatiksprache namens JSON-Schema. Hier kann Metadaten (Daten zu Daten) angegeben werden, die die Eigenschaften eines Objekts bedeuten und beschreiben, welche Werte für diese Eigenschaften gültig sind. 
+
+\begin{lstlisting}
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "array",
+	"items": [
+		{
+			"type": "object",
+			"properties": {
+				"type": {"type": "string",
+					"enum": ["card", "uid", "cancel_button", "terminate_button", "get_rfid_status",
+					"return_scanned_board_button", "loan_scanned_board_button", "finish_button"]},
+			"uid": {"type": "string"}
+		},
+			"required": ["type", "uid"]
+		}
+	]
+}
+\end{lstlisting}
 
 \section{Server}
 \label{sec:server}
