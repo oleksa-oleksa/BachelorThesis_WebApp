@@ -30,14 +30,7 @@ Bei der Arbeit mit dem Mikrocomputer tritt jedoch später ein Problem mit der St
 \label{sec:register_client:install_rfid}
 Obwohl Raspbian mit einer Reihe von Software vorinstalliert ist, wird es aber zusätzlich benötigt, die Treiber für RFID-Leser zu installieren. Es sollte an dieser Stelle auch noch angemerkt werden, dass am Anfang der Entwicklungsprozess ein anderen RFID-Leser angeschlossen wurde als der, den in der Abschlussarbeit zu beschreiben und zu beobachten ist. Zuerst wurde die Treiber für Reiner SCT CyberJack RFID Basis\cite{website:4} installiert. Die Schritte sollten in der Abschlussarbeit nicht unerwähnt bleiben, da die damals für den ersten RFID-Leser installierte Treiber und Daemons (Appendix \ref{sec:appendix:daemon}) wurden endlich für den zweiten RFID-Leser benutzt, mit dem die Entwicklung der Aufgabe abgeschlossen wurde. Der Grund für die Hardwareaustausch ist die festgestellte Tatsache, dass Reiner SCT CyberJack RFID Leser die Studentenkarten nicht ablesen konnte. Obwohl in der Spezifikation es steht, dass die Reiner RFID-Leser kontaktlose RFID Chipkarten wie eID mit dem neuen Personalausweis (nPA), GeldKarte oder eTicketing unterstützt, wurde es unmöglich mit den MIFARE-Transponder 13,561 MHz Funkbereich ins Spiel zu bringen. Die Studierenden-Ausweise der Beuth sollten mit dieser Technologie gelesen werden und somit ist diese Anforderung für die vorliegende Abschlussarbeit wichtig. 
 
-Um RFID-Leser anzuschließen, muss man den Leser über USB mit einem Raspberry Pi verbunden. Der Typ des RFID-Lesegeräts, der für die vorliegende Abschlussarbeit verwendet wird, ist ein ACR122U-A9 von Advanced Card Systems\cite{website:7}, den auf der Abbildung\ref{fig:rfid_hard} zu sehen. Zuerst müssen wir die Paketlisten aktualisieren und einige erforderliche Pakete herunterladen und installieren:\cite{website:6}
-\begin{lstlisting}
-sudo apt-get update
-sudo apt-get install pcscd pcsc-tools pcsc-lite
-sudo apt-get install libpcsclite-dev libtool
-sudo apt-get install libusb-1.0-0-dev
-\end{lstlisting}
-
+Um RFID-Leser anzuschließen, muss man den Leser über USB mit einem Raspberry Pi verbunden. Der Typ des RFID-Lesegeräts, der für die vorliegende Abschlussarbeit verwendet wird, ist ein ACR122U-A9 von Advanced Card Systems\cite{website:7}, den auf der Abbildung\ref{fig:rfid_hard} zu sehen. Zuerst müssen wir die Paketlisten aktualisieren und einige Pakete herunterladen und installieren:\cite{website:6}. Die folgenden Abhängigkeiten werden benötigt im System mit dem Befehl "sudo apt-get install" zu installieren: $libusb-dev, libpcsclite-dev, libpcsclite1, libccid, pcscd, pcsc-tools, libpcsc-perl, libusb-1.0-0-dev, libtool, libssl-dev$.\\
 \begin{wrapfigure}{l}{0.45\textwidth}
 	\fbox{\includegraphics[width=0.42\textwidth]{gfx/rfid_hard.jpg}}
 	\caption{ACR122U-A9 von Advanced Card Systems und Raspbery Pi}
@@ -61,7 +54,7 @@ Anfänglich wurde als Spannungsversorgungsteil ein USB-Netzteil von einem modern
 Nachdem es gelingt mir, die Hardware angefahren und die ersten Studentenkarte so abzulesen, dass es ein Schallton von RFID-Leser erzeugt wurde, sollte eine weitere Aufgabe gelöst werden: die Daten von RFID-Tag auf einem auszuleihenden Raspi Board von Studentenkarte unterscheiden zu können. Es sollte ausgeschlossen werden, dass ein Ausleihe-/Rückgabevorgang angefangen wird, falls eine falsche Studentenkarte (z.B. mit einer BVG Jahresfahrkarte) am RFID-Leser präsentiert wird. Als es im Kapitel \ref{sec:theorie:mifare} erklärt wurde, sind die neuen Campus Karte der Beuth Hoschule für Technik Berlin mit den die MIFARE-Transponder hergestellt. Für die Programmierung des RFID-Lesers wird Smartcard-Schnittstelle benutzt, deren Installierung geschah zusammen mit pyscard und im Kapitel \ref{sec:register_client:install_rfid} geschrieben. Diese Schnittstelle steht für den Entwickler für die Arbeit mit Smartcards und NFC-Geräten zur Verfügung, sie wird in Form mehrerer Systemdienste implementiert und ihr Schnittstellenteil ist das PC/SC-Framework. PC/SC steht für Personal Computer/Smart Card.
 
 Es steht mehreren Möglichkeiten für die Entwicklung eine Sprache zu wählen: die Funktionen der Smartcard-Schnittstelle können mit Python, C/C++ und Java Sprache verwendet werden. Die Programmierung des Register-Clients wird auf Python Sprache gemacht, dieselbe Sprache wird für Server während der Arbeit mit Django Framework benutzt. Die Entwicklung mit dem Importieren der PCSC-Header-Dateien beginnt. 
-\begin{lstlisting}
+\begin{lstlisting}[language=Python]
 from smartcard.System import readers
 from smartcard.ATR import ATR
 from smartcard.CardMonitoring import CardMonitor, CardObserver
@@ -78,7 +71,7 @@ Found readers: ['ACS ACR122U']
 	\label{fig:baga_stud}
 \end{wrapfigure} 
 Wie die weitere Entwicklung darf einfach den ersten gefundenen RFID-Leser genommen werden. Wenn keine Terminals angeschlossen sind, wird das Programm beendet und eine entsprechende Meldung der PSE-Labor Mitarbeiter ausgegeben. Dann muss mit dem ausgewählten Terminal verbunden werden. Dies erfolgt durch Aufrufen der Funktion $SCardConnect()$. Beim Aufruf von $SCardConnect()$ geben wir den gemeinsam genutzten Modus $(SHARE\_SHARED)$, das bevorzugte Kommunikationsprotokoll (in unserem Fall T0 und T1) an, übergeben die Adresse der Variablen, in die das Handle für weitere Operationen mit der Karte gespeichert wird, und die Adresse der Variablen $active\_protocol$. in der gewählten Kommunikationsprotokoll gespeichert wird. Auf Anwendungsebene interessiert es uns nicht besonders, welches Protokoll zum Herstellen der Verbindung ausgewählt wurde, aber diese Informationen müssen während der Programmierung gespeichert werden - sie werden später zum Senden von Befehlen benötigt\cite[p. 104]{chirico:smart_card}.
-\begin{lstlisting}
+\begin{lstlisting}[language=Python]
 hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 	if hresult == SCARD_S_SUCCESS:
 		hresult, readers = SCardListReaders(hcontext, [])
@@ -102,7 +95,7 @@ uid 5C E7 87 30
 \end{lstlisting}
 
 Klasse $DetectionObserver$ mit der Vererbung vom der Klasse $CardObserver$ wird benutzt, um zu erkennen, wann eine Karte dem Kartenleser vorgelegt wurde, und dann die eindeutige Kennung (UID) von einer Karte zu lesen. Es wird mithilfe der Klasse $ CardMonitor$ getan, die das Einsetzen / Entfernen von Smartcards überwacht und den $CardObserver$ benachrichtigt. 
-\begin{lstlisting}
+\begin{lstlisting}[language=Python]
 def update(self, observable, actions):
 	(addedcards, removedcards) = actions
 	for card in addedcards:
@@ -144,7 +137,7 @@ Zu Zweck Definition der Struktur wird das Schlüsselwort "items" mit einem Array
 
 \section{Server}
 \label{sec:server}
-Als er wurde im Kapitel \ref{sec:register_client:smart} erwähnt, während der Implementierung der Aufgabe der Abschlussarbeit wurde mit dem Entwicklungsserver gearbeitet. Ein Entwicklungsserver ist ein Servertyp, der die Entwicklung und das Testen von Programmen, Websites, Software oder Anwendungen für Softwareprogrammierer erleichtert. Der bietet eine Laufzeitumgebung sowie alle Hardware- / Software-Dienstprogramme, die für das Debuggen und die Entwicklung von Programmen unerlässlich sind.
+Als er wurde im Kapitel \ref{sec:register_client:smart} erwähnt, während der Implementierung der Aufgabe der Abschlussarbeit wurde mit dem Entwicklungsserver gearbeitet. Ein Entwicklungsserver ist ein Servertyp, der die Entwicklung und das Testen von Programmen, Websites, Software oder Anwendungen für Softwareprogrammierer erleichtert. Der bietet eine Laufzeitumgebung sowie alle Hardware- / Software-Dienstprogramme, die für das Debuggen und die Entwicklung von Programmen unerlässlich sind. Django ist eines der effizientesten modernen Frameworks für die Entwicklung von Webprojekten. Der Grund für diese Effizienz ist ein klarer Mechanismus für die Arbeit mit einem Projekt, ein praktisches ORM - ein Modellsystem zur Vereinfachung der Verwendung der Datenbank, eine integrierte funktionale Vorlagen-Engine.
 
 
 
