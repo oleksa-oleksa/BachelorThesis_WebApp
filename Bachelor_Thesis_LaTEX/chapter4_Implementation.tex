@@ -127,26 +127,20 @@ Es wird weiteres von Register-Client auf keine Antwort vom Server erwartet, ob d
 \begin{lstlisting}
 LOAN_SERVER_URL=http://127.0.0.1:8000 python reader.py
 \end{lstlisting}
-Als letztes für die Implementierung des Register-Clients ist wichtig, die kurze Beschreibung der entwickelte von Autorin JSON-Datei zu geben. Definieren der Struktur, des Inhalts und der Semantik von JSON-Objekten geschieht mithilfe von der Grammatiksprache namens JSON-Schema. Hier kann Metadaten (Daten zu Daten) angegeben werden, die die Eigenschaften eines Objekts bedeuten und beschreiben, welche Werte für diese Eigenschaften gültig sind. 
+Als letztes für die Implementierung des Register-Clients ist es wichtig, die kurze Beschreibung der entwickelte von Autorin JSON-Datei anzugeben. Definition der Struktur, des Inhalts und der Semantik von JSON-Objekten geschieht mithilfe von der Grammatiksprache namens JSON-Schema. Hier kann Metadaten (Daten über die Daten) angegeben werden, die die Eigenschaften eines Objekts beschreiben und gültige Werte. 
 
 \begin{lstlisting}
-{
-	"$schema": "http://json-schema.org/draft-04/schema#",
-	"type": "array",
-	"items": [
-		{
-			"type": "object",
-			"properties": {
-				"type": {"type": "string",
-					"enum": ["card", "uid", "cancel_button", "terminate_button", "get_rfid_status",
-					"return_scanned_board_button", "loan_scanned_board_button", "finish_button"]},
-			"uid": {"type": "string"}
-		},
-			"required": ["type", "uid"]
-		}
-	]
-}
+{"$schema": "http://json-schema.org/draft-04/schema#",
+"type": "array", "items": [
+	{"type": "object", "properties": {
+		"type": {"type": "string",
+			"enum": ["card", "uid", "cancel_button", "terminate_button", "get_rfid_status",
+			"return_scanned_board_button", "loan_scanned_board_button", "finish_button"]},
+		"uid": {"type": "string"}},
+	"required": ["type", "uid"]}]}
 \end{lstlisting}
+
+Zu Zweck Definition der Struktur wird das Schlüsselwort "items" mit einem Array gesetzt, wobei jedes Element ein Schema ist, das jedem Index des Arrays des Dokuments entspricht. Das heißt, ein Array, bei dem das erste Element das erste Element des Eingabearrays validiert, das zweite Element das zweite Element des Eingabearrays validiert usw\cite{website:14}. Es ist zu betonen, dass für das ersten Element der JSON-Datei es eine Zeichenfolge aus einem festen Wertesatz sein muss. Nur diesen Zeichenfolgen können von Endliche Zustandsmaschine, die im Kapitels \ref{sec:design:fsm} und \ref{sec:server:restapi} beschrieben sind, abgearbeitet werden. 
 
 \section{Server}
 \label{sec:server}
