@@ -155,20 +155,54 @@ Der ganzen Quellcode für das acaLoan-Server wird als Django Projekt dargestellt
  django-admin startproject acaLoanRaspiBoard   
 \end{lstlisting}
 
+\begin{figure}
+	\centering
+	\fbox{\includegraphics[width=1\textwidth]{gfx/django_start.jpg}}
+	\caption{Screenshot von Raspberry Pi nach dem Erstellung des acaLoanRaspiBoard-Projekts.}
+	\label{fig:django_start}
+\end{figure}
+
+Die Datei settings.py enthält eine Grundkonfiguration für die Verwendung einer SQLite-Datenbank und eine Liste von Django-Anwendungen und wurde als während der Implementierung geändert, um das üblichste deutsche Zeitformat anstatt des amerikanischen zu verwenden.
+\begin{lstlisting}
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'Europe/Berlin'
+
+TIME_INPUT_FORMATS = ['%H:%M:%S']
+TIME_FORMAT = '%H:%M:%S'
+DATETIME_FORMAT = "d.m.Y H:m"
+
+DATE_FORMAT = "Y-m-d"
+\end{lstlisting}
+
+acaLoan-Server muss im zusätzliche Dateien wie Bilder, JavaScript oder CSS bereitstellen. In Django werden diese Dateien als "statische Dateien" bezeichnet. Django stellt django.contrib.staticfiles zur Verfügung, um den Entwickler bei der Verwaltung zu unterstützen. Dafür müssen in die Datei settings.py die folgenden Zeilen hinzugefügt werden:
+\begin{lstlisting}
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
+\end{lstlisting}
+
+In der settings.py ist auch den Debug-Modus des Projekts aktiviert, um während der Entwicklung detaillierte Fehlermeldungen zu sehen.  Nach der Erstellung des Projekts und kleine notwendigen Änderungen, kann endlich acaLoan-Server gestartet werden. Da Django einen praktischen Mechanismus bietet, um die Konfiguration Ihres Webservers während der Entwicklung zu vermeiden, kann enthaltenen bereits ein Webserver mit dem Befehl aufgerufen werden: 
+\begin{lstlisting}
+python manage.py runserver
+\end{lstlisting}
+Nach dem Befehl ausgeführt wurde und im Browser zu http://127.0.0.1:8000/ navigiert wurde, wird die folgende Ausgabe angezeigt, die auf der Abbildung \ref{fig:django_start} zu sehen ist.
+ 
 \subsection{Datenbankeinrichtung}
 \label{sec:server:database}
+Nach dem Erstellung des Projekts und dem ersten Starten des acaLoan-Server ist es die Zeit, sich mit der Einrichtung von Datenbank zu beschäftigen. Theoretisch kann ein Django-basierte Projekt ohne Datenbank ausgeführt werden. Für die hier vorliegenden Abschlussarbeit was jedoch es ein Zweck, eine Datenbank einzurichten, um alle Ausleihe-/Rückgabevorgänge zu verwalten, so dass in einem echten Projekt kann man nicht auf Datenbankeinrichtung verzichten. Für die Implementierung wird für Verwendung von SQLite3 entschieden. Die Datenbank selbst wird in einer Datei auf der Festplatte gespeichert. Um die Datenbank mit dem Django-Projekt zu verbinden, muss den DATABASES-Block in der Datei mysite / settings.py bearbeitet. Um sqlite zu verwenden, muss nur django.db.backends.sqlite3 als ENGINE angegeben und den Namen der Datei, in der die Datenbank gespeichert wird, in den Parameter NAME geschrieben werden.
 
-\subsection{Einführung in das Django Admin}
-\label{sec:server:admin}
 
-\subsection{Start des Entwicklungsservers}
-\label{sec:server:server}
 
 \subsection{Erstellen der öffentlichen Schnittstelle - "Views"}
 \label{sec:server:views}
 
+\subsection{Einführung in das Django Admin}
+\label{sec:server:admin}
+
 \subsection{Templates und Design der acaLoan-Website}
 \label{sec:server:design}
+
+\subsection{Implementierung des Zustandsmaschine}
+\label{sec:server:fsm}
 
 
 \section{Display-Client}
