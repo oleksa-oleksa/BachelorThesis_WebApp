@@ -141,14 +141,19 @@ Als er wurde im Kapitel \ref{sec:register_client:smart} erwähnt, während der I
 
 \subsection{Erstellung acaLoan Django-Projekts}
 \label{sec:server:install}
-Glücklicherweise ist der Installationsprozess für Django unkompliziert, sodass das Einrichten Ihrer Entwicklungsumgebung schnell und einfach ist. Django ist vollständig in Python geschrieben, daher muss zuerst Python installiert werden, um Django zu installieren. Weil die Autorin für die Implementierung des Servers ihren eignen Mac OS Rechner verwendet, ist Python bereits Computer installiert. Wenn "Python" in die Befehlszeile eingegeben (mithilfe der Terminal.app auf meinem Mac), wurde folgendes angezeigt werden:
+Glücklicherweise ist der Installationsprozess für Django unkompliziert, sodass das Einrichten Ihrer Entwicklungsumgebung schnell und entspannt ist. Django ist vollständig in Python geschrieben, daher muss zuerst Python installiert werden, um Django zu installieren. Weil die Autorin für die Implementierung des Servers ihren eignen Mac OS Rechner verwendet, ist Python bereits Computer installiert. Wenn "Python" in die Befehlszeile eingegeben (mithilfe der Terminal.app auf meinem Mac), wurde folgendes angezeigt werden:
 \begin{lstlisting}
 $ python
 Python 3.8.1 (default, Feb 17 2020, 23:55:16) 
 [Clang 11.0.0 (clang-1100.0.33.17)] on darwin
 \end{lstlisting}
 
-Sobald Python auf Computer installiert ist, kann Django auch installiert werden. Es gibt drei Möglichkeiten: Installation der offizielle Django-Version, Verwendung eines verteilungsspezifisches Installationsprogramm oder Herunterladen der Version, die derzeit immer noch entwickelt wird. In der Abschlussarbeit wird nur die Installation der offiziellen Version verwendet. Der Installation wird mit "venv"-Tool geschieht, das isolierte Python-Umgebungen bietet, die somit praktischer sind als die systemweite Installation von Paketen. 
+Sobald Python auf Computer installiert ist, kann Django auch installiert werden. Es gibt drei Möglichkeiten: Installation der offizielle Django-Version, Verwendung eines verteilungsspezifisches Installationsprogramm oder Herunterladen der Version, die derzeit immer noch entwickelt wird. In der Abschlussarbeit wird nur die Installation der offiziellen Version verwendet. Der Installation wird mit "Pipenv"-Tool geschieht, das isolierte Python-Umgebungen bietet, die somit praktischer sind als die systemweite Installation von Paketen. Pipenv verwaltet Projektpakete automatisch über die Pipfile-Datei, während die Pakete installiert oder deinstalliert werden. Pipenv generiert auch die Datei Pipfile.lock, mit der deterministische Builds erstellt und eine Momentaufnahme Ihrer Arbeitsumgebung erstellt werden. Zusätzlich für die Aufgabeimplementierung wird django-fsm installiert, das mit der Django Installation nicht geliefert wird und erlaubt eine einfache deklarative Zustandsverwaltung für Django-Modelle. 
+
+Der ganzen Quellcode für das acaLoan-Server wird als Django Projekt dargestellt. Django hat einen Befehl zum einfachen Erstellen einer anfänglichen Projektstruktur. Es wird mit der Ausführung des folgenden Befehls vom Terminal erledigt:
+\begin{lstlisting}
+ django-admin startproject acaLoanRaspiBoard   
+\end{lstlisting}
 
 \subsection{Datenbankeinrichtung}
 \label{sec:server:database}

@@ -135,6 +135,21 @@ An dieser Stelle muss es gesagt werden, dass die RFID-Tags bestimmte Nachteile h
 \section{Django Framework}
 \label{sec:theorie:about_django}
 Django ist ein Open Source-Webentwicklungsframework, das in der Python-Sprache geschrieben ist. Es wurde entwickelt, um so viele Prozesse wie möglich zu automatisieren, sodass es sich auf die Softwareentwicklung konzentriert werden können, ohne Zeit mit dem Einrichten des Servers verschwenden zu müssen. Django wurde ursprünglich so konzipiert, dass es lose Kopplung zwischen verschiedenen Teilen der Infrastruktur hat, sodass es unabhängig voneinander gearbeitet werden kann. Diese Unabhängigkeit bedeutet, dass es in der Entwicklungsprozess nur die Teile von Django verwendet werden kann, die benötigt werden, ohne sich um Probleme mit der Interdependenz von Komponenten kümmern zu müssen. Durch die Verwendung von Django wird die erforderliche Codemenge reduziert, wodurch das Schreiben von Webanwendungen schneller und die Wartung Ihrer Anwendung in Zukunft erheblich vereinfacht wird. Django folgt strikt dem DRY-Prinzip (Don't Repeat Yourself), dass jeder einzelne Code oder jede einzelne Daten an nur einem Ort gespeichert werden sollte. Dies vereinfacht und beschleunigt den Softwareänderungsprozess erheblich, da eine Anwendung, die geändert werden muss, an einem einzigen Ort ausgeführt werden muss.
+
+Nach der Django Instalation und dem Erstellen eines Projekts ist es nützlich, die erstellte Projektstruktur zu betrachten:
+
+\begin{itemize}
+	\item \textbf{manage.py} ist ein Befehlszeilenprogramm, mit dem auf verschiedene Weise mit  Django-Projekt interagiert wird . Diese Datei muss nicht geändert werden.
+	
+	\item \textbf{acaLoanRaspiBoard} Projektarbeitsverzeichnis enthält:
+	
+	\subitem \textbf{__init__.py}: Eine leere Datei, die Python mitteilt, dass dieses Verzeichnis für das Python-Paket bestimmt ist.
+	\item \textbf{settings.py}: Die Einstellungen und Konfigurationsdatei für das Django-Projekt.
+	\item \textbf{urls.py}: Die URL-Beschreibungsdatei für dieses Django-Projekt.
+	\item \textbf{asgi.py}: Damit kann die Anwendung mit einem Webserver unter Verwendung des ASGI-Protokolls arbeiten.
+	Die generierte Datei settings.py enthält eine Grundkonfiguration für die Verwendung einer SQLite-Datenbank und eine Liste von Django-Anwendungen, die standardmäßig zum Projekt hinzugefügt werden sollen.
+\end{itemize}
+
 \section{Grundlagen der REST API}
 \label{sec:theorie:api}
 
