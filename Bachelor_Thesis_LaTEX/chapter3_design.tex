@@ -1,14 +1,16 @@
 % !TeX spellcheck = de_DE
 \chapter{Systemdesign}
 \label{sec:design}
-Nachdem die Aufgabestellung des Projekts wurde von PSE-Labor veröffentlicht und mit Autorin der Abschlussarbeit besprochen und alle Unklarheiten geklärt, die erste Wahl der Hardware gemacht und die Hardware bestellt wurde und während es auf die Lieferung in das PSE-Labor gewartet wurde, wurde der erste notwendige Schritt angefangen: Systemdesign. Im Rahmen des Systemdesigns werden die Struktur und Zusammenhänge der Elemente des zu entwickelnden Systems untersucht. Das Ergebnis dieser Untersuchung enthält genügend Informationen, um das System zu implementieren.
+Nachdem die Aufgabestellung des Projekts wurde von PSE-Labor veröffentlicht und mit Autorin der Abschlussarbeit besprochen und alle Unklarheiten geklärt, die erste Wahl der Hardware gemacht und die Hardware bestellt wurde und während es auf die Lieferung in das PSE-Labor gewartet wurde, wurde der erste notwendige Schritt angefangen: Systemdesign. Im Rahmen des Systemdesigns werden die Struktur und Zusammenhänge der Elemente des zu entwickelnden Systems untersucht. Das Ergebnis dieser Untersuchung enthält genügend Informationen, um das System zu implementieren. Zuerst wurden die User Stories erstellt. Die sind keine detaillierte Beschreibung der Anforderungen (d.h. was das System tun sollte), sondern eine diskutierte Darstellung der Absicht (Endbenutzer muss/will so etwas tun). Die sind kurz und leicht zu lesen sowohl für Entwicklerin (Autorin) als auch für Stakeholder (mindestens PSE-Labor Mitarbeiter) verständlich. Für das Systemarchitektur wird das UML-Klassendiagramm entwickelt, das einen Überblick über ein Softwaresystem bietet, indem Klassen, Attribute, Operationen und deren Beziehungen angezeigt werden. Dieses Diagramm enthält den Klassennamen, die Attribute und die Operation in separaten festgelegten Fächern. In der Entwurfsphase wird es festgelegt, welche Klassen das System benötigt wird. Die festgestellte Klassen werden weiter nicht wie üblichen Python-Klassen implementieren, jedoch wie eine Django Modelle direkt zum Erzeugen der Datenbank verwendet. Es ist mithilfe der User Stories zu klären, was die zu entwickelnde Datenbank leisten soll. Es wird auf die Frage konzentriert, welche Daten in der Datenbank gespeichert werden sollen. Dazu wird zunächst  die betroffenen Geschäftsprozesse betrachtet und geklärt welche Informationsobjekte (Personen, Sachen) von Interesse sind und wie diese miteinander in Beziehung stehen. Während der Analysephase wurde auch Sequenzdiagramm erzeugt, die einfach die Interaktionen zwischen Objekten in einer sequentiellen Reihenfolge zeigt, d.h. die Reihenfolge, in der diese Wechselwirkungen stattfinden. 
 
 \section{Anforderungen und User Stories}
 \label{sec:design:user_stories}
 % + Sequencdiagramm
 
+Sequenzdiagramme beschreiben, wie und in welcher Reihenfolge die Objekte in einem System funktionieren. Diese Diagramme wird häufig verwendet, um Anforderungen an neue und vorhandene Systeme zu dokumentieren und zu verstehen.
+
 \section{Systemarchitektur}
 \label{sec:design:arch}
-
+Das Klassendiagramm definiert die Objekttypen im System und die verschiedenen Arten von Beziehungen, die zwischen ihnen bestehen. Es bietet eine allgemeine Ansicht einer Anwendung. Diese Modellierungsmethode kann mit fast allen objektorientierten Methoden ausgeführt werden. Eine Klasse kann sich auf eine andere Klasse beziehen. Eine Klasse kann ihre Objekte haben oder von anderen Klassen erben.
 \section{Endliche Zustandsmaschine}
 \label{sec:design:fsm}
