@@ -190,6 +190,8 @@ Nach dem Befehl ausgeführt wurde und im Browser zu http://127.0.0.1:8000/ navig
 \label{sec:server:database}
 Nach dem Erstellung des Projekts und dem ersten Starten des acaLoan-Server ist es die Zeit, sich mit der Einrichtung von Datenbank zu beschäftigen. Theoretisch kann ein Django-basierte Projekt ohne Datenbank ausgeführt werden. Für die hier vorliegenden Abschlussarbeit was jedoch es ein Zweck, eine Datenbank einzurichten, um alle Ausleihe-/Rückgabevorgänge zu verwalten, so dass in einem echten Projekt kann man nicht auf Datenbankeinrichtung verzichten. Für die Implementierung wird für Verwendung von SQLite3 entschieden. Die Datenbank selbst wird in einer Datei auf der Festplatte gespeichert. Um die Datenbank mit dem Django-Projekt zu verbinden, muss den DATABASES-Block in der Datei mysite / settings.py bearbeitet. Um sqlite zu verwenden, muss nur django.db.backends.sqlite3 als ENGINE angegeben und den Namen der Datei, in der die Datenbank gespeichert wird, in den Parameter NAME geschrieben werden.
 
+Als nächsten müssen die Modelle in Django erzeugt werden, die die Daten definieren, mit denen während der Entwicklung gearbeitet werden.
+
 
 
 \subsection{Erstellen der öffentlichen Schnittstelle - "Views"}
