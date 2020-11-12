@@ -13,4 +13,4 @@ img/*.png
 .idea
 **/venv/*
 db.sqlite3
-
+!*/gfx
