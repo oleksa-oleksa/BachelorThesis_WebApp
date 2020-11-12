@@ -20,7 +20,7 @@ Die Analyse der Anforderungen hat sich mit den User Stories angefangen. Eine Use
 	\label{fig:stories}
 \end{figure}
 
-Seit Oktober 2016 bietet GitHub die Möglichkeit, GitHub-Probleme, Pull-Anfragen und Notizen mit Projekten zu verfolgen. Mit GitHub-Projekten können Boards im Kanban-Stil für die Verwaltung der Arbeit verwendet und separate Code-Repositorys durchschnitten werden. Der Text der User Story selbst sollte die Rolle / Aktionen des Benutzers im System, seine Bedürfnisse und den Gewinn erläutern, den der Benutzer nach dem Auftreten der Story erhält. Zum Beispiel: Wie \textit{<Benutzerrolle / Charakter>, ich <möchte etwas bekommen>, <für diesen und jenen Zweck>}. Es sollte eine Aktion geben - die Hauptaktion. Es macht keinen Sinn, "Autorisieren und Suchen" oder "Suchparameter angeben und eine Suche durchführen" zu beschreiben. Es muss die Aktion angegeben, die Stakeholder wirklich benötigt. Während des Schreibens der User Story wurden zwei Gruppe von Stakeholders definiert für die User Stories geschrieben wurden: die Studierende (Beuth Studentinnen und Studenten) und der Admin (PSE-Labor Mitarbeitern). Es wurden die folgenden User Stories erstellt (als Github Projekt auf der Abbildung \ref*{fig:stories} zu sehen), die später während der Entwicklungsphase implementiert wurden:
+Seit Oktober 2016 bietet GitHub die Möglichkeit, GitHub-Probleme, Pull-Anfragen und Notizen mit Projekten zu verfolgen\cite{website:18}. Mit GitHub-Projekten können Boards im Kanban-Stil für die Verwaltung der Arbeit verwendet und separate Code-Repositorys durchschnitten werden. Der Text der User Story selbst sollte die Rolle / Aktionen des Benutzers im System, seine Bedürfnisse und den Gewinn erläutern, den der Benutzer nach dem Auftreten der Story erhält. Zum Beispiel: Wie \textit{<Benutzerrolle / Charakter>, ich <möchte etwas bekommen>, <für diesen und jenen Zweck>}. Es sollte eine Aktion geben - die Hauptaktion. Es macht keinen Sinn, "Autorisieren und Suchen" oder "Suchparameter angeben und eine Suche durchführen" zu beschreiben. Es muss die Aktion angegeben, die Stakeholder wirklich benötigt. Während des Schreibens der User Story wurden zwei Gruppe von Stakeholders definiert für die User Stories geschrieben wurden: die Studierende (Beuth Studentinnen und Studenten) und der Admin (PSE-Labor Mitarbeitern). Es wurden die folgenden User Stories erstellt (als Github Projekt auf der Abbildung \ref*{fig:stories} zu sehen), die später während der Entwicklungsphase implementiert wurden:
 \begin{itemize}
 	\itemsep-1.2em 
 	\item As a student, I want \textbf{to loan a board} so I can work at lab
@@ -86,6 +86,14 @@ anstatt ein Sequenzdiagramm mit mehreren Objekten und Gruppen von Nachrichten zu
 	\caption{Systemarchitektur: Zusammenhang  zwischen Server, Register-Client und Display-Client.}
 	\label{fig:class}
 \end{figure}
+Die Architektur besteht aus den grundlegenden Beschreibungen (Ansichten),  die zeigen, aus welchen grundlegenden Teilen (Komponenten, Modulen, Layouts usw.) das System besteht und wie diese Beschreibungen zusammenhängen. Das System aus Sicht des Benutzers umfasst Artefakte in Bezug auf praktische Anwendungsphasen, Szenarien und Workflows. Das System aus Sicht des Managers oder Kunden umfasst Artefakte, die die Grenze zwischen dem System und seiner Umgebung definieren, grundlegende Funktionen und Verhaltensweisen des Systems, sowie interne und externe Benutzer. Endlich das System aus Sicht der Designer definiert physische Sicht. Dies umfasst Artefakte, die die physische Grenze des Systems, Komponenten, ihre Interaktionen zwischen interne Datenbanken und Datenstrukturen und die bei seiner Entwicklung verwendeten Standards definieren.
+\end{itemize}
+
+Betriebsansicht - das System aus Sicht des Benutzers oder "Bedieners". Dies umfasst Artefakte in Bezug auf praktische Anwendungsphasen, Szenarien und Workflows.
+
+
+Die Architektur sollte klar zeigen: wie alle drei Arten von Beschreibungen der miteinander verbundenen „transparenten Box“ die Hauptfunktionen des Systems ergeben. Architektur ist also untrennbar mit Anforderungen verbunden. Die Anforderungen, die die Architektur am meisten beeinflussen, werden als architektonische Anforderungen bezeichnet.
+
 
 Das Klassendiagramm definiert die Objekttypen im System und die verschiedenen Arten von Beziehungen, die zwischen ihnen bestehen. Es bietet eine allgemeine Ansicht einer Anwendung. Diese Modellierungsmethode kann mit fast allen objektorientierten Methoden ausgeführt werden. Eine Klasse kann sich auf eine andere Klasse beziehen. Eine Klasse kann ihre Objekte haben oder von anderen Klassen erben.
 
