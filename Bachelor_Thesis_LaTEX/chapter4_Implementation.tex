@@ -203,9 +203,23 @@ Als nächsten müssen die Modelle in Django erzeugt werden, die die Daten defini
 \subsection{Templates und Design der acaLoan-Website}
 \label{sec:server:design}
 
-\subsection{Implementierung des Zustandsmaschine}
+\subsection{Implementierung des Use Cases}
 \label{sec:server:fsm}
 Während der Implementierung der User Cases wurde auch Sequenzdiagramm erzeugt, die einfach die Interaktionen zwischen Objekten in einer sequentiellen Reihenfolge zeigt, d.h. die Reihenfolge, in der diese Wechselwirkungen stattfinden. Die Sequenzdiagramm wurde als nächstes als eine Basis für das Design des Zustandsmaschine verwendet.  
+
+\subsubsection{Sequenzdiagramm}
+\label{sec:server:fsm:sequenz}
+\begin{figure}
+	\centering
+	\fbox{\includegraphics[width=0.8\textwidth]{gfx/seq.png}}
+	\caption{Sequenzdiagramme der erfolgreichen Ausleihe der Lab-Loan Raspi Board}
+	\label{fig:seq}
+\end{figure}
+Sequenzdiagramme beschreiben, wie und in welcher Reihenfolge die Objekte in einem System funktionieren. In der Abschlussarbeit werden ein Sequenzdiagramm gezeigt, die auf den Abbildungen \ref{fig:seq} zu betrachten ist. Es ist ein erfolgreichen Szenario für die Ausleihe der Lab-Loan Raspi Board von einem gültigen Studierende. Das Sequenzdiagramme entspricht der oben genannte User Story \textit{"As a student, I want to loan a board so I can work at lab"}. Die meisten Kommunikation geschieht über die asynchrone Nachrichten. Zum Beispiel, es wird von Register-Klient mit dem angeschlossenen RFID-Leser nicht darauf gewartet, ob die abgelesene Studentenkarte gültig ist oder ob ein Student zum Kurs zugelassen ist. Sofort die vorherigen Ablesevorgang angeschlossen wurde und JSON-Datei dem Server geschickt, steht der RFID-Leser wieder zur Verfügung und ein RFID-Tag des Boards abgelesen werden kann. Es kann sogar sein, dass anstatt erwarteten in erfolgreichen Szenario RFID-Tags eine weitere Studentenkarte abgelesen wird (z.B. nebenstehende Kumpel der Studierende aus Spaß oder wegen der Eile lässt seine Karte ablesen vor dem Beenden des laufenden Ausleihevorgang). Obwohl es aus der Sich der Zustandsmaschine nicht zugelassen ist, eine weitere Studentenkarte zu lesen, wird trotzdem die Karte von RFID-Reader abgelesen, eine weitere JSON-Datei zum Server geschickt und weiter RFID-Leser zum nächsten Lesen freigegeben. Es ist rein die Aufgabe des Servers die ankommenden Daten zu verifizieren und den Zustandsmaschine in einem weiteren Zustand zu schalten. Die entsprechende Information mit der Begrüßung der Studierende oder Fehlermeldung wird auch vom Server generiert und dem Display-Client zum Anzeigen übergeben. Mehr über diese Vorgehensweise in entsprechenden Kapitels \ref{sec:register_client:smart}, \ref{sec:server:fsm} und \ref*{sec:display_client:js} der Implementierungsphase nachzulesen. 
+
+\subsubsection{Endliche Zustandsmaschine}
+\label{sec:server:fsm:fsm}
+
 
 \section{Display-Client}
 \label{sec:display_client}

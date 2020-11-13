@@ -53,35 +53,36 @@ Nichtfunktionale Anforderungen bestimmen nicht die Funktionen, sondern die Eigen
 \label{sec:design:req:non-func}
 \begin{itemize}
 	\itemsep-1.2em 
+	\item The Server has to be implemented using a modern Python web framework Django.
+	\item The user Interfaces (frontend) shall be implemented as HTML pages with dynamic content inside based on Django Templates.
+	\item The admin views must require authorization. A view decorated with this function will be executed normally only if the logged user has admin rights.
+	\item The SQLite rational database will be used in order to store students, boards and loan records
+	\item For terminating the session automatically after timeout the command line application (CLI) will be implemented using python and will be run on the server.
 	\item Users must use for the initial login their student card. Moreover, every next login will be done with the same card. 
 	\item Students never allowed to loan home board longer than 1 week (7 calendar days). Such attempt should be reported to the security administrator.
-	\item Students never allowed to loan lab board longer than 120 minutes. An the end of the exercise admnistrator should be notified it the board was not returned.
+	\item Students never allowed to loan lab board longer than 120 minutes. An the end of the exercise admnistrator should be notified if the board was not returned.
 	\item Loan process can not be started if a student was not properly registered on the course
 	\item Every unsuccessful attempt by a user to loan/return an item shall be recorded on an audit trail.
 	\item Only one active session is allowed for loan/return process. No multi-user mode is intended
-	\item If the currect session is inactive longer longer than 60s the session will be terminated and should be restarted
+	\item If the currect session is inactive longer longer than 180s the session will be terminated and should be restarted
+	\item The actions made on RFID-Reader should be displayed on the screen with an acceptable delay for a humans (less then 5 seconds)
 \end{itemize}
 
-Wie es zu sehen ist, sind User Stories ein großartiges und notwendiges Werkzeug. Die User Story selbst ist die Verbindung zwischen der menschlichen Wahrnehmung und der technischen Umsetzung. Mithilfe der Anforderungen können die Betriebsfunktionen und Einschränkungen des Systems beschrieben werden, die seine Funktionalität verbessern.
+Während die User Story selbst die Verbindung zwischen der menschlichen Wahrnehmung und der technischen Umsetzung ist, können mithilfe der Anforderungen die Betriebsfunktionen und Einschränkungen des Systems beschrieben werden, die seine Funktionalität verbessern.
 
-\section{UML Komponentendiagramm}
-\label{sec:design:uml_component}
+\section{Systemmodell mit UML}
+\label{sec:design:uml}
 
-\section{UML Klassendiagramm}
-\label{sec:design:uml_class}
+\section{Komponentendiagramm}
+\label{sec:design:uml:uml_component}
+
+\subsection{Klassendiagramm}
+\label{sec:design:uml:class}
 Für das Systemarchitektur wird das UML-Klassendiagramm entwickelt, das einen Überblick über ein Softwaresystem bietet, indem Klassen, Attribute, Operationen und deren Beziehungen angezeigt werden. Dieses Diagramm enthält den Klassennamen, die Attribute und die Operation in separaten festgelegten Fächern. In der Entwurfsphase wird es festgelegt, welche Klassen das System benötigt wird. Die festgestellte Klassen werden weiter nicht wie üblichen Python-Klassen implementieren, jedoch wie eine Django Modelle direkt zum Erzeugen der Datenbank verwendet. 
 
-\section{Sequenzdiagramm}
-\label{sec:design:sequenz}
-\begin{figure}
-	\centering
-	\fbox{\includegraphics[width=0.8\textwidth]{gfx/seq.png}}
-	\caption{Sequenzdiagramme der erfolgreichen Ausleihe der Lab-Loan Raspi Board}
-	\label{fig:seq}
-\end{figure}
-Sequenzdiagramme beschreiben, wie und in welcher Reihenfolge die Objekte in einem System funktionieren. Diese Diagramme wird häufig verwendet, um Anforderungen an neue und vorhandene Systeme zu dokumentieren und zu verstehen. Ein Sequenzdiagramm ist so strukturiert, dass es eine Zeitleiste darstellt, die oben beginnt und nach unten abfällt, um die Sequenz der Interaktionen zu markieren. Jedes Objekt hat eine Spalte und die zwischen ihnen ausgetauschten Nachrichten werden durch Pfeile dargestellt. Diese Pfeile werden Lebensliniennotationen genannt und ein Sequenzdiagramm besteht aus mehreren dieser Lebensliniennotationen, die horizontal angeordnet sein sollten. Keine zwei Lebensliniennotationen sollten sich überlappen. Sie repräsentieren sie die verschiedenen Objekte, die während der Sequenz im System miteinander interagieren. Es ist besser kleinere Sequenzdiagramme zu zeichnen, die das Wesentliche des Anwendungsfalls erfassen
-anstatt ein Sequenzdiagramm mit mehreren Objekten und Gruppen von Nachrichten zu überladen, die den Leser verwirren. In der Abschlussarbeit werden ein Sequenzdiagramm gezeigt, die auf den Abbildungen \ref{fig:seq} zu betrachten ist. Es ist ein erfolgreichen Szenario für die Ausleihe der Lab-Loan Raspi Board von einem gültigen Studierende. Das Sequenzdiagramme entspricht der oben genannte User Story \textit{"As a student, I want to loan a board so I can work at lab"}. Die meisten Kommunikation geschieht über die asynchrone Nachrichten, die verwendet werden, wenn der Nachrichtenanrufer nicht darauf wartet, dass der Empfänger die Nachricht verarbeitet und zurückkehrt, bevor er andere Nachrichten an andere Objekte im System sendet. Zum Beispiel, es wird von Register-Klient mit dem angeschlossenen RFID-Leser nicht darauf gewartet, ob die abgelesene Studentenkarte gültig ist oder ob ein Student zum Kurs zugelassen ist. Sofort die vorherigen Ablesevorgang angeschlossen wurde und JSON-Datei dem Server geschickt, steht der RFID-Leser wieder zur Verfügung und ein RFID-Tag des Boards abgelesen werden kann. Es kann sogar sein, dass anstatt erwarteten in erfolgreichen Szenario RFID-Tags eine weitere Studentenkarte abgelesen wird (z.B. nebenstehende Kumpel der Studierende aus Spaß oder wegen der Eile lässt seine Karte ablesen vor dem Beenden des laufenden Ausleihevorgang). Obwohl eine weitere Studentenkarte zu lesen aus der Sich der Zustandsmaschine nicht zugelassen ist, wird trotzdem die Karte von RFID-Reader abgelesen, eine weitere JSON-Datei zum Server geschickt und weiter RFID-Leser zum nächsten Lesen freigegeben. Est is rein die Aufgabe des Servers die ankommenden Daten zu verifizieren und den Zustandsmaschine in einem weiteren Zustand zu schalten. Die entsprechende Information mit der Begrüßung der Studierende oder Fehlermeldung wird auch vom Server generiert und dem Display-Client zum Anzeigen übergeben. Mehr über diese Vorgehensweise in entsprechenden Kapitels \ref{sec:register_client:smart}, \ref{sec:server:fsm} und \ref*{sec:display_client:js} der Implementierungsphase nachzulesen. 
-
+\subsection{Anwendungsfalldiagramm}
+\label{sec:design:uml:use_cases}
+Während der Analyse der Systemanforderungen haben wir festgestellt, dass die Software aus vier zentralen Anwendungsfällen bestehen sollte. Diese sind: Die Ausleihe des Lab-Loan Boards, die Rückgabe des Lab-Loan Boards, die des Ausleihe des Home-Loan Boards, die Rückgabe des Home-Loan Boards. Jeder von diesen Anwendungsfälle kann erfolgreich oder mit dem Fehler beendet werden.  
 
 \section{Systemarchitektur}
 \label{sec:design:arch}
