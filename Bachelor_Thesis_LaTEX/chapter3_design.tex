@@ -1,13 +1,12 @@
 % !TeX spellcheck = de_DE
 \chapter{Systemdesign}
 \label{sec:design}
-Dieser Kapitel erklärt die Anforderungen an der Software, die unten detailliert erklärt werden. Nachdem die Aufgabestellung des Projekts wurde von PSE-Labor veröffentlicht und mit Autorin der Abschlussarbeit besprochen und alle Unklarheiten geklärt und auf die Lieferung der Hardware in das PSE-Labor gewartet wurde, wurde der erste notwendige Schritt angefangen: Systemdesign. Im Rahmen des Systemdesigns werden die Struktur und Zusammenhänge der Elemente des zu entwickelnden Systems untersucht. Das Ergebnis dieser Untersuchung enthält genügend Informationen, um das System zu implementieren. 
-
+Die Softwareentwicklung beginnt mit einer Beschreibung der Bedürfnisse und ihrer Analyse. Je genauer und korrekter die Beschreibung der Softwareanforderungen und deren Analyse ist, desto einfacher ist es, alle nachfolgenden Schritte abzuschließen. Das Hauptproblem in dieser Phase ist der Unterschied in den Ansichten des Kunden (in dem Fall der vorliegenden Abschlussarbeit sind die Kunden die PSE-Labor Mitarbeiter) und des Entwicklers (die Autorin der Abschlussarbeit). Es wurde auch die Entscheidung getroffen, mit welchen Hardware ist die Aufgabestellung zu implementieren. Jedoch während der Entwicklung der Register-Client (der einer von drei Bestandsteilen der Software, an dem ein RFID-Leser angeschlossen werden muss), wurde schließlich ein RFID-Leser gewechselt. Der Fall ist im Kapitel \ref{sec:register_client:install_rfid} nachzulesen. Im Rahmen der Analyse und des Systemdesigns wurden die Struktur und Zusammenhänge der Elemente des zu entwickelnden Systems untersucht. Das Ergebnis dieser Untersuchung enthält genügend Informationen, um das System zu implementieren und ist unten in folgenden Kapitels detailliert beschrieben. 
 
 \section{User Stories}
 \label{sec:design:user_stories}
 Zuerst wurden die User Stories erstellt, die eine diskutierte Darstellung der Absicht (Endbenutzer muss/will so etwas tun) zeigen können. Es ist mithilfe der User Stories zu klären, was die zu entwickelnde Datenbank leisten soll. Es wird auf die Frage konzentriert, welche Daten in der Datenbank gespeichert werden sollen. 
-Der Text der User Story selbst sollte die Rolle / Aktionen des Benutzers im System, seine Bedürfnisse und den Gewinn erläutern, den der Benutzer nach dem Auftreten der Story erhält. Zum Beispiel: Wie \textit{<Benutzerrolle / Charakter>, ich <möchte etwas bekommen>, <für diesen und jenen Zweck>}. Während des Schreibens der User Story wurden zwei Gruppe von Stakeholders definiert: die Studierende (Beuth Studentinnen und Studenten) und der Admin (PSE-Labor Mitarbeitern). Es wurden die folgenden User Stories erstellt (für die Verwaltung des Projekts  der Abbildung \ref*{fig:stories} zu sehen), die später während der Entwicklungsphase implementiert wurden:
+Der Text der User Story selbst sollte die Rolle / Aktionen des Benutzers im System, seine Bedürfnisse und den Gewinn erläutern, den der Benutzer nach dem Auftreten der Story erhält. Zum Beispiel: Wie \textit{<Benutzerrolle / Charakter>, ich <möchte etwas bekommen>, <für diesen und jenen Zweck>}. Während des Schreibens der User Story wurden zwei Gruppe von Stakeholders definiert: die Studierende (Beuth Studentinnen und Studenten) und der Admin (PSE-Labor Mitarbeitern). Es wurden die folgenden User Stories erstellt, die später während der Entwicklungsphase implementiert wurden:
 \begin{itemize}
 	\itemsep-1.2em 
 	\item As a student, I want \textbf{to loan a board} so I can work at lab
@@ -29,23 +28,29 @@ Der Text der User Story selbst sollte die Rolle / Aktionen des Benutzers im Syst
 
 \section{Anforderungen}
 \label{sec:design:req}
-Die Softwareentwicklung beginnt mit einer Beschreibung der Bedürfnisse und ihrer Analyse. Je genauer und korrekter die Beschreibung der Softwareanforderungen und deren Analyse ist, desto einfacher ist es, alle nachfolgenden Schritte abzuschließen. Das Hauptproblem in dieser Phase ist der Unterschied in den Ansichten des Kunden (in dem Fall der vorliegenden Abschlussarbeit sind die Kunden die PSE-Labor Mitarbeiter) und des Entwicklers (die Autorin der Abschlussarbeit). Es wurde auch die Entscheidung getroffen, mit welchen Hardware ist die Aufgabestellung zu implementieren. Jedoch während der Entwicklung der Register-Client (der einer von drei Bestandsteilen der Software, an dem ein RFID-Leser angeschlossen werden muss), wurde schließlich den RFID-Leser gewechselt. Der Fall ist im Kapitel \ref{sec:register_client:install_rfid} nachzulesen.
+Während die meisten neuen Funktionen mithilfe der User Stories aus Anwendersicht definiert werden sollten, ist dies nicht immer machbar oder sogar hilfreich, wenn es zu Sicherheitsfunktionen oder Infrastrukturanforderungen kommt, die nicht kundenorientiert sind. Es gibt zwei Arten von Anforderungen: funktionale Anforderung und nichtfunktionale Anforderungen. Während der Analysephase wurden die beiden Arten von Anforderungen definiert. 
 
-
-Während die meisten neuen Funktionen mithilfe der User Stories aus Anwendersicht definiert werden sollten, ist dies nicht immer machbar oder sogar hilfreich, wenn es zu Sicherheitsfunktionen oder Infrastrukturanforderungen kommt, die nicht kundenorientiert sind. Die Anforderungen sind in der Regel mehr detailliert und das Schreiben dauert länger. Diese gehen oft technisch auf die Funktionsweise der Software ein. Diese Details leiten das Entwicklungsteam dann beim Erstellen eines neuen Features oder einer neuen Funktionalität. Es gibt zwei Arten von Anforderungen: eine funktionale Anforderung, die beschreibt, was ein Softwaresystem tun sollte, und eine nicht funktionale Anforderungen, die Vorgehensweise des Systems einschränken sollte. Während der Analysephase wurden die beiden Arten von Anforderungen definiert. Die manche von diese Anforderungen sind in der unten geschriebenen Liste zu sehen.
-
-\textbf{Funktionale Anforderungen}
+\subsection{Funktionale Anforderungen}
+Eine funktionale Anforderung beschreibt, was ein Softwaresystem tun sollte. Es werden die folgenden funktionalen Anforderungen definiert:
+\label{sec:design:req:func}
 \begin{itemize}
 	\itemsep-1.2em 
 	\item The background color for all windows in the application will be white and have a hexadecimal RGB color value of 0x0000FF.
-	\item The colors of design guidelines of Beuth Hochschule will be used
-	\item The software automatically validates whether a student is able to loan a board for a homework
-	\item The software automatically shows the information about boards they already loaned
-	\item Student will see their name after they scanned their valid student card
-	\item Student will see board's number after they scanned a Raspberry Board
+	\item The colors of design guidelines of Beuth Hochschule will be used.
+	\item The software automatically validates whether a student is able to loan a board for a homework.
+	\item The software automatically shows the information about boards that student already loaned.
+	\item Student will see their name after they scanned their valid student card.
+	\item Student will see board's number after they scanned a Raspberry Board.
+	\item If student can not loan a board they will see an information message on a display.
+	\item If a student can not loan a board the session should be terminated
+	\item If an error during the loan proccess is occured the student will see datailed information so they can later talk with an admin about theis issue.
+	\item Error states will be marked with red color on the page
+	\item Succeeded states will be marked with a green color on the page
 \end{itemize}
 
-\textbf{Nicht funktionale Anforderungen}
+\subsection{Nichtfunktionale Anforderungen}
+Nichtfunktionale Anforderungen bestimmen nicht die Funktionen, sondern die Eigenschaften des Systems: Leistung, Zuverlässigkeit, Verfügbarkeit, Skalierbarkeit und eine Reihe anderer Parameter, die das Systems einschränken und verbessern sollen. 
+\label{sec:design:req:non-func}
 \begin{itemize}
 	\itemsep-1.2em 
 	\item Users must use for the initial login their student card. Moreover, every next login will be done with the same card. 
