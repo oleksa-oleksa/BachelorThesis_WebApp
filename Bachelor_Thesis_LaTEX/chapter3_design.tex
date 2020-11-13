@@ -113,9 +113,16 @@ Der folgenden Anwendungsfall ist ähnlich zum vorherigen Anwendungsfall \textit{
 \label{sec:design:uml}
 Die Architektur besteht aus den grundlegenden Beschreibungen (Ansichten),  die zeigen, aus welchen grundlegenden Teilen (Komponenten, Modulen, Layouts usw.) das System besteht und wie diese Beschreibungen zusammenhängen. Mit der Unified Modeling Language, zu Deutsch: „vereinheitlichte Modellierungssprache“, steht ein allgemeingültiger ISO-Standard für die Entwicklung von Software und komplexeren Systemarchitekturen zur Verfügung\cite{website:20}.
 
+\begin{figure}
+	\centering
+	\fbox{\includegraphics[width=1\textwidth]{gfx/component.png}}
+	\caption{UML Komponentendiagramm}
+	\label{fig:components}
+\end{figure}
+
 \subsection{Komponentendiagramm}
 \label{sec:design:uml:uml_component}
-UML-Komponentendiagramme stellen die Beziehungen zwischen einzelnen Systemkomponenten in einer statischen Entwurfssicht dar. Dabei können sowohl logische als auch physische Modellierungsaspekte berücksichtigt werden. Im UML-Kontext sind Komponenten modulare Teile eines Systems, die unabhängig sind und durch äquivalente Komponenten ausgetauscht werden können. Sie sind in sichgeschlossen und kapseln beliebig komplexe Strukturen.Kontakt zu anderen Komponenten nehmen die gekapselten Elemente ausschließlich über Schnittstellen auf\cite{website:20}.
+UML-Komponentendiagramme stellen die Beziehungen zwischen einzelnen Systemkomponenten in einer statischen Entwurfssicht dar. Dabei können sowohl logische als auch physische Modellierungsaspekte berücksichtigt werden. Im UML-Kontext sind Komponenten modulare Teile eines Systems, die unabhängig sind und durch äquivalente Komponenten ausgetauscht werden können. Sie sind in sichgeschlossen und kapseln beliebig komplexe Strukturen. Kontakt zu anderen Komponenten nehmen die gekapselten Elemente ausschließlich über Schnittstellen auf\cite{website:20}. Die Komponentendiagramm eines zu entwickelten System ist auf der Abbildung \ref{fig:components} gezeichnet.
 
 
 \subsection{Klassendiagramm}
