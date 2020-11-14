@@ -122,7 +122,7 @@ UML-Komponentendiagramme stellen die Beziehungen zwischen einzelnen Systemkompon
 	\caption{UML Komponentendiagramm}
 	\label{fig:components}
 \end{figure}
-Obwohl das Thema der Bachelorarbeit "Entwicklung eine Datenbank-Applikation" lautet, besteht sie nicht nur aus einziger Komponente wie eine Datenbank zur Ausleihverwaltung. Die Aufgabestellung lässt sich die folgenden Struktur definieren, indem drei verteilte Teilen zu entwickeln ist.
+Die Aufgabestellung lässt sich die folgenden Struktur definieren, indem drei verteilte Teilen zu entwickeln ist:
 \begin{itemize}
 	\item Erstens wird an einem uComputer ein sogenannten Register-Client realisiert. Dafür ein RFID-Leser an uComputer angeschlossen wird. Register-Client ist neben dem Eingangstür eines kleinen Lagerraums des PSE-Labors zu platzieren ist, wo Raspi-Boards aufbewahrt werden. Es ist geplant, dass Studierende einen Board selbst aus dem Fach nehmen könnte und dann mit Hilfe des Register-Clients den genommenen Board auf sich oder seine Gruppe registrieren lassen. Der Register-Client hat selbst keinen Zugriff zur Datenbank und sollte nur die abgelesene Daten von der Smartcard der Studierende zur Server schicken. 
 	\item Zweitens ist ein Display-Client zu entwickeln, der den Studierenden es zulässt, die Begrüßung des System und eine Beschreibung die für Ausleihe notwendigen Schritten zu sehen. Es sollte in einem Browser-Fenster die aktuelle Server-Kommunikation und Auskunft angezeigt wird, ob die Ausleihe gelang oder ein Fehler aufgetreten war. Ein Android/iOS-Tablett ist eine gute Wahl für die technische Realisierung, da es die Kommunikation zwischen den Mensch und das System leicht und ohne erweiterte Hinweise zulässt. 
