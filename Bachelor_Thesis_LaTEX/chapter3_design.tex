@@ -111,30 +111,36 @@ Der folgenden Anwendungsfall ist ähnlich zum vorherigen Anwendungsfall \textit{
 
 \section{Systemarchitektur}
 \label{sec:design:uml}
-Die Architektur besteht aus den grundlegenden Beschreibungen (Ansichten),  die zeigen, aus welchen grundlegenden Teilen (Komponenten, Modulen, Layouts usw.) das System besteht und wie diese Beschreibungen zusammenhängen. Mit der Unified Modeling Language, zu Deutsch: „vereinheitlichte Modellierungssprache“, steht ein allgemeingültiger ISO-Standard für die Entwicklung von Software und komplexeren Systemarchitekturen zur Verfügung\cite{website:20}.
+Die Architektur besteht aus den grundlegenden Beschreibungen (Ansichten),  die zeigen, aus welchen grundlegenden Teilen (Komponenten, Modulen, Layouts usw.) das System besteht und wie diese Beschreibungen zusammenhängen. 
 
+\subsection{Komponentendiagramm}
+\label{sec:design:uml:uml_component}
+UML-Komponentendiagramme stellen die Beziehungen zwischen einzelnen Systemkomponenten in einer statischen Entwurfssicht dar. Dabei können sowohl logische als auch physische Modellierungsaspekte berücksichtigt werden. Im UML-Kontext sind Komponenten modulare Teile eines Systems, die unabhängig sind und durch äquivalente Komponenten ausgetauscht werden können. Sie sind in sichgeschlossen und kapseln beliebig komplexe Strukturen. Kontakt zu anderen Komponenten nehmen die gekapselten Elemente ausschließlich über Schnittstellen auf\cite{website:20}. Die Komponentendiagramm eines zu entwickelten System ist auf der Abbildung \ref{fig:components} gezeichnet. Die Komponenten werden miteinander über HTTP-Protokoll kommunizieren. Es wird mithilfe API-Endpunkt geschehen, an dem eine Verbindung mit den drei Bestandteilen der Softwareprogramm herstellt wird. An den API-Endpunkt werden Informationsanforderungen von einer Webanwendung einem Webserver geschickt und die Antwort empfangen.
 \begin{figure}
 	\centering
 	\fbox{\includegraphics[width=1\textwidth]{gfx/component.png}}
 	\caption{UML Komponentendiagramm}
 	\label{fig:components}
 \end{figure}
+Obwohl das Thema der Bachelorarbeit "Entwicklung eine Datenbank-Applikation" lautet, besteht sie nicht nur aus einziger Komponente wie eine Datenbank zur Ausleihverwaltung. Die Aufgabestellung lässt sich die folgenden Struktur definieren, indem drei verteilte Teilen zu entwickeln ist.
+\begin{itemize}
+	\item Erstens wird an einem uComputer ein sogenannten Register-Client realisiert. Dafür ein RFID-Leser an uComputer angeschlossen wird. Register-Client ist neben dem Eingangstür eines kleinen Lagerraums des PSE-Labors zu platzieren ist, wo Raspi-Boards aufbewahrt werden. Es ist geplant, dass Studierende einen Board selbst aus dem Fach nehmen könnte und dann mit Hilfe des Register-Clients den genommenen Board auf sich oder seine Gruppe registrieren lassen. Der Register-Client hat selbst keinen Zugriff zur Datenbank und sollte nur die abgelesene Daten von der Smartcard der Studierende zur Server schicken. 
+	\item Zweitens ist ein Display-Client zu entwickeln, der den Studierenden es zulässt, die Begrüßung des System und eine Beschreibung die für Ausleihe notwendigen Schritten zu sehen. Es sollte in einem Browser-Fenster die aktuelle Server-Kommunikation und Auskunft angezeigt wird, ob die Ausleihe gelang oder ein Fehler aufgetreten war. Ein Android/iOS-Tablett ist eine gute Wahl für die technische Realisierung, da es die Kommunikation zwischen den Mensch und das System leicht und ohne erweiterte Hinweise zulässt. 
+	\item Drittens ist ein Web-Server für die Datenbank-Applikation schließlich zu implementieren. Er umfasst alle Datensätze über die vorhandenen im Labor Raspi-Boards, registrierten zum Kurs Studierenden und die abgewickelten Leihvorgänge.  Web-Server wird mit einem Web-Framework Django erstellt. Django verfügt nun über die Funktionalität und Datenbasis, um die dafür erforderlichen Aktionen durchzuführen. Als Web-Framework bietet Django eine Reihe von Komponenten und Funktionen (Benutzerauthentifizierung, Hochladen von Dateien, Umgang mit Daten usw.), die bei jeder Webanwendungen benötigt werden. Mit einem Web-Framework muss ein Entwickler keine Zeit damit verschwenden, denselben Code von Grund auf neu jedes Mal zu schreiben.
+	\item Zwischen Server und Klient wird RESTful Kommunikation, die eine Implementierung eines Webdienstes unter Verwendung von HTTP- und REST-Prinzipien ist.
+\end{itemize}
 
+Wie erfolgt nun die Abwicklung des eigentlichen Leihvorgangs von der Ausleihe bis zur Rückgabe eines Boards?  Zuerst wird eine Studentenkarte am Register-Client ablesen und nachdem sollte einen Name und die Anzahl schon ausgeliehenen Boards am Display-Client angezeigt werden. Falls der Studierende zum Kurs zugelassen ist, darf dann ein gewünschten Board am Register-Client abgelesen werden. Es ist möglich, dass zu den schon ausgeliehenen Lab-Board noch zusätzlich einen Home-Board nach Hause mitgenommen wird. Das abgelesene Board ist entweder auszuleihen oder zurückzugeben. Sämtliche im Verleih befindlichen Geräte werden von den Mitarbeitern des Labors regelmäßig nach jeder Übung vor dem nächsten Ausleihevorgang auf Funktionsfähigkeit geprüft. Es kann sein, dass einem Studierenden die Home-Loan-Absicht eines Boards (12-16) verweigert wird, da in der Vergangenheit schon einmal vom Studierende ein Board in einem inakzeptabel Zustand zurückgeben war und die Ursachen mit den Mitarbeiter des Labor nicht geklären hat. Falls der Studierende, dem Home-Loan verboten wurde, ein Board auszuleihen versucht, wird eine Fehlermeldung auf dem Bildschirm gezeigt und der Leihvorgang mit dem Fehlerzustand terminiert.  
+
+\subsection{Klassendiagramm}
+\label{sec:design:uml:class}
+Für das Systemarchitektur wird das UML-Klassendiagramm entwickelt, das einen Überblick über ein Softwaresystem bietet, indem Klassen, Attribute, Operationen und deren Beziehungen angezeigt werden\cite{website:19}. In der Entwurfsphase wird es festgelegt, welche Klassen das System benötigt wird. Die festgestellte Klassen werden weiter nicht wie üblichen Python-Klassen implementieren, jedoch wie eine Django Modelle direkt zum Erzeugen der Datenbank verwendet. Das Klassendiagramm erklärt, was sind die Komponenten des Systems und wo sollen wir die Einkapselungsbarrieren platzieren. Welche Entscheidungen sind innerhalb von Komponenten zu verbergen, damit sie geändert werden können, ohne den Rest des Systems zu beeinträchtigen. Die geplante Klassen sind auf der Abbildung \ref{fig:class} gezeichnet.
 \begin{figure}
 	\centering
 	\fbox{\includegraphics[width=1\textwidth]{gfx/Class_Diagram.png}}
 	\caption{UML Klassendiagramm}
 	\label{fig:class}
 \end{figure}
-
-\subsection{Komponentendiagramm}
-\label{sec:design:uml:uml_component}
-UML-Komponentendiagramme stellen die Beziehungen zwischen einzelnen Systemkomponenten in einer statischen Entwurfssicht dar. Dabei können sowohl logische als auch physische Modellierungsaspekte berücksichtigt werden. Im UML-Kontext sind Komponenten modulare Teile eines Systems, die unabhängig sind und durch äquivalente Komponenten ausgetauscht werden können. Sie sind in sichgeschlossen und kapseln beliebig komplexe Strukturen. Kontakt zu anderen Komponenten nehmen die gekapselten Elemente ausschließlich über Schnittstellen auf\cite{website:20}. Die Komponentendiagramm eines zu entwickelten System ist auf der Abbildung \ref{fig:components} gezeichnet. Die Komponenten werden miteinander über HTTP-Protokoll kommunizieren. Es wird mithilfe API-Endpunkt geschehen, an dem eine Verbindung mit den drei Bestandteilen der Softwareprogramm herstellt wird. An den API-Endpunkt werden Informationsanforderungen von einer Webanwendung einem Webserver geschickt und die Antwort empfangen.
-
-
-\subsection{Klassendiagramm}
-\label{sec:design:uml:class}
-Für das Systemarchitektur wird das UML-Klassendiagramm entwickelt, das einen Überblick über ein Softwaresystem bietet, indem Klassen, Attribute, Operationen und deren Beziehungen angezeigt werden\cite{website:19}. In der Entwurfsphase wird es festgelegt, welche Klassen das System benötigt wird. Die festgestellte Klassen werden weiter nicht wie üblichen Python-Klassen implementieren, jedoch wie eine Django Modelle direkt zum Erzeugen der Datenbank verwendet. Das Klassendiagramm erklärt, was sind die Komponenten des Systems und wo sollen wir die Einkapselungsbarrieren platzieren. Welche Entscheidungen sind innerhalb von Komponenten zu verbergen, damit sie geändert werden können, ohne den Rest des Systems zu beeinträchtigen. Die geplante Klassen sind auf der Abbildung \ref{fig:class} gezeichnet.
 
 \section{Endliche Zustandsmaschine}
 \label{sec:design:fsm}
