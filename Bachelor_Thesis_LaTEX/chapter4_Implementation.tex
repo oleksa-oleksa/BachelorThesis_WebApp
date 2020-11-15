@@ -202,9 +202,33 @@ class Student(models.Model):
 	is_home_loan_enabled = models.BooleanField(default=True)
 \end{lstlisting}
  ForeignKey wird verwendet, um eine Viele-zu-Eins-Beziehung zu definieren, die eine Beziehung zwischen mehr als einer Instanz einer Entität und einer Instanz einer anderen Entität ist. Sodass in der Datenbank für ein Semester können mehrere Studierende immatrikuliert werden.
- \begin{lstlisting}
- content...
+\begin{lstlisting}[caption={Board Modell},captionpos=b]
+class Board(models.Model):
+	raspi_tag = models.OneToOneField(RaspiTag, on_delete=models.SET_NULL, blank=True, null=True)
+	board_no = models.IntegerField('board number', unique=True)
+	board_type = enum.EnumField(BoardType, default=BoardType.LAB_LOAN)
+	board_status = enum.EnumField(BoardStatus, default=BoardStatus.ACTIVE)
  \end{lstlisting}
+Um eine Eins-zu-Eins-Beziehung zu definieren, wird OneToOneField verwendet. In einer relationalen Datenbank besteht eine Eins-zu-Eins-Beziehung, wenn eine Zeile in einer Tabelle nur mit einer Zeile in einer anderen Tabelle verknüpft sein kann und umgekehrt.
+\begin{lstlisting}[caption={Action Modell},captionpos=b]
+class Action(models.Model):
+	# Holds the record about the loan operation, student, board and time
+	student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
+	board = models.ForeignKey(Board, on_delete=models.SET_NULL, blank=True, null=True)
+	timestamp = models.DateTimeField(auto_now=True)
+	operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
+\end{lstlisting}
+Mit $DateTimeField(auto_now=True)$ wird die Zeit der Ausleihe-/Rückgabeaktion genau entsprechend der Zeit des Servers gespeichert. 
+\begin{lstlisting}[caption={Session Modell},captionpos=b]
+class Session(models.Model):
+	# Holds the information about the interaction between user (student) and system
+	TERMINAL_STATES = ['timeout', 'finished', 'canceled', 'error_terminated']
+	start_time = models.DateTimeField(default=datetime.datetime.now)
+	state = FSMField(default='session_started')
+	last_action_time = models.DateTimeField(auto_now=True)
+	student_card = models.ForeignKey(StudentCard, on_delete=models.SET_NULL, blank=True, null=True, related_name='+')
+	raspi_tag = models.ForeignKey(RaspiTag, on_delete=models.SET_NULL, blank=True, null=True, related_name='+')
+\end{lstlisting}
 
 \subsection{Erstellen der öffentlichen Schnittstelle - "Views"}
 \label{sec:server:views}
