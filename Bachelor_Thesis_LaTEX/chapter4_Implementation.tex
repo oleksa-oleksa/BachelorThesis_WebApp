@@ -164,17 +164,14 @@ Der ganzen Quellcode für das acaLoan-Server wird als Django Projekt dargestellt
 \end{figure}
 
 Die Datei settings.py enthält eine Grundkonfiguration für die Verwendung einer SQLite-Datenbank und eine Liste von Django-Anwendungen und wurde als während der Implementierung geändert, um das üblichste deutsche Zeitformat anstatt des amerikanischen zu verwenden.
-\begin{lstlisting}
+\begin{lstlisting}[caption={My Caption},captionpos=b]
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Europe/Berlin'
-
 TIME_INPUT_FORMATS = ['%H:%M:%S']
 TIME_FORMAT = '%H:%M:%S'
 DATETIME_FORMAT = "d.m.Y H:m"
-
 DATE_FORMAT = "Y-m-d"
 \end{lstlisting}
-
 acaLoan-Server muss im zusätzliche Dateien wie Bilder, JavaScript oder CSS bereitstellen. In Django werden diese Dateien als "statische Dateien" bezeichnet. Django stellt django.contrib.staticfiles zur Verfügung, um den Entwickler bei der Verwaltung zu unterstützen. Dafür müssen in die Datei settings.py die folgenden Zeilen hinzugefügt werden:
 \begin{lstlisting}
 STATIC_URL = '/static/'
@@ -189,11 +186,25 @@ Nach dem Befehl ausgeführt wurde und im Browser zu http://127.0.0.1:8000/ navig
  
 \subsection{Datenbankeinrichtung}
 \label{sec:server:database}
-Nach dem Erstellung des Projekts und dem ersten Starten des acaLoan-Server ist es die Zeit, sich mit der Einrichtung von Datenbank zu beschäftigen. Theoretisch kann ein Django-basierte Projekt ohne Datenbank ausgeführt werden. Für die hier vorliegenden Abschlussarbeit was jedoch es ein Zweck, eine Datenbank einzurichten, um alle Ausleihe-/Rückgabevorgänge zu verwalten, so dass in einem echten Projekt kann man nicht auf Datenbankeinrichtung verzichten. Für die Implementierung wird für Verwendung von SQLite3 entschieden. Die Datenbank selbst wird in einer Datei auf der Festplatte gespeichert. Um die Datenbank mit dem Django-Projekt zu verbinden, muss den DATABASES-Block in der Datei mysite / settings.py bearbeitet. Um sqlite zu verwenden, muss nur django.db.backends.sqlite3 als ENGINE angegeben und den Namen der Datei, in der die Datenbank gespeichert wird, in den Parameter NAME geschrieben werden\cite{website:15}.
+Nach dem Erstellung des Projekts und dem ersten Starten des acaLoan-Server ist es die Zeit, sich mit der Einrichtung von Datenbank zu beschäftigen. Theoretisch kann ein Django-basierte Projekt ohne Datenbank ausgeführt werden. Für die hier vorliegenden Abschlussarbeit was jedoch es ein Zweck, eine Datenbank einzurichten, um alle Ausleihe-/Rückgabevorgänge zu verwalten, so dass in einem echten Projekt kann man nicht auf Datenbankeinrichtung verzichten. Für die Implementierung wird für Verwendung von SQLite3 entschieden. Die Datenbank selbst wird in einer Datei auf der Festplatte gespeichert. Um die Datenbank mit dem Django-Projekt zu verbinden, muss den DATABASES-Block in der Datei $mysite/settings.py$ bearbeitet. Um sqlite zu verwenden, muss nur $django.db.backends.sqlite3$ als ENGINE angegeben und den Namen der Datei, in der die Datenbank gespeichert wird, in den Parameter NAME geschrieben werden\cite{website:15}.
 
-Als nächsten müssen die Modelle in Django erzeugt werden, die die Daten definieren, mit denen während der Entwicklung gearbeitet werden. Die Modelle in Django werden entsprechend der Struktur realisiert, die im Kapitel \ref{sec:design:arch} erwähnt wurde. 
+Als nächsten müssen die Modelle in Django erzeugt werden, die die Daten definieren, mit denen während der Entwicklung gearbeitet werden. Die Modelle in Django werden entsprechend des Entity Relationship Diagrams realisiert, das im Kapitel \ref{sec:design:db} gezeigt wurde. Die wichtigste Modelle sind unten zu sehen:
 
-
+\begin{lstlisting}
+class Student(models.Model):
+	student_card = models.OneToOneField(StudentCard, on_delete=models.SET_NULL, blank=True, null=True)
+	semester = models.ForeignKey(Semester, on_delete=models.CASCADE, blank=True, null=True)
+	first_name = models.CharField('first name', max_length=50)
+	second_name = models.CharField('second name', max_length=50)
+	matricul_no = models.CharField('matriculation', max_length=10, unique=True)
+	hrz_no = models.CharField('hrz', max_length=10, unique=True)
+	group = enum.EnumField(StudentGroup)
+	is_home_loan_enabled = models.BooleanField(default=True)
+\end{lstlisting}
+ ForeignKey wird verwendet, um eine Viele-zu-Eins-Beziehung zu definieren, die eine Beziehung zwischen mehr als einer Instanz einer Entität und einer Instanz einer anderen Entität ist. Sodass in der Datenbank für ein Semester können mehrere Studierende immatrikuliert werden.
+ \begin{lstlisting}
+ content...
+ \end{lstlisting}
 
 \subsection{Erstellen der öffentlichen Schnittstelle - "Views"}
 \label{sec:server:views}
