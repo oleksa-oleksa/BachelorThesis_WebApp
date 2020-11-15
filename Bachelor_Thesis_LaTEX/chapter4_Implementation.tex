@@ -17,11 +17,11 @@ Der vorhandene für die Abschlussarbeit Raspberry Pi 3 Model B+ wurde nicht als 
 \end{itemize}
 
 Die Arbeit mit einem RaspberryPi setzt ein paar Anfangsinvestitionen voraus, die auch von den angestrebten Aufgaben und Projekten abhängen. Zuerst gäbe es die Möglichkeiten, dass der gekaufte Raspberry Pi Board bereits ein Betriebssystem darauf installiert hätte. Aber es war nicht der Fall von vorhandenen im PSE-Labor Board. Um ein Betriebssystem auf diesen Raspberry Pi zu bringen, muss eine SD-Karte mit einem Betriebssystem-Image "geflasht" werden. Dafür zunächst wurde die Distribution von der Website Raspbian.org herunterladen und die MicroSD-Karte in den Kartenleser eines vorhandenen im PSE-Labor PC eingelegt. Anschließend wurde mit dem Macintosh Disk Utility-Dienstprogramm das heruntergeladene und entpackte Betriebssystem für den RaspberryPi auf eine Speicherkarte geschrieben. Dann ist die Karte in Raspberry Pi einzulegen. Der Raspi ist damit betriebsbereit und muss für die zukünftigen Anwendungen noch konfiguriert werden. Wenn der Pi zum ersten Mal eingeschaltet wird, wird viel Text auf dem Bildschirm angezeigt. Diese werden als Startmeldungen bezeichnet. Wenn Raspbian zum ersten Mal gestartet wurde, kann es ein oder zwei Minuten dauern, um die Nutzung des freien Speicherplatzes auf der microSD-Karte optimal anzupassen. Beim nächsten Start geht es schneller. Schließlich ist kurz ein Fenster mit dem Raspberry Pi-Logo zu sehen, dann wird Terminal Fenster angezeigt, in dem es einloggt werden muss. Zum ersten Einloggen wird den Standardbenutzername "pi" und das Standardkennwort  "raspberry" verwendet. Um Register-Client vor sowohl Online-Bedrohungen als auch von Missbrauch im Labor zu schützen, wurde das Standardkennwort sofort geändert. Der nächste Schritt ist Raspbian bis zur Version "Raspbian mit dem Raspberry Pi Desktop" zu aktualisieren, damit die grafische Benutzeroberfläche und Chromium Browser zu Verfügung stehen können. Dies kann mit dem Terminalbefehl gemacht werden:
-\begin{lstlisting}
+\begin{lstlisting}[caption={[Terminalbefehl für die Installation der die grafische Benutzeroberfläche] },captionpos=b]
 sudo apt-get install lxde-core xserver-xorg xinit
 \end{lstlisting}
 Dann ist der Raspberry Pi erneut zu laden. Nachdem Raspberry Pi-Logo wieder angezeigt wurde, wäre der Raspbian-Desktop zu sehen. Somit gilt Betriebssystem als vollständig installiert und kann benutzt werden. Das war aber nicht der Fall mit dem vorhandenen Hardware, da es plötzlich eine Boot-Schleife vorkam, nachdem der Mikrocomputer eingeschaltet wurde und der Startvorgang nicht abgeschlossen werden konnte. Anstatt das zum Benutzung bereiteten Betriebssystem mit der grafische Benutzeroberfläche zu sehen,  wird eine Schleife erzeugt, in der die Startvorgang kontinuierlich und wiederholt ausgeführt wurde und somit eine Nutzung der Mikrocomputers unmöglich ist. Nach den mehreren Recherchen wurde es vermutet, dass es durch eine unzureichende Stromversorgung verursacht werden könnte. Es wurde aber zuerst nicht versucht, einen USB-Netzteil zu wechseln, da die anderen USB-Netzteil man durch PSE-Labor bestellen und eine Zeit abwarten muss. Jedoch wurde eine erzeugte Boot-Schleife mit einem anderen Terminalbefehl erfolgreich gelöst:
-\begin{lstlisting}
+\begin{lstlisting}[caption={[Boot-Schleife beim Start des der Desktops] },captionpos=b]
 sudo apt-get install --reinstall pcmanfm
 \end{lstlisting}
 Bei der Arbeit mit dem Mikrocomputer tritt jedoch später ein Problem mit der Stromversorgung auf. Der Fall kann im entsprechenden Kapitel \ref{sec:register_client:voltage_issue} nachgelesen werden.
@@ -37,10 +37,10 @@ Um RFID-Leser anzuschließen, muss man den Leser über USB mit einem Raspberry P
 	\caption{ACR122U-A9 von Advanced Card Systems und Raspbery Pi}
 	\label{fig:rfid_hard}
 \end{wrapfigure}
-PC/SC ist ein Standard für die Schnittstelle von Computern mit Smartcards, der auf den meisten Betriebssystemen, einschließlich Windows und Linux, verfügbar ist. PC/SC-Kopplungsgeräte benötigen einen Treiber, mit dem Anwendungen die Karte einfach erreichen können. Da PC/SC für Smartcards entwickelt wurde - und in einer Zeit, in der Smartcards nur Kontaktkarten waren funktioniert es auch mit den kontaktlosen Karten, falls RFID-Leser es unterstützt. Das Daemon-Programm für pcsc-lite namens pcscd koordiniert die Kommunikation mit Smartcard-Lesegeräten und Smartcards sowie kryptografischen Tokens, die mit dem System verbunden sind. Normalerweise wird pcscd beim Booten von /etc/init.d/pcscd gestartet. Damit können Anwendungen auf Smartcards und Lesegeräte zugreifen, ohne die Details der Karte oder des Lesegeräts zu kennen. Das Laden von Treibern für Kartenleser wird von pcscd koordiniert. Der Zweck von pcsc-lite besteht darin, eine kompatible API (Winscard) für die Migration von Windows-basierten PC / SC-Anwendungen auf Unix bereitzustellen\cite{website:5}. Die allgemeinen Zugriff auf USB-Geräte bietet eine C-Bibliothek namens libusb.  Sie soll von Entwicklern verwendet werden, um die Produktion von Anwendungen zu erleichtern, die mit USB-Hardware kommunizieren. Es ist portabel, da mit einer einzigen plattformübergreifenden API auf USB-Geräte unter Linux, MacOS, Windows usw. zugegriffen werden kann. Sie wird im Benutzermodus ausgeführt und somit für die Kommunikation der Anwendung mit einem Gerät keine besonderen Berechtigungen oder Erhöhungen erforderlich sind.\cite{website:8}
+PC/SC ist ein Standard für die Schnittstelle von Computern mit Smartcards, der auf den meisten Betriebssystemen, einschließlich Windows und Linux, verfügbar ist. PC/SC-Kopplungsgeräte benötigen einen Treiber, mit dem Anwendungen die Karte einfach erreichen können. Da PC/SC für Smartcards entwickelt wurde - und in einer Zeit, in der Smartcards nur Kontaktkarten waren funktioniert es auch mit den kontaktlosen Karten, falls RFID-Leser es unterstützt. Das Daemon-Programm für pcsc-lite namens pcscd koordiniert die Kommunikation mit Smartcard-Lesegeräten und Smartcards sowie kryptografischen Tokens, die mit dem System verbunden sind. Normalerweise wird pcscd beim Booten von /etc/init.d/pcscd gestartet. Damit können Anwendungen auf Smartcards und Lesegeräte zugreifen, ohne die Details der Karte oder des Lesegeräts zu kennen. Das Laden von Treibern für Kartenleser wird von pcscd koordiniert. Der Zweck von pcsc-lite besteht darin, eine kompatible API (Winscard) für die Migration von Windows-basierten PC / SC-Anwendungen auf Unix bereitzustellen\cite{website:5}. Die allgemeinen Zugriff auf USB-Geräte bietet eine C-Bibliothek namens libusb.  Sie soll von Entwicklern verwendet werden, um die Produktion von Anwendungen zu erleichtern, die mit USB-Hardware kommunizieren. Es ist portabel, da mit einer einzigen plattformübergreifenden API auf USB-Geräte unter Linux, MacOS, Windows usw. zugegriffen werden kann. Sie wird im Benutzermodus ausgeführt und somit für die Kommunikation der Anwendung mit einem Gerät keine besonderen Berechtigungen oder Erhöhungen erforderlich sind.\cite{website:88}
 
 Dann laden wir die Open-Source-Bibliothek libnfc für Near Field Communication (NFC) herunter, extrahieren, konfigurieren und installieren es. Nach der erfolgreichen Installation kann den verbindenden über USB RFID-Leser mithilfe des Tools lsusb angesehen werden: es wird VendorId und ProductID angezeigt. Es ist auch notwendig die abgelesene VendorId und ProductID in der entsprechenden XML-Datei. Die Datei auf der MicroSD-Karte ist zu finden :
-\begin{lstlisting}
+\begin{lstlisting}[caption={[XML-Datei für VendorId und ProductID] },captionpos=b]
 /usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/info.plist
 \end{lstlisting}
 
@@ -55,7 +55,7 @@ Anfänglich wurde als Spannungsversorgungsteil ein USB-Netzteil von einem modern
 Nachdem es gelingt mir, die Hardware angefahren und die ersten Studentenkarte so abzulesen, dass es ein Schallton von RFID-Leser erzeugt wurde, sollte eine weitere Aufgabe gelöst werden: die Daten von RFID-Tag auf einem auszuleihenden Raspi Board von Studentenkarte unterscheiden zu können. Es sollte ausgeschlossen werden, dass ein Ausleihe-/Rückgabevorgang angefangen wird, falls eine falsche Studentenkarte (z.B. mit einer BVG Jahresfahrkarte) am RFID-Leser präsentiert wird. Als es im Kapitel \ref{sec:theorie:mifare} erklärt wurde, sind die neuen Campus Karte der Beuth Hoschule für Technik Berlin mit den die MIFARE-Transponder hergestellt. Für die Programmierung des RFID-Lesers wird Smartcard-Schnittstelle benutzt, deren Installierung geschah zusammen mit pyscard und im Kapitel \ref{sec:register_client:install_rfid} geschrieben. Diese Schnittstelle steht für den Entwickler für die Arbeit mit Smartcards und NFC-Geräten zur Verfügung, sie wird in Form mehrerer Systemdienste implementiert und ihr Schnittstellenteil ist das PC/SC-Framework. PC/SC steht für Personal Computer/Smart Card.
 
 Es steht mehreren Möglichkeiten für die Entwicklung eine Sprache zu wählen: die Funktionen der Smartcard-Schnittstelle können mit Python, C/C++ und Java Sprache verwendet werden. Die Programmierung des Register-Clients wird auf Python Sprache gemacht, dieselbe Sprache wird für Server während der Arbeit mit Django Framework benutzt. Die Entwicklung mit dem Importieren der PCSC-Header-Dateien beginnt. 
-\begin{lstlisting}
+\begin{lstlisting}[caption={[Importieren der PCSC-Header-Dateien] },captionpos=b]
 from smartcard.System import readers
 from smartcard.ATR import ATR
 from smartcard.CardMonitoring import CardMonitor, CardObserver
@@ -72,7 +72,7 @@ Found readers: ['ACS ACR122U']
 	\label{fig:baga_stud}
 \end{wrapfigure} 
 Wie die weitere Entwicklung darf einfach den ersten gefundenen RFID-Leser genommen werden. Wenn keine Terminals angeschlossen sind, wird das Programm beendet und eine entsprechende Meldung der PSE-Labor Mitarbeiter ausgegeben. Dann muss mit dem ausgewählten Terminal verbunden werden. Dies erfolgt durch Aufrufen der Funktion $SCardConnect()$. Beim Aufruf von $SCardConnect()$ geben wir den gemeinsam genutzten Modus $(SHARE\_SHARED)$, das bevorzugte Kommunikationsprotokoll (in unserem Fall T0 und T1) an, übergeben die Adresse der Variablen, in die das Handle für weitere Operationen mit der Karte gespeichert wird, und die Adresse der Variablen $active\_protocol$. in der gewählten Kommunikationsprotokoll gespeichert wird. Auf Anwendungsebene interessiert es uns nicht besonders, welches Protokoll zum Herstellen der Verbindung ausgewählt wurde, aber diese Informationen müssen während der Programmierung gespeichert werden - sie werden später zum Senden von Befehlen benötigt\cite[p. 104]{chirico:smart_card}.
-\begin{lstlisting}
+\begin{lstlisting}[caption={Funktion SCardEstablishContext},captionpos=b]
 hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 	if hresult == SCARD_S_SUCCESS:
 		hresult, readers = SCardListReaders(hcontext, [])
@@ -82,21 +82,21 @@ hresult, hcontext = SCardEstablishContext(SCARD_SCOPE_USER)
 \end{lstlisting}
 
 ATR (Answer-To-Reset) ist ein kurzes (nicht mehr als 33) Byte-Array, das die Karte beim Anschließen an das Terminal senden muss. Wenn die Karte dies nicht innerhalb einer bestimmten Zeit tut, wird davon ausgegangen, dass sie nicht richtig funktioniert. ATR enthält grundlegende Informationen über die Karte und die technischen Parameter der Verbindung. Das Format ist jedoch recht kompliziert und hängt vom Hersteller des Kartenchips, den darauf installierten „Anwendungen“ usw. ab. ATR wird im Terminal gespeichert, solange die Karte angeschlossen ist. Es lässt sich die zwei verschiedenen RFID-Transponder (MIFARE Smart-Studentenkarte und RFID-Tag) mit Hilfe ATR voneinander unterscheiden. Das folgendes wird z.B. von der Studentenkarte zurückbekommen, wann Autorin ihre eigene Studentenkarte am RFID-Leser ablesen lässt (siehe Abbildung \ref{fig:baga_stud}):
-\begin{lstlisting}
+\begin{lstlisting}[caption={Abgelesene Studentenkarte},captionpos=b]
 +Inserted:  3B 81 80 01 80 80
 Student card added
 uid 04 2F 75 7A 30 40 80
 \end{lstlisting}
 
 Das anderes wird aber angezeigt, wann den RFID-Transponder am RFID-Leser präsentiert wird, den in der Zukunft am im PSE-Labor vorhandenen Raspi-Boards angeklebt wird:
-\begin{lstlisting}
+\begin{lstlisting}[caption={Abgelesener Raspi-Tag},captionpos=b]
 +Inserted:  3B8F8001804F0CA000000306030001000000006A
 Raspi board added
 uid 5C E7 87 30
 \end{lstlisting}
 
 Klasse $DetectionObserver$ mit der Vererbung vom der Klasse $CardObserver$ wird benutzt, um zu erkennen, wann eine Karte dem Kartenleser vorgelegt wurde, und dann die eindeutige Kennung (UID) von einer Karte zu lesen. Es wird mithilfe der Klasse $ CardMonitor$ getan, die das Einsetzen / Entfernen von Smartcards überwacht und den $CardObserver$ benachrichtigt. 
-\begin{lstlisting}[language=Python]
+\begin{lstlisting}[caption={Monitor der angelegte und enfertne Smartkarten},captionpos=b]
 def update(self, observable, actions):
 	(addedcards, removedcards) = actions
 	for card in addedcards:
@@ -106,7 +106,7 @@ def update(self, observable, actions):
 \end{lstlisting}
 
 Sobald eine korrekte Studentenkarte oder RFID-Transponder am RFID-Leser erscheint und ohne Kollision mit anderen in der Nähe bleibenden elektromagnetische Felde abgelesen wird, wird abhängig vom dem Typ der Karte eine JSON-Datei erstellt und von einem acaLoan-client zum Server geschickt. Der acaLoan-client selbst ist ein kleinen Python-Script, der die korrekte Erstellung der JSON-Datei erlaubt und eine Verbindung mittels HTTP-Protokoll zum Server bedient. 
-\begin{lstlisting}
+\begin{lstlisting}[caption={acaLoanClient},captionpos=b]
 class AcaLoanClient:
 	def __init__(self, base_url):
 		self.base_url = base_url
@@ -118,12 +118,12 @@ class AcaLoanClient:
 \end{lstlisting}
 
 Es wird weiteres von Register-Client auf keine Antwort vom Server erwartet, ob der abgelesenen Studentenkarte die Ausleihe des Raspi-Boards erlaubt ist oder ob gehaltenen in der Hand Raspi-Board ausgeliehen oder zurückgegeben darf. Sobald die Verbindung zum Server erfolgreich hergestellt wurde und eine JSON-Datei geschickt, wird der RFID-Leser wieder zum Ablesen der nächsten RFID-Transponder freigegeben. Der Python-Script für RFID-Leser muss am Register-Client mit der Verwendung der Umgebungsvariable $LOAN_SERVER$. Während der Entwicklung der Abschlussarbeit geschieht es mit dem Name des Django Entwicklungsservers. Mehr darüber ist in folgenden Kapitel \ref{sec:server} nachzulesen.
-\begin{lstlisting}
+\begin{lstlisting}[caption={[Umgebungsvariable für den Serverstart] },captionpos=b]
 LOAN_SERVER_URL=http://127.0.0.1:8000 python reader.py
 \end{lstlisting}
 Als letztes für die Implementierung des Register-Clients ist es wichtig, die kurze Beschreibung der entwickelte von Autorin JSON-Datei anzugeben. Definition der Struktur, des Inhalts und der Semantik von JSON-Objekten geschieht mithilfe von der Grammatiksprache namens JSON-Schema. Hier kann Metadaten (Daten über die Daten) angegeben werden, die die Eigenschaften eines Objekts beschreiben und gültige Werte. 
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={JSON-Schema},captionpos=b]
 {"$schema": "http://json-schema.org/draft-04/schema#",
 "type": "array", "items": [
 	{"type": "object", "properties": {
@@ -143,7 +143,7 @@ Als er wurde im Kapitel \ref{sec:register_client:smart} erwähnt, während der I
 \subsection{Erstellung acaLoan Django-Projekts}
 \label{sec:server:install}
 Glücklicherweise ist der Installationsprozess für Django unkompliziert, sodass das Einrichten Ihrer Entwicklungsumgebung schnell und entspannt ist. Django ist vollständig in Python geschrieben, daher muss zuerst Python installiert werden, um Django zu installieren. Weil die Autorin für die Implementierung des Servers ihren eignen Mac OS Rechner verwendet, ist Python bereits Computer installiert. Wenn "Python" in die Befehlszeile eingegeben (mithilfe der Terminal.app auf meinem Mac), wurde folgendes angezeigt werden:
-\begin{lstlisting}
+\begin{lstlisting}[caption={[Python Version überprüfen ] },captionpos=b]
 $ python
 Python 3.8.1 (default, Feb 17 2020, 23:55:16) 
 [Clang 11.0.0 (clang-1100.0.33.17)] on darwin
@@ -152,7 +152,7 @@ Python 3.8.1 (default, Feb 17 2020, 23:55:16)
 Sobald Python auf Computer installiert ist, kann Django auch installiert werden. Es gibt drei Möglichkeiten: Installation der offizielle Django-Version, Verwendung eines verteilungsspezifisches Installationsprogramm oder Herunterladen der Version, die derzeit immer noch entwickelt wird. In der Abschlussarbeit wird nur die Installation der offiziellen Version verwendet. Der Installation wird mit "Pipenv"-Tool geschieht, das isolierte Python-Umgebungen bietet, die somit praktischer sind als die systemweite Installation von Paketen. Pipenv verwaltet Projektpakete automatisch über die Pipfile-Datei, während die Pakete installiert oder deinstalliert werden. Pipenv generiert auch die Datei Pipfile.lock, mit der deterministische Builds erstellt und eine Momentaufnahme Ihrer Arbeitsumgebung erstellt werden. Zusätzlich für die Aufgabeimplementierung wird django-fsm installiert, das mit der Django Installation nicht geliefert wird und erlaubt eine einfache deklarative Zustandsverwaltung für Django-Modelle. 
 
 Der ganzen Quellcode für das acaLoan-Server wird als Django Projekt dargestellt. Django hat einen Befehl zum einfachen Erstellen einer anfänglichen Projektstruktur. Es wird mit der Ausführung des folgenden Befehls vom Terminal erledigt:
-\begin{lstlisting}
+\begin{lstlisting}[caption={[Erstellung acaLoan Django-Projekts] },captionpos=b]
  django-admin startproject acaLoanRaspiBoard   
 \end{lstlisting}
 
@@ -164,7 +164,7 @@ Der ganzen Quellcode für das acaLoan-Server wird als Django Projekt dargestellt
 \end{figure}
 
 Die Datei settings.py enthält eine Grundkonfiguration für die Verwendung einer SQLite-Datenbank und eine Liste von Django-Anwendungen und wurde als während der Implementierung geändert, um das üblichste deutsche Zeitformat anstatt des amerikanischen zu verwenden.
-\begin{lstlisting}[caption={My Caption},captionpos=b]
+\begin{lstlisting}[caption={Deutsches Zeitformat in Django},captionpos=b]
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Europe/Berlin'
 TIME_INPUT_FORMATS = ['%H:%M:%S']
@@ -173,13 +173,13 @@ DATETIME_FORMAT = "d.m.Y H:m"
 DATE_FORMAT = "Y-m-d"
 \end{lstlisting}
 acaLoan-Server muss im zusätzliche Dateien wie Bilder, JavaScript oder CSS bereitstellen. In Django werden diese Dateien als "statische Dateien" bezeichnet. Django stellt django.contrib.staticfiles zur Verfügung, um den Entwickler bei der Verwaltung zu unterstützen. Dafür müssen in die Datei settings.py die folgenden Zeilen hinzugefügt werden:
-\begin{lstlisting}
+\begin{lstlisting}[caption={[Die zusätzliche Dateien in das Projekt hinzufügen] },captionpos=b]
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
 \end{lstlisting}
 
 In der settings.py ist auch den Debug-Modus des Projekts aktiviert, um während der Entwicklung detaillierte Fehlermeldungen zu sehen.  Nach der Erstellung des Projekts und kleine notwendigen Änderungen, kann endlich acaLoan-Server gestartet werden. Da Django einen praktischen Mechanismus bietet, um die Konfiguration Ihres Webservers während der Entwicklung zu vermeiden, kann enthaltenen bereits ein Webserver mit dem Befehl aufgerufen werden: 
-\begin{lstlisting}
+\begin{lstlisting}[caption={[runserver-Befehl] },captionpos=b]
 python manage.py runserver
 \end{lstlisting}
 Nach dem Befehl ausgeführt wurde und im Browser zu http://127.0.0.1:8000/ navigiert wurde, wird die folgende Ausgabe angezeigt, die auf der Abbildung \ref{fig:django_start} zu sehen ist.
@@ -190,7 +190,7 @@ Nach dem Erstellung des Projekts und dem ersten Starten des acaLoan-Server ist e
 
 Als nächsten müssen die Modelle in Django erzeugt werden, die die Daten definieren, mit denen während der Entwicklung gearbeitet werden. Die Modelle in Django werden entsprechend des Entity Relationship Diagrams realisiert, das im Kapitel \ref{sec:design:db} gezeigt wurde. Die wichtigste Modelle sind unten zu sehen:
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Student Modell},captionpos=b]
 class Student(models.Model):
 	student_card = models.OneToOneField(StudentCard, on_delete=models.SET_NULL, blank=True, null=True)
 	semester = models.ForeignKey(Semester, on_delete=models.CASCADE, blank=True, null=True)
