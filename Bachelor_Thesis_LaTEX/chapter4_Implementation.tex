@@ -262,8 +262,8 @@ Um einen  Arbeitszeitverbrauch des Mitarbeiter des PSE-Labor zu senken, wurde da
 Django wird als Framework für die Erstellung vollständiger Websites benutzt. Das Rendern von HTML ist eine der grundlegenden Fähigkeiten von Django. Da das Design für Display-Client erstellt werden muss, wurde der Styl der Beuth Hochschule für Farben und Schriftarten verwendet ein einfaches Website-Design im kostenlosen Online-Tool "mockflow.com" erstellt. Die Seiten sind auf der Abbildung \ref{fig:design} abgebildet. Dann wurden aus dem Design-Bilder direkt ohne automatisierten Dienste die HTML- und CSS-Dateien erstellt, die später mit Django HTML-Vorlagen verwenden werden.  
 \subsubsection{Erstellen der öffentlichen Schnittstelle}
 \label{sec:server:design:views}
-Nach dem Speichern der HTML- und CSS-Dateien in $/acaLoanRaspiBoard/loan/templates$ müssen  die entsprechenden Ansichten erstellt werden, um die Seiten zu rendern. Eine Ansicht ist eine spezifische Webseite in der Django-Anwendung, die bestimmte Funktion erfüllt und über eine bestimmte Vorlage verfügbar ist\cite{website:166:temp}. Sie werden durch eine Python-Funktion (oder eine Methode bei klassenbasierten Ansichten) dargestellt. Django wählt eine Ansicht aus, indem er die angeforderte URL überprüft (genauer gesagt den Teil der URL nach dem Domainnamen)\cite{website:166:temp}. Die wichtigsten für acaLoan-Projekt sind die Seiten "index" und "start". Die erste HTML-Vorlage wird immer dem Benutzer im Webbrowser im Vollbildmodus angezeigt und mit dem Drücken der Taste "Loan/Return Board" wird neue Sitzung in dem Zustand $session\_started$ angefangen. In der zweiten Vorlage namens "start" wird den Zustand der Sitzung angezeigt, den wird vom Server über die REST API Kommunikationsschnittstelle dem Display-Client geschickt.  
-\begin{lstlisting}[caption={index-Ansicht in Django},captionpos=b]
+Nach dem Speichern der HTML- und CSS-Dateien in $/acaLoanRaspiBoard/loan/templates$ müssen  die entsprechenden Ansichten erstellt werden, um die Seiten zu rendern. Eine Ansicht ist eine spezifische Webseite in der Django-Anwendung, die bestimmte Funktion erfüllt und über eine bestimmte Vorlage verfügbar ist\cite{website:166:temp}. Sie werden durch eine Python-Funktion (oder eine Methode bei klassenbasierten Ansichten) dargestellt. Django wählt eine Ansicht aus, indem er die angeforderte URL überprüft (genauer gesagt den Teil der URL nach dem Domainnamen)\cite{website:166:temp}. Eine von wichtigsten für acaLoan-Projekt Ansichten ist die Seite "index". deren HTML-Vorlage immer dem Benutzer im Webbrowser im Vollbildmodus angezeigt wird und mit dem Drücken der Taste "Loan/Return Board" eine neue Sitzung in dem Zustand $session\_started$ angefangen werden kann. 
+\begin{lstlisting}[caption={Index-Ansicht in Django},captionpos=b]
 def index(request):
 	now = datetime.datetime.now()
 	loans = []
@@ -280,8 +280,41 @@ def index(request):
 	return render(request, template_name, context)
 \end{lstlisting}
 
+Hier will ich besonders zeigen, dass in intelligente HTML-Seite die die Variablen anstelle bestimmter Werte verwendet werden kann, um in $index.html$ die verfügbare zur Home-Ausleihe Boards dem Studierende anzuzeigen zu können. Hier werden die verfügbare im Labor Home-Boards und die Boards, deren Rückgabefrist ist immer noch nicht versäumt, aus der Datenbank zugreifen und als Python-Wörterbuch mit Variablennamen der HTML-Vorlage zum rendern übergeben. In der Vorlage namens "start" wird den Zustand der Sitzung angezeigt, den wird vom Server über die REST API Kommunikationsschnittstelle dem Display-Client geschickt, die regelmäß abgerufen werden muss. Die Sitzungsaktualisierungen werden in der events-Ansicht behandelt. Zuerst wird es überprüft, ob angekommenen JSON-Datei eine erwartete von dem Server Nachricht erhält. 
+
+\begin{lstlisting}[caption={Events-Ansicht in Django, JSON-Parsing},captionpos=b]
+    if request.method != "POST":
+		return HttpResponseNotFound()
+	...
+	try:
+		body = json.loads(request.body)
+		input_type = body['type']
+	except (KeyError, json.JSONDecodeError):
+		return HttpResponseBadRequest()	
+	if input_type not in ["card", "tag", "cancel_button", "terminate_button", "get_rfid_status",
+	"return_scanned_board_button", "loan_scanned_board_button", "finish_button"]:
+		return HttpResponseBadRequest()
+\end{lstlisting}
+Falls die JSON-Datei korrekt ist, wird ihre Inhalt für die Übergang der endlichen Zustandsmaschine verwendet. Es wird detaillierter im Kapitel "Endliche Zustandsmaschine mit Django FSM" erklärt.
+\begin{lstlisting}[caption={Events-Ansicht in Django, Aufur von FSM Transitions},captionpos=b]
+if input_type == "card":
+try:
+	uid = body['uid']
+	session.student_card_inserted(uid)
+except StudentCard.DoesNotExist:
+	pass
+elif input_type == "tag":
+	uid = body['uid']
+	session.rfid_inserted(uid)
+elif input_type == "cancel_button":
+	session.session_canceled()
+...
+\end{lstlisting}
+
 \subsubsection{Django HTML-Vorlage}
 \label{sec:server:design:templates}
+Ein Kontext ist ein Wörterbuch mit Variablennamen als Schlüssel und deren Werten als Wert. Wenn Ihr Kontext für die obige Vorlage wie folgt aussieht: {myvar1: 101, myvar2: 102}, wenn Sie diesen Kontext an die Vorlagenrendermethode übergeben, wird {{myvar1}} durch 101 und {{myvar2}} durch ersetzt 102 in Ihrer Vorlage. Dies ist ein vereinfachtes Beispiel, aber tatsächlich ist ein Kontextobjekt der Kontext, in dem die Vorlage gerendert wird.
+
 
 
 \subsection{Implementierung des Anwendungsfällen}
