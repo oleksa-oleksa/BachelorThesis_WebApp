@@ -354,7 +354,55 @@ Ein Sequenzdiagramm beschreiben, wie und in welcher Reihenfolge die Objekte in e
 
 \subsubsection{Endliche Zustandsmaschine mit Django FSM}
 \label{sec:server:fsm:fsm}
-Die endliche Zustandsmaschine wird mit Django FSM realisiert. 
+\begin{figure}
+	\centering
+	\fbox{\includegraphics[width=0.7\textwidth]{gfx/transitions.png}}
+	\caption{Django FSM mit Zustände und Übergänge}
+	\label{fig:django_fsm_trans}
+\end{figure}
+Die endliche Zustandsmaschine wird mit Django FSM realisiert (auf der Abbildung \ref{fig:django_fsm_trans}). FSMField des Session Modells wird für eine automatisierte Verwaltung des Zustands der FSM verwendet. Modellmethoden werden mit dem Übergangsdekorateur markiert, sodass wird die Änderung des Zustands gemacht. Der FSM wird auf dem Zustand $session\_started"$ gestartet. Vor der Erstellung einer neuen Sitzung, wird zuerst die Felder des Modells mit der Ausführen der Funktion "clean" validiert. Falls die eine aktive Sitzung schon existiert, wird ein ValidationError ausgelöst:
+
+\begin{lstlisting}[caption={Session clean() für die Validation des Modells},captionpos=b]
+def clean(self):
+	open_session = Session.objects.exclude(state__in=Session.TERMINAL_STATES).count()
+	if open_session != 0:
+		raise ValidationError('Active session already exists!')
+	super().clean()
+\end{lstlisting}
+
+Die nächsten erlaubten bei der FSM Zustände sind: $canceled$, $timeout$, $valid\_student\_card$ und $unknown\_student\_card$. Ein Übergang in den Zustand $canceled$ is immer erlaubt und wird mit dem Drücken der "Cancel"-Taste auf einem Bildschirm des Display-Client ausgelöst. $timeout$ wird von Server behandelt und dient dazu, um zu lang gedauerte Sitzungen zwangsweise zu beenden und Display-Client für einen nächsten Versuch wieder freizumachen. Um in einem von beiden Zielzustände zu getreten, muss die Existenz der Studentenkarte in der Datenbank überprüft werden. 
+\begin{lstlisting}[caption={FSM Übergang beim Ablesen der Studentenkarte},captionpos=b]
+@transition(field=state, source='session_started', target=RETURN_VALUE('valid_student_card', 'unknown_student_card'))
+def student_card_inserted(self, card_uid):
+	try:
+		card = StudentCard.objects.get(uid=card_uid)
+		if card.student is not None:
+			self.student_card = card
+			return 'valid_student_card'
+	except StudentCard.student.RelatedObjectDoesNotExist:
+		return 'unknown_student_card'
+	except StudentCard.DoesNotExist:
+		return 'unknown_student_card'
+\end{lstlisting}
+
+Die ähnlichen Vorgänge werden bei jedem Übergang der FSM verwenden. So beispielsweise wird den Status der angelesene Board überprüft und dann wird es von FSM festgestellt, ob ein Studierende einen Board ausleihen oder zurückgeben möchte. Es wird vom Studierende nicht erfordert, die Operation zu bestimmen. 
+
+\begin{lstlisting}[caption={FSM Übergang beim Ablesen der Board RFID-Tag},captionpos=b]
+@transition(field=state, source='valid_rfid',
+target=RETURN_VALUE('rfid_state_loaned', 'rfid_state_active', 'status_error'))
+def get_rfid_status(self):
+	board = self.get_active_board()
+	if board is not None:
+		if board.board_status == BoardStatus.LOANED:
+			return 'rfid_state_loaned'
+	elif board.board_status == BoardStatus.ACTIVE:
+		return 'rfid_state_active'
+	...
+\end{lstlisting}
+
+Die alle implementierte Zustände und Übergänge sind auf der Abbildung \ref{fig:django_fsm_trans} zu betrachten. Sie werden mit dem Toll $graphviz$ aus der existierenden in dem acaLoan-Projekt Modell $Session$ und seine mit dem Django FSM Zuständen und Übergange automatisiert erzeugt. Sodass werden alle Anwendungsfälle, die im Kapitel \ref{sec:design:use_cases} definiert wurden, erfolgreich mit der Verwendung der Django FSM implementiert. 
+
+Nach jeder Änderung des Zustands wird über HTTP-Protokoll vom Server die Nachricht an Display-Client geschickt, sodass es die Änderungen dem Studierende anzeigen könnte. Die Implementierung des Clientseitiges JavaScript wird in folgenden Kapitel beschrieben.  
 
 \section{Display-Client}
 \label{sec:display_client}
