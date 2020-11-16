@@ -237,6 +237,13 @@ Der Befehl migrate überprüft die Einstellung $INSTALLED\_APPS$ und erstellt al
 
 \subsection{Einführung in das Django Admin}
 \label{sec:server:admin}
+\begin{figure}
+	\centering
+	\fbox{\includegraphics[width=1\textwidth]{gfx/django_admin.png}}
+	\caption{Screenshot von Django Admin Site mit Board Tabelle.}
+	\label{fig:django_admin}
+\end{figure}
+
 Einer der mächtigsten Teile von Django ist die automatische Administrationsoberfläche. Es liest Metadaten aus erstellten Modellen, um eine schnelle, modellzentrierte Oberfläche bereitzustellen, über die vertrauenswürdige Benutzer Inhalte auf der Website verwalten können\cite{website:djangoAdmin}. Die Admin-Site verwender werden kann, indem die URL aufgerufen wird, mit der Die Admin-Site verbunden wurde (im AcaLoan-Projekt ist es $/admin/$).
 
 Wenn einen Benutzer zum Anmelden erstellt werden muss, wird es mit dem Befehl createuperuser gemacht. Für die Anmeldung beim Administrator muss der Benutzer standardmäßig das Attribut $is\_superuser$ oder $is\_staff$ auf True gesetzt haben.
