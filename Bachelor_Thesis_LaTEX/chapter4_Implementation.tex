@@ -243,10 +243,13 @@ Der Befehl migrate überprüft die Einstellung $INSTALLED\_APPS$ und erstellt al
 	\caption{Screenshot von Django Admin Site mit Board Tabelle.}
 	\label{fig:django_admin}
 \end{figure}
-
-Einer der mächtigsten Teile von Django ist die automatische Administrationsoberfläche. Es liest Metadaten aus erstellten Modellen, um eine schnelle, modellzentrierte Oberfläche bereitzustellen, über die vertrauenswürdige Benutzer Inhalte auf der Website verwalten können\cite{website:djangoAdmin}. Die Admin-Site verwender werden kann, indem die URL aufgerufen wird, mit der Die Admin-Site verbunden wurde (im AcaLoan-Projekt ist es $/admin/$).
-
-Wenn einen Benutzer zum Anmelden erstellt werden muss, wird es mit dem Befehl createuperuser gemacht. Für die Anmeldung beim Administrator muss der Benutzer standardmäßig das Attribut $is\_superuser$ oder $is\_staff$ auf True gesetzt haben.
+Einer der mächtigsten Teile von Django ist die automatische Administrationsoberfläche. Es liest Metadaten aus erstellten Modellen, um eine schnelle, modellzentrierte Oberfläche bereitzustellen, über die vertrauenswürdige Benutzer Inhalte auf der Website verwalten können\cite{website:djangoAdmin}. Die Admin-Site verwendet werden kann, indem die URL aufgerufen wird, mit der Die Admin-Site verbunden wurde (im AcaLoan-Projekt ist es $/admin/$). Wenn einen Benutzer zum Anmelden erstellt werden muss, wird es mit dem Befehl createuperuser gemacht. Für die Anmeldung beim Administrator muss der Benutzer standardmäßig das Attribut $is\_superuser$ oder $is\_staff$ auf True gesetzt haben. Mithilfe der Django-Admin Site können die Mitarbeiter nicht benutzerorientierten Inhalt verwalten. Z.B. so werden am Anfang jedes Semesters die neuen Datensätzen für die registrierten für das Modul Studierende erstellt. 
+\begin{wrapfigure}{l}{0.45\textwidth}
+	\fbox{\includegraphics[width=0.42\textwidth]{gfx/upload_csv.png}}
+	\caption{Admin spezifische Site für CSV-Hochladen}
+	\label{fig:upload_csv}
+\end{wrapfigure}
+Um einen  Arbeitszeitverbrauch des Mitarbeiter des PSE-Labor zu senken, wurde das kleine Python Script geschrieben, das permanenten Identifikationsnummer (UID) von einer kontaktlosen Speicherkarte der Studierende ablesen und als CSV-Datei auf der Festplatte speichern kann. Nachdem die Datensätze der Studierende in der Datenbank erzeugen und die UIDs mithilfe des Scripts am RFID-Leser abgelesen wurden, kann Admin des acaLoan-Systems die CSV-Datei hochladen. Somit werden die UIDs der Studentenkarten automatisch mit dazugehörigen Studentensätzen über eindeutigen Matrikelnummer verknüpft. Die Seite mit dem Hochladen der CSV-Datei ist nur für den vertrauenswürdigen Admin des System zu Verfügung stehen dürfen und den Zugriffsrechten sind von Django zu verwalten, dazu den entsprechenden Schnittstelle mit dem $@staff\_member\_required$ geschützt wird geworden.
 
 
 \subsection{Erstellen der öffentlichen Schnittstelle - "Views"}
