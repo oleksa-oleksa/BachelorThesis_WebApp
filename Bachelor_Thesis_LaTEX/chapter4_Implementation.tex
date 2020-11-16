@@ -251,13 +251,38 @@ Einer der mächtigsten Teile von Django ist die automatische Administrationsober
 \end{wrapfigure}
 Um einen  Arbeitszeitverbrauch des Mitarbeiter des PSE-Labor zu senken, wurde das kleine Python Script geschrieben, das permanenten Identifikationsnummer (UID) von einer kontaktlosen Speicherkarte der Studierende ablesen und als CSV-Datei auf der Festplatte speichern kann. Nachdem die Datensätze der Studierende in der Datenbank erzeugen und die UIDs mithilfe des Scripts am RFID-Leser abgelesen wurden, kann Admin des acaLoan-Systems die CSV-Datei hochladen. Somit werden die UIDs der Studentenkarten automatisch mit dazugehörigen Studentensätzen über eindeutigen Matrikelnummer verknüpft. Die Seite mit dem Hochladen der CSV-Datei ist nur für den vertrauenswürdigen Admin des System zu Verfügung stehen dürfen und den Zugriffsrechten sind von Django zu verwalten, dazu den entsprechenden Schnittstelle mit dem $@staff\_member\_required$ geschützt wird geworden.
 
-
-\subsection{Erstellen der öffentlichen Schnittstelle - "Views"}
-\label{sec:server:views}
-
-
-\subsection{Templates und Design der acaLoan-Website}
+\subsection{Design der acaLoan-Website}
 \label{sec:server:design}
+\begin{figure}
+	\centering
+	\fbox{\includegraphics[width=1\textwidth]{gfx/design.png}}
+	\caption{Screenshot von mockflow.com mit dem Design der acaLoan-Website.}
+	\label{fig:design}
+\end{figure}
+Django wird als Framework für die Erstellung vollständiger Websites benutzt. Das Rendern von HTML ist eine der grundlegenden Fähigkeiten von Django. Da das Design für Display-Client erstellt werden muss, wurde der Styl der Beuth Hochschule für Farben und Schriftarten verwendet ein einfaches Website-Design im kostenlosen Online-Tool "mockflow.com" erstellt. Die Seiten sind auf der Abbildung \ref{fig:design} abgebildet. Dann wurden aus dem Design-Bilder direkt ohne automatisierten Dienste die HTML- und CSS-Dateien erstellt, die später mit Django HTML-Vorlagen verwenden werden.  
+\subsubsection{Erstellen der öffentlichen Schnittstelle}
+\label{sec:server:design:views}
+Nach dem Speichern der HTML- und CSS-Dateien in $/acaLoanRaspiBoard/loan/templates$ müssen  die entsprechenden Ansichten erstellt werden, um die Seiten zu rendern. Eine Ansicht ist eine spezifische Webseite in der Django-Anwendung, die bestimmte Funktion erfüllt und über eine bestimmte Vorlage verfügbar ist\cite{website:166:temp}. Sie werden durch eine Python-Funktion (oder eine Methode bei klassenbasierten Ansichten) dargestellt. Django wählt eine Ansicht aus, indem er die angeforderte URL überprüft (genauer gesagt den Teil der URL nach dem Domainnamen)\cite{website:166:temp}. Die wichtigsten für acaLoan-Projekt sind die Seiten "index" und "start". Die erste HTML-Vorlage wird immer dem Benutzer im Webbrowser im Vollbildmodus angezeigt und mit dem Drücken der Taste "Loan/Return Board" wird neue Sitzung in dem Zustand $session\_started$ angefangen. In der zweiten Vorlage namens "start" wird den Zustand der Sitzung angezeigt, den wird vom Server über die REST API Kommunikationsschnittstelle dem Display-Client geschickt.  
+\begin{lstlisting}[caption={index-Ansicht in Django},captionpos=b]
+def index(request):
+	now = datetime.datetime.now()
+	loans = []
+	for b in Board.objects.filter(board_no__gte=HOME_LOAN_MINIMAL_NO):	
+		if b.board_status == BoardStatus.LOANED:
+		action = b.action_set.order_by("-timestamp").first()
+		deadline = action.timestamp + MAX_HOME_LOAN_LIMIT	
+			if deadline > now:
+			loans.append({'board': b, 'deadline': deadline})
+		else:
+		loans.append({'board': b, 'deadline': None})	
+	template_name = "loan/index.html"
+	context = {"loans": loans}
+	return render(request, template_name, context)
+\end{lstlisting}
+
+\subsubsection{Django HTML-Vorlage}
+\label{sec:server:design:templates}
+
 
 \subsection{Implementierung des Anwendungsfällen}
 \label{sec:server:fsm}
@@ -273,7 +298,7 @@ Während der Implementierung der User Cases wurde auch Sequenzdiagramm erzeugt, 
 \end{figure}
 Ein Sequenzdiagramm beschreiben, wie und in welcher Reihenfolge die Objekte in einem System funktionieren. In der Abschlussarbeit werden ein Sequenzdiagramm gezeigt, die auf den Abbildungen \ref{fig:seq} zu betrachten ist. Es ist ein erfolgreichen Szenario für die Ausleihe der Lab-Loan Raspi Board von einem gültigen Studierende. Das Sequenzdiagramme entspricht der oben genannte User Story \textit{"As a student, I want to loan a board so I can work at lab"}. Die meisten Kommunikation geschieht über die asynchrone Nachrichten. Zum Beispiel, es wird von Register-Klient mit dem angeschlossenen RFID-Leser nicht darauf gewartet, ob die abgelesene Studentenkarte gültig ist oder ob ein Student zum Kurs zugelassen ist. Sofort die vorherigen Ablesevorgang angeschlossen wurde und JSON-Datei dem Server geschickt, steht der RFID-Leser wieder zur Verfügung und ein RFID-Tag des Boards abgelesen werden kann. Es kann sogar sein, dass anstatt erwarteten in erfolgreichen Szenario RFID-Tags eine weitere Studentenkarte abgelesen wird (z.B. nebenstehende Kumpel der Studierende aus Spaß oder wegen der Eile lässt seine Karte ablesen vor dem Beenden des laufenden Ausleihevorgang). Obwohl es aus der Sich der Zustandsmaschine nicht zugelassen ist, eine weitere Studentenkarte zu lesen, wird trotzdem die Karte von RFID-Reader abgelesen, eine weitere JSON-Datei zum Server geschickt und weiter RFID-Leser zum nächsten Lesen freigegeben. Es ist rein die Aufgabe des Servers die ankommenden Daten zu verifizieren und den Zustandsmaschine in einem weiteren Zustand zu schalten. Die entsprechende Information mit der Begrüßung der Studierende oder Fehlermeldung wird auch vom Server generiert und dem Display-Client zum Anzeigen übergeben. Mehr über diese Vorgehensweise in entsprechenden Kapitels \ref{sec:register_client:smart}, \ref{sec:server:fsm} und \ref*{sec:display_client:js} der Implementierungsphase nachzulesen. 
 
-\subsection{Endliche Zustandsmaschine mit Django FSM}
+\subsubsection{Endliche Zustandsmaschine mit Django FSM}
 \label{sec:server:fsm:fsm}
 
 
