@@ -188,7 +188,7 @@ Nach dem Befehl ausgeführt wurde und im Browser zu http://127.0.0.1:8000/ navig
 \label{sec:server:database}
 Nach dem Erstellung des Projekts und dem ersten Starten des acaLoan-Server ist es die Zeit, sich mit der Einrichtung von Datenbank zu beschäftigen. Theoretisch kann ein Django-basierte Projekt ohne Datenbank ausgeführt werden. Für die hier vorliegenden Abschlussarbeit was jedoch es ein Zweck, eine Datenbank einzurichten, um alle Ausleihe-/Rückgabevorgänge zu verwalten, so dass in einem echten Projekt kann man nicht auf Datenbankeinrichtung verzichten. Für die Implementierung wird für Verwendung von SQLite3 entschieden. Die Datenbank selbst wird in einer Datei auf der Festplatte gespeichert. Um die Datenbank mit dem Django-Projekt zu verbinden, muss den DATABASES-Block in der Datei $mysite/settings.py$ bearbeitet. Um sqlite zu verwenden, muss nur $django.db.backends.sqlite3$ als ENGINE angegeben und den Namen der Datei, in der die Datenbank gespeichert wird, in den Parameter NAME geschrieben werden\cite{website:15}.
 
-Als nächsten müssen die Modelle in Django erzeugt werden, die die Daten definieren, mit denen während der Entwicklung gearbeitet werden. Die Modelle in Django werden entsprechend des Entity Relationship Diagrams realisiert, das im Kapitel \ref{sec:design:db} gezeigt wurde. Die wichtigste Modelle sind unten zu sehen:
+Als nächsten müssen die Modelle in Django erzeugt werden, die die Daten definieren, mit denen während der Entwicklung gearbeitet werden. Die Modelle in Django werden entsprechend des Klassendiagramm aus dem Kapitel \ref{sec:design:uml:class} und des Entity Relationship Diagramm realisiert, das im Kapitel \ref{sec:design:db} gezeigt wurde. Die wichtigste Modelle sind unten zu sehen:
 
 \begin{lstlisting}[caption={Student Modell},captionpos=b]
 class Student(models.Model):
@@ -201,7 +201,7 @@ class Student(models.Model):
 	group = enum.EnumField(StudentGroup)
 	is_home_loan_enabled = models.BooleanField(default=True)
 \end{lstlisting}
- ForeignKey wird verwendet, um eine Viele-zu-Eins-Beziehung zu definieren, die eine Beziehung zwischen mehr als einer Instanz einer Entität und einer Instanz einer anderen Entität ist. Sodass in der Datenbank für ein Semester können mehrere Studierende immatrikuliert werden.
+ ForeignKey wird verwendet, um eine Viele-zu-Eins-Beziehung zu definieren, die eine Beziehung zwischen mehr als einer Instanz einer Entität und einer Instanz einer anderen Entität ist. Sodass in der Datenbank für ein Semester können mehrere Studierende immatrikuliert werden. $on\_delete=models.CASCADE$ ist ein SQL-Standard, das nicht nur in Django verwendet wird. Wenn das referenzierte Objekt gelöscht wird, ist auch die Objekte zu löschen, auf die es verwiest. Wenn es beispielsweise einen Semester zu entfernen ist, müssen auch die Studenten gelöscht, die während dieses Semester in System registriert wurden. Damit sollen alle veraltet Daten der Studierende nach dem Semesterende endgültig aus der Datenbank gelöscht werden. 
 \begin{lstlisting}[caption={Board Modell},captionpos=b]
 class Board(models.Model):
 	raspi_tag = models.OneToOneField(RaspiTag, on_delete=models.SET_NULL, blank=True, null=True)
@@ -229,13 +229,22 @@ class Session(models.Model):
 	student_card = models.ForeignKey(StudentCard, on_delete=models.SET_NULL, blank=True, null=True, related_name='+')
 	raspi_tag = models.ForeignKey(RaspiTag, on_delete=models.SET_NULL, blank=True, null=True, related_name='+')
 \end{lstlisting}
-An dieser Stelle muss man besonders betonen, dass Feld $state = FSMField(default='session\_started')$ wird für Django Finite State Machine Framework benutzt. Anstatt einem Django-Modell ein Statusfeld hinzuzufügen und seine Werte manuell zu verwalten, wird FSMField verwendet und Modellmethoden mit dem Übergangsdekorator markiert\cite{website:fsm}. Diese Methoden können Änderungen der Zustandsänderung enthalten. Die Implementierung wird in Kapitel \ref{sec:server:fsm:fsm} erklärt. 
+An dieser Stelle muss man besonders betonen, dass Feld $state = FSMField(default='session\_started')$ wird für Django Finite State Machine Framework benutzt. Anstatt einem Django-Modell ein Statusfeld hinzuzufügen und seine Werte manuell zu verwalten, wird FSMField verwendet und Modellmethoden mit dem Übergangsdekorator markiert\cite{website:fsm}. Diese Methoden können Änderungen der Zustandsänderung enthalten. Die Implementierung wird in Kapitel \ref{sec:server:fsm:fsm} erklärt. Nachdem die Django Modelle entsprechend der Beschreibung aus dem Kapitel \ref{sec:design:uml:class} erzeugen wurden, müssen die Tabellen in der Datenbank erstellt werden, bevor sie verwendt werden können. Dazu wird den  Befehl ausgeführt:
+\begin{lstlisting}[caption={[Der Befehl migrate] },captionpos=b]
+$ python manage.py migrate
+\end{lstlisting}
+Der Befehl migrate überprüft die Einstellung $INSTALLED\_APPS$ und erstellt alle erforderlichen Datenbanktabellen gemäß den Datenbankeinstellungen in der Datei $acaLoanRaspiBoard/settings.py$\cite{website:15}.
+
+\subsection{Einführung in das Django Admin}
+\label{sec:server:admin}
+Einer der mächtigsten Teile von Django ist die automatische Administrationsoberfläche. Es liest Metadaten aus erstellten Modellen, um eine schnelle, modellzentrierte Oberfläche bereitzustellen, über die vertrauenswürdige Benutzer Inhalte auf der Website verwalten können\cite{website:djangoAdmin}. Die Admin-Site verwender werden kann, indem die URL aufgerufen wird, mit der Die Admin-Site verbunden wurde (im AcaLoan-Projekt ist es $/admin/$).
+
+Wenn einen Benutzer zum Anmelden erstellt werden muss, wird es mit dem Befehl createuperuser gemacht. Für die Anmeldung beim Administrator muss der Benutzer standardmäßig das Attribut $is\_superuser$ oder $is\_staff$ auf True gesetzt haben.
+
 
 \subsection{Erstellen der öffentlichen Schnittstelle - "Views"}
 \label{sec:server:views}
 
-\subsection{Einführung in das Django Admin}
-\label{sec:server:admin}
 
 \subsection{Templates und Design der acaLoan-Website}
 \label{sec:server:design}
