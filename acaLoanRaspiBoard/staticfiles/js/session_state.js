@@ -82,7 +82,7 @@ function handle_session_event(body) {
             $("#loaned_home_board_info").show()
             $("#loaned_home_board_info").text(body.loaned_home_board)
             $("#loaned_home_board_operation").show()
-            $("#loaned_home_board_operation").text(body.loaned_lab_board_operation)
+            $("#loaned_home_board_operation").text(body.loaned_home_board_operation)
             $("#operation_info").show()
             $("#operation_info").text(body.operation)
     }
