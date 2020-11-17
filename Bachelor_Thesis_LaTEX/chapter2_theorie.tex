@@ -124,27 +124,6 @@ Während sich jedes Sender-Empfänger-System mit RFID hinsichtlich Gerätetyp un
 
 An dieser Stelle muss es gesagt werden, dass die RFID-Tags bestimmte Nachteile haben, die wurden zwischen den Mitarbeiter und Autorin der Abschlussarbeit diskutiert. Es wurde jedoch die Entscheidung getroffen, dass RFID-Tags für die vorgesehenen Zwecken des Verfolgen des Raspi-Boards (welchen Raspi-Board von welchem Student am welchen Tag ausgeliehen wurde und bis zum welchen Tag zurückgegeben muss) die Sicherheitserwartungen der PSE-Labor Mitarbeiter erfühlen. RFID-Tags sind aus mehreren Gründen im Vergleich nicht ideal. Da ein RFID-Tag nicht zwischen Lesegeräten unterscheiden kann, können die Informationen von fast jedem gelesen werden, sobald sie die ursprüngliche Lieferkette verlassen haben. Weil RFID-Lesegeräte so tragbar sind und die Reichweite einiger Tags so groß ist, können Betrüger Informationen sammeln, auf die sie sonst keinen Zugriff hätten. Dies bedeutet, dass jeder ohne Wissen einer Person potenziell sensible Informationen sammeln kann. Diese Nachteile der RFID-Tags wurden vernachlässigt, da sowohl Studentenkarte als auch geklebte auf den Raspi-Boards RFID-Tags keine sensible Information behalten. Es gibt trotzdem ein Gefahr, dass entweder die Studentenkarte geklont von einem Täter wird, um sich für einen Student ausgeben und ein Raspi-Board stehlen zu können, oder ein Raspi-Board geklont von einem Täter wird, um ein Datensatz in der Datenbank zu erzeugen, dass schon ausgeliehenen Board quasi zurückgegeben wurde, obwohl in der Realität den Raspi-Board nie zurückgegeben wurde. Gegen das Klonen des Raspi-Tags wurde es besprochen, dass in der Zukunft im PSE-Labor im Schrank mit den Raspi-Boards jeden Platz für jeden entsprechenden Raspi-Board mit einem Gewichtssensor ausgerüstet werden wird und acaLoan-System auf der Erscheinung des bestimmten Gewicht erwarten wird. Dies ist aber nicht der Teil bestehenden Abschlussarbeit und von Mitarbeiter des PSE-Labor als eine spannende Aufgabe für die andere Abschlussarbeit vorgesehen ist. Gegen das Klonen des Studentenkarte wurde es zuerst entschieden, dass ein bestehenden Zugang zu einem Schrank mit Raspi-Boards entlang die beide Arbeitstischen der Mitarbeiter des PSE-Labor eine bestimmte Sicherheit gewährleisten könnte. Nach anderen Lösungen wird es weiter noch diskutiert und es liegt außer den Rahmen der bestehenden Abschlussarbeit. 
 	
-\section{HTTP für Client-Server Kommunikation}
-\label{sec:theorie:http}
-HTTP steht für Hypertext Transfer Protokoll und dient zum Verwaltung der Übermittlung eines Dokuments durch einen Webserver an einen Webbrowser. HTTP wird auch zum Übertragen von XML-Dateien, VoiceXML, WML, Streaming von Video und Audio verwendet. Es verwendet normalerweise Port 80 und as Transportschichtprotokoll - TCP. Das in RFC 1945 (HTTP 1.0 \cite{website:httprfc1945}), 2068 \cite{website:httprfc2068} und 2616 (HTTP 1.1) definierte WWW-Protokoll, mit dem HTML-Dokumente über das Internet von Knoten zu Knoten gesendet werden können. HTTP unterstützt die dauerhafte Übertragung (Übertragung mehrerer Objekte). Nicht persistente Verbindungen (Übertragung eines Webdokumentobjekts pro Sitzung zwischen Client und Server) sowie zwei Methoden zur Benutzeridentifizierung: Autorisierungs- und Cookie-Objekte (Dateien). Dies ist ein zustandsloses Protokoll, in dem keine Benutzersitzungsinformationen gespeichert werden. Jede Datenübertragung wird als neue Sitzung für die Kommunikation zwischen verteilten Informationssystemen betrachtet. 
-
-HTTP basiert auf dem Anforderungs- / Antwortparadigma: Browser (und möglicherweise auch Proxyserver) senden Nachrichten an HTTP-Server. Diese Server generieren Nachrichten, die an die Browser zurückgesendet werden. Die an HTTP-Server gesendeten Nachrichten werden als Anforderungen bezeichnet, und die von den Servern generierten Nachrichten werden als Antworten bezeichnet \cite[pp.33-34]{shklar:webapplication}. Dieses grundlegende Paar wird im nächsten Kapitel \ref{sec:theorie:api} untersucht. In der Praxis kommunizieren Server und Browser selten direkt - dazwischen befinden sich ein oder mehrere Proxys. Eine Verbindung ist als virtuelle Verbindung definiert, die aus HTTP-Agenten besteht, einschließlich des Browsers, des Servers und der am Austausch teilnehmenden Zwischenproxys (Abbildung \ref{fig:http_req} \cite[pp.33-34]{shklar:webapplication}).
-\begin{figure}
-	\centering
-	\fbox{\includegraphics[width=1\textwidth]{gfx/req_res.png}}
-	\caption{Die virtuelle Anforderungs- / Antwortschaltung}
-	\label{fig:http_req}
-\end{figure}
-
-HTTP definiert eine Reihe von Anforderungsmethoden, um die gewünschte Aktion anzugeben, die für eine bestimmte Ressource ausgeführt werden soll. Sie werden als HTTP-Verben bezeichnet.
-Diese Anforderungsmethoden sind unten aufgeführt:
-\begin{itemize}
-	\item \textbf{GET} ist die einfachste Anforderungsmethode. Wenn eine URL in Browser eingeben oder auf einen Hyperlink geklickt wird, um eine andere Seite zu besuchen, verwendet der Browser die GET-Methode, um die Anforderung an den Webserver zu senden.
-	\item \textbf{POST} wird benutzt, um eine neue Ressource zu erstellen. POST-Anforderungen enthalten normalerweise Daten zum Erstellen einer neuen Ressource.
-	\item \textbf{PUT} ist zum Aktualisieren einer vorhandenen Ressource. Der Inhalt kann aktualisierte Daten für die Ressource enthalten.
-	\item \textbf{DELETE} ist zum Löschen einer vorhandenen Ressource.
-\end{itemize}
-
 \section{Django Framework}
 \label{sec:theorie:about_django}
 Django ist ein Open Source-Webentwicklungsframework, das in der Python-Sprache geschrieben ist. Es wurde entwickelt, um so viele Prozesse wie möglich zu automatisieren, sodass es sich auf die Softwareentwicklung konzentriert werden können, ohne Zeit mit dem Einrichten des Servers verschwenden zu müssen. Django wurde ursprünglich so konzipiert, dass es lose Kopplung zwischen verschiedenen Teilen der Infrastruktur hat, sodass es unabhängig voneinander gearbeitet werden kann. Diese Unabhängigkeit bedeutet, dass es in der Entwicklungsprozess nur die Teile von Django verwendet werden kann, die benötigt werden, ohne sich um Probleme mit der Interdependenz von Komponenten kümmern zu müssen. Durch die Verwendung von Django wird die erforderliche Codemenge reduziert, wodurch das Schreiben von Webanwendungen schneller und die Wartung Ihrer Anwendung in Zukunft erheblich vereinfacht wird. Django folgt strikt dem DRY-Prinzip (Don't Repeat Yourself), dass jeder einzelne Code oder jede einzelne Daten an nur einem Ort gespeichert werden sollte. Dies vereinfacht und beschleunigt den Softwareänderungsprozess erheblich, da eine Anwendung, die geändert werden muss, an einem einzigen Ort ausgeführt werden muss.
@@ -169,7 +148,28 @@ Die Architektur von Django basiert auf den Ideen des The Model-View-Controller (
 	\item \textbf{Der Controller (C)} steuert den Informationsfluss zwischen dem Modell und der Ansicht. Mithilfe der programmierten Logik wird entschieden, welche Informationen über das Modell aus der Datenbank abgerufen und welche Informationen an die Ansicht übergeben werden. Es erhält auch Informationen vom Benutzer über die Ansicht und implementiert die Aufgaben der Anwendung: entweder durch Ändern der Ansicht oder durch Ändern von Daten über das Modell oder durch Ändern die beiden Elementen.
 \end{itemize}
 
-\section{Grundlagen der REST API}
+\section{HTTP für Client-Server Kommunikation}
+\label{sec:theorie:http}
+HTTP steht für Hypertext Transfer Protokoll und dient zum Verwaltung der Übermittlung eines Dokuments durch einen Webserver an einen Webbrowser. HTTP wird auch zum Übertragen von XML-Dateien, VoiceXML, WML, Streaming von Video und Audio verwendet. Es verwendet normalerweise Port 80 und as Transportschichtprotokoll - TCP. Das in RFC 1945 (HTTP 1.0 \cite{website:httprfc1945}), 2068 \cite{website:httprfc2068} und 2616 (HTTP 1.1) definierte WWW-Protokoll, mit dem HTML-Dokumente über das Internet von Knoten zu Knoten gesendet werden können. HTTP unterstützt die dauerhafte Übertragung (Übertragung mehrerer Objekte). Nicht persistente Verbindungen (Übertragung eines Webdokumentobjekts pro Sitzung zwischen Client und Server) sowie zwei Methoden zur Benutzeridentifizierung: Autorisierungs- und Cookie-Objekte (Dateien). Dies ist ein zustandsloses Protokoll, in dem keine Benutzersitzungsinformationen gespeichert werden. Jede Datenübertragung wird als neue Sitzung für die Kommunikation zwischen verteilten Informationssystemen betrachtet. 
+
+HTTP basiert auf dem Anforderungs- / Antwortparadigma: Browser (und möglicherweise auch Proxyserver) senden Nachrichten an HTTP-Server. Diese Server generieren Nachrichten, die an die Browser zurückgesendet werden. Die an HTTP-Server gesendeten Nachrichten werden als Anforderungen bezeichnet, und die von den Servern generierten Nachrichten werden als Antworten bezeichnet \cite[pp.33-34]{shklar:webapplication}. Dieses grundlegende Paar wird im nächsten Kapitel \ref{sec:theorie:api} untersucht. In der Praxis kommunizieren Server und Browser selten direkt - dazwischen befinden sich ein oder mehrere Proxys. Eine Verbindung ist als virtuelle Verbindung definiert, die aus HTTP-Agenten besteht, einschließlich des Browsers, des Servers und der am Austausch teilnehmenden Zwischenproxys (Abbildung \ref{fig:http_req} \cite[pp.33-34]{shklar:webapplication}).
+\begin{figure}
+	\centering
+	\fbox{\includegraphics[width=1\textwidth]{gfx/req_res.png}}
+	\caption{Die virtuelle Anforderungs- / Antwortschaltung}
+	\label{fig:http_req}
+\end{figure}
+
+HTTP definiert eine Reihe von Anforderungsmethoden, um die gewünschte Aktion anzugeben, die für eine bestimmte Ressource ausgeführt werden soll. Sie werden als HTTP-Verben bezeichnet.
+Diese Anforderungsmethoden sind unten aufgeführt:
+\begin{itemize}
+	\item \textbf{GET} ist die einfachste Anforderungsmethode. Wenn eine URL in Browser eingeben oder auf einen Hyperlink geklickt wird, um eine andere Seite zu besuchen, verwendet der Browser die GET-Methode, um die Anforderung an den Webserver zu senden.
+	\item \textbf{POST} wird benutzt, um eine neue Ressource zu erstellen. POST-Anforderungen enthalten normalerweise Daten zum Erstellen einer neuen Ressource.
+	\item \textbf{PUT} ist zum Aktualisieren einer vorhandenen Ressource. Der Inhalt kann aktualisierte Daten für die Ressource enthalten.
+	\item \textbf{DELETE} ist zum Löschen einer vorhandenen Ressource.
+\end{itemize}
+
+\section{Grundlagen der Client-Server-Kommunikation}
 \label{sec:theorie:api}
 In der Client-Server-Kommunikation haben wir zunächst zwei Partner: den Client und den Server. Um die Kommunikation zwischen diesen beiden Partnern zu verstehen, müssen wir einige einfache Themen kennen:
 \begin{itemize}
@@ -177,11 +177,15 @@ In der Client-Server-Kommunikation haben wir zunächst zwei Partner: den Client 
 \item \textbf{Antwort} wird vom Server an den Client gesendet und ist die Reaktion des Servers auf eine Anforderung des Clients. 
 \end{itemize}
 
-Die ankommenden Anforderungen muss vom Server interpretiert und weitergeleitet werden. Während dieses Schritts übernimmt der Webserver die Verantwortung für Bestimmung, welche Maßnahmen zur Verarbeitung der Anforderung erforderlich sind. Diese Aktion kann das einfache Abrufen einer statischen HTML-Datei oder der Zugruf zur Datenbank sein. Das kann komplexe Funktionen ausführen, die mit einer vollständigen Webanwendung verbunden sind \cite[p.205]{shklar:webapplication}.
+Die ankommenden Anforderungen muss vom Server interpretiert und weitergeleitet werden. Während dieses Schritts übernimmt der Webserver die Verantwortung für Bestimmung, welche Maßnahmen zur Verarbeitung der Anforderung erforderlich sind. Diese Aktion kann das einfache Abrufen einer statischen HTML-Datei oder der Zugruf zur Datenbank sein. Das kann komplexe Funktionen ausführen, die mit einer vollständigen Webanwendung verbunden sind \cite[p.204]{shklar:webapplication}. Wenn ein Benutzer versucht, auf eine Webanwendung zuzugreifen, sendet der Browser zuerst eine HTTP-Anforderung an einen Webserver. Die mit der Anforderung verknüpften Informationen (häufig als Anforderungskontext bezeichnet) umfasst die weitere Informationen, die in der URL, dem Anforderungsheadern und dem Nachrichtentext enthalten sind. Es enthält auch Sitzungsinformationen, die den Anwendungsstatus über aufeinanderfolgende Anforderungen hinweg beibehalten \cite[p.205]{shklar:webapplication}.
+
+Die Client-Server-Kommunikation ist zustandslos. Dies bedeutet, dass sich der Server keine Informationen über den Status des Clients merken muss, während der Client alle Informationen in seine Anforderung aufnehmen muss.
+
+Das REST- oder RESTful-API-Design (Representational State Transfer) nutzt vorhandene Protokolle. Während REST über nahezu jedes Protokoll verwendet werden kann, nutzt es normalerweise HTTP, wenn es für Web-APIs verwendet wird \cite{website:rest}. REST ist eine Client-Server-Architektur. Der Server speichert und / oder bearbeitet Informationen und stellt sie dem Benutzer auf effiziente Weise zur Verfügung. Der Client nimmt diese Informationen und zeigt sie dem Benutzer an und / oder verwendet sie, um nachfolgende Informationsanforderungen auszuführen. Diese Trennung von Funktionsweise ermöglicht es sowohl dem Client als auch dem Server, sich unabhängig voneinander zu existieren und entwickelt werden, da nur die Schnittstelle gleich bleiben muss  \cite{website:rest2}. In einem REST-API-Aufruf werden eine Teilmenge der HTTP-Methoden für die Aktionen verwendet, die wir ausführen müssen. Diese Methoden wurden oben im Kapitel \ref{sec:theorie:http} schon erklärt. REST-APIs geben normalerweise die von Benutzter angeforderten Daten im JSON-Format zurück. Eine JSON-Payload ist eigentlich eine String (Zeichenfolge) . Bevor die Daten tatsächlich verwendet werden können, müssen diese Zeichenfolge analysiert und in Objekte umgewandelt werden. Die Funktionsweise das REST-APIs von acaLoan-System sind in Kapitel \ref{sec:display_client:protokoll} nachzulesen.
 
 \section{Clientseitiges JavaScript}
 \label{sec:theorie:js}
-
+Client Side JavaScript (CSJS) ermöglicht die Verbesserung und Bearbeitung von Webseiten. In einer Browserumgebung hat Ihr Code Zugriff auf Dinge, die nur vom Browser bereitgestellt werden, wie das Dokumentobjekt für die aktuelle Seite, das Fenster, Funktionen wie Warnungen, die eine Nachricht anzeigen usw. Die Hauptaufgaben von clientseitigem JavaScript sind die Validierung Eingabe, Animation, Bearbeiten von UI-Elementen, Anwenden von Stilen und einige Berechnungen werden durchgeführt, wenn die Seite nicht so oft aktualisiert werden soll. Bei der Webentwicklung ist es der Browser auf dem Computer des Benutzers, der diesen Code ausführt und hauptsächlich in Javascript ausgeführt wird. Außerdem muss dieser Code in einer Vielzahl von Browsern ausgeführt werden.
 Konzeptionell lässt der Client den Javascript-Code bestimmte Inhalte der angezeigten Webseite ändern
 Ereignisse wie:
 1. Benutzerinteraktion mit HTML-Seitenelementen, d. H. Klicken auf ein beliebiges Element oder eine Schaltfläche.
