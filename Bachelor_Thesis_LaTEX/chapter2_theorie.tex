@@ -175,6 +175,13 @@ Die Architektur von Django basiert auf den Ideen des The Model-View-Controller (
 \section{Clientseitiges JavaScript}
 \label{sec:theorie:js}
 
+Konzeptionell lässt der Client den Javascript-Code bestimmte Inhalte der angezeigten Webseite ändern
+Ereignisse wie:
+1. Benutzerinteraktion mit HTML-Seitenelementen, d. H. Klicken auf ein beliebiges Element oder eine Schaltfläche.
+2. Ereignisaktualisierungen, die über das Netzwerk vom Anwendungsserver empfangen wurden.
+
+Bei dieser Implementierung wird davon ausgegangen, dass der Chrome-Browser als Rendering-Frontend verwendet wird, dies ist jedoch nicht streng
+Anforderung und der Client sollte nahtlos mit anderen modernen Browsern arbeiten.
 
 
 
