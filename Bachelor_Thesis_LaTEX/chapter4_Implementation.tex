@@ -416,7 +416,16 @@ Ein solcher Ansatz ermöglicht die Nutzung moderner visueller Rendering-Engines 
 
 subsection{Die Funktionsweise}
 \label{sec:display_client:funkt}
-Bevor der Client verwendet werden kann, muss eine spezielle URL geöffnet werden. Diese URL wird vom acaLoan-Server bereitgestellt, der liefert dem Browser sowohl eine HTML-Seite und CSS-Stylesheets zur Anzeige visueller Elemente als auch Javascript-Code zur Ausführung. Wenn der Browser die HTML-Seite lädt, werden eingehende Daten analysiert und zusammen mit dem Rendern für einen Benutzer wird eine interne Darstellung aller auf einer Seite vorhandenen Elemente in eine baumartige Struktur namens Document Object Model.
+Bevor der Client verwendet werden kann, muss eine spezielle URL geöffnet werden. Diese URL wird vom acaLoan-Server bereitgestellt, der liefert dem Browser sowohl eine HTML-Seite und CSS-Stylesheets zur Anzeige visueller Elemente als auch Javascript-Code zur Ausführung. Wenn der Browser die HTML-Seite lädt, werden eingehende Daten abgelesen und zusammen mit dem Rendern für einen Benutzer wird eine interne Darstellung aller auf einer Seite vorhandenen Elemente in eine baumartige Struktur namens Document Object Model. Mithilfe einer Reihe von Programmierschnittstellen, die von einem Browser bereitgestellt werden, können Attribute von DOM-Objekten oder die Struktur von DOM geändert werden. Jede Änderung am DOM, sowohl das Hinzufügen, Entfernen oder Reorganisieren von Elementen als auch das Ändern des Inhalts oder des Attributwerts des Tags, kommt sofort zur Wirkung.
+
+Unter anderem bietet der Browser die Möglichkeit, eine asynchrone HTTP-Anforderung an einen Remote-Webserver auszuführen. In diesem Fall bedeutet asynchron, dass die Benutzerinteraktion mit der Webseite für die Zeit, in der die Anforderung ausgeführt wird, nicht blockiert wird. Die Standard-API-Schnittstelle für solche Vorgänge heißt XMLHttpRequest. Diese Programmierschnittstellen werden vom Browser über eine Javascript-Codeausführung verfügbar gemacht. Der Entwickler kann ein Javascript-Programm erstellen, das mit externen Diensten kommunizieren und  DOM-Elemente aktualisieren darf, um Änderungen anzuzeigen.
+
+Die Kombination dieser Funktionen dient als Grundlage für die Erstellung eines interaktiven Client-Flows:
+\begin{enumerate}
+	\item Die Clientanwendung stellt eine Kommunikation mit einem Server her und empfängt Aktualisierungen über den aktuellen Status einer Benutzerinteraktion
+	\item Wenn der Server mit dem aktuellen Status antwortet, kann er mit einem derzeit bekannten Anwendungsstatus eines Clients verglichen werden, und bei Bedarf können Änderungen am DOM vorgenommen werden.
+	\item Da HTTP-Anforderungen für einen Benutzer transparent sind und Änderungen am DOM sofort sichtbar sind, entsteht eine echte interaktive Erfahrung.
+\end{enumerate}
 
 \subsection{Clientseitiges JavaScript}
 \label{sec:display_client:js}
