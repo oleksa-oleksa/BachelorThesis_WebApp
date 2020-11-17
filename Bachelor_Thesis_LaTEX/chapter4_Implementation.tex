@@ -459,8 +459,81 @@ Wenn keine aktive Sitzung vorhanden ist, treten folgende Ereignisse auf:
 \end{figure}
 \end{enumerate}
 
-\subsection{Interaktive Benutzersitzung}
+\subsection{Interaktive Benutzersitzung mit JavaScript}
 \label{sec:display_client:session}
+Nachdem die Benutzersitzung gestartet ist. dient die folgenden Bedingungen:
+\begin{itemize}
+	\item Der Sitzungsstatus wird auf dem Server geändert
+	\item Der Benutzer interagiert mit einem Elemente der angezeigten Webseite
+\end{itemize}
+Da das HTTP-Protokoll keine bidirektionale Kommunikation bietet und die Möglichkeiten des Servers, Daten proaktiv an einen Client zu übertragen, sehr begrenzt sind, muss regelmäßig nach einer Änderung des Sitzungsstatus gefragt werden. Um dies zu erreichen, legt der Javascript-Code eine regelmäßige Aktualisierung des Sitzungsstatus fest durch Registrieren eines Timer-Ereignisses mit dem Aufrufen einer setInterval() -Funktion. 
+\begin{lstlisting}[caption={function session\_started()},captionpos=b]
+function session_started(body) {
+	console.log("Started session with id " + body.id)
+	active_session_id = body.id
+	session_refresh_timer = setInterval(refresh_session_state, 1000)}
+\end{lstlisting}
+Mit $jQuery.ajax( url [, settings ] )$ wird eine asynchrone HTTP-Anforderung (Ajax) ausgeführt. 
+\begin{lstlisting}[caption={Function refresh\_session\_state()},captionpos=b]
+function refresh_session_state() {
+	$.ajax({url: "api/sessions/"+active_session_id, method: "GET"})
+	.done(handle_session_event)
+	.fail(function() {
+		clearInterval(session_refresh_timer)
+		alert("Timeout/Canceled. Please start again!")
+		window.location.replace("/loan")
+		})}
+\end{lstlisting}
+
+Die Funktion $handle\_session\_event$ wird nach erfolgreichem Abschluss einer Ajax-Anforderung ausgerufen und hat die folgenden Funktionsweise:
+\begin{itemize}
+	\item Die Funktion verwendet die XMLHttpRequest() nach Browser-API, um eine asynchrone HTTP-Anforderung an den Server zu senden
+	\item Die asynchrone HTTP-Anforderung wird so eingerichtet, dass eine vom Benutzer bereitgestellte Funktion aufgerufen wird, wenn der Server eine erfolgreiche Antwort liefert.
+	\item Basierend auf dem Inhalt der Antwort wird der Status des DOM angepasst, um den Sitzungsstatus widerzuspiegeln und den Benutzer über die erforderlichen Aktionen zu informieren. Die Fehlermeldungen werden auch von dieser Funktion über Status des DOM angepasst, z.B. in folgenden Quellcode wird es die Fehlermeldung gegeben über Verbot einen Board nach Hause auszuleihen:
+	\begin{lstlisting}[caption={Änderung des DOM im Fall des Verbot der Home-Ausleihe},captionpos=b]
+	if (body.state == "home_loan_disabled") {
+		$("#student_name").text("You can not loan board to work a home")
+		$("#operation_info").text("Home loan is disabled. Ask teaching assistant or administrator for a help")
+		$("#warning_picture").show()
+		decorate_terminate_state(body)}
+	\end{lstlisting}
+	\item Der neue Sitzungsstatus wird im Client zur späteren Bezugnahme gespeichert.
+\end{itemize}
+
+\subsection{Client-Server-Kommunikationsprotokoll}
+\label{sec:display_client:protokoll}
+Beim regelmäßigen Abrufen von Sitzungsaktualisierungen vom Server erwartet der Client, dass der Server mit JSON-Nachrichten antwortet. Die Clientanwendung analysiert diese Nachrichten und vergleicht sie mit dem vorherigen bekannten Status.
+\begin{lstlisting}[caption={Sitzungsaktualisierungen mit JSON},captionpos=b]
+if input_type not in ["card", "tag", "cancel_button", "terminate_button", "get_rfid_status",
+"return_scanned_board_button", "loan_scanned_board_button", "finish_button"]:
+	return HttpResponseBadRequest()
+...
+elif input_type == "cancel_button":
+	session.session_canceled()
+elif input_type == "finish_button":
+	session.session_finished()
+elif input_type == "get_rfid_status":
+	session.get_rfid_status()
+elif input_type == "return_scanned_board_button":
+	session.loaned_board_returned()
+elif input_type == "loan_scanned_board_button":
+	session.loan_active_board()
+elif input_type == "terminate_button":
+	session.session_terminated()
+\end{lstlisting}
+Einem Client bekannten Status wird dem im Kapitels \ref{sec:design:fsm} und \ref{sec:server:fsm:fsm} FSM-Kapitel beschriebenen Sitzungsstatus zugeordnet. Beispielweise in dem Anwendungsfall "Ausleihe des Home-Loan Boards" (Kapitel \ref{sec:design:use_cases:home_loan})  gibt es einen Übergang aus dem Zustand $rfid\_state\_active$
+
+\begin{lstlisting}[caption={Sitzungsaktualisierungen mit JSON},captionpos=b]
+@transition(field=state, source='rfid_state_active', target=RETURN_VALUE('loaned', 'home_loan_disabled', 'error',
+'maximum_boards_reached', 'same_bord_type'))
+def loan_active_board(self):
+result = self.board_loaned()
+if result == 'loaned':
+# After the new Action in DB was created with board_returned()
+# # the board_status will be set to Active again
+Board.loan_board(self.raspi_tag)
+return result
+\end{lstlisting}
 
 \subsection{Clientseitiges JavaScript}
 \label{sec:display_client:js}
