@@ -338,7 +338,7 @@ class Session(models.Model):
 	def loaned_board_returned(self):
 		if self.board_returned():
 			# After the new Action in DB was created with board_returned()
-			# # the board_status will be set to Active again
+			# the board_status will be set to Active again
 			Board.return_board(self.raspi_tag)
 			return 'returned'
 		else:
@@ -349,8 +349,8 @@ class Session(models.Model):
 	def loan_active_board(self):
 		result = self.board_loaned()
 		if result == 'loaned':
-			# After the new Action in DB was created with board_returned()
-			# # the board_status will be set to Active again
+			# After the new Action in DB was created with board_loaned()
+			# the board_status will be set to Loaned
 			Board.loan_board(self.raspi_tag)
 		return result
 
