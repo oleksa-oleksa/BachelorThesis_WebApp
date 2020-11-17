@@ -448,7 +448,7 @@ Wenn keine aktive Sitzung vorhanden ist, treten folgende Ereignisse auf:
 	"POST /loan/api/sessions HTTP/1.1" 201 120
 	"GET /loan/api/sessions/17 HTTP/1.1" 201 216
 	\end{lstlisting}
-\item Der Server antwortet mit dem HTTP-Statuscode 201 und liefert dem Browser das grundlegende Layout der Sitzungsinteraktionsseite. In der Code oben wurden die neue Benutzersitzung mit der Nummer 17 erstellt.
+\item Der Server antwortet mit dem HTTP-Statuscode 201 und liefert dem Browser das grundlegende Layout der Sitzungsinteraktionsseite. In der Beispiel oben wurden die neue Benutzersitzung mit der Nummer 17 erstellt.
 \item Der Browser verarbeitet die HTML-Seite und lädt zusätzliche statische Elemente wie CSS-Stylesheets und JavaScript-Code vom Server.
 \item Die HTML-Seite wird generiert, JS-Code wird ausgeführt. Die interaktive Sitzung hat begonnen. Die ist auf der Abbildung \ref{fig:web01} angezeigt. In dem Zustand der FSM $session\_started$ wird zuerst keine Information gegeben, wer der Studierende ist und mit welchem Board gearbeitet ist. Die Webseite zeigt dem Studierende nur die Hinweise, die ihn das Prozess der Ausleihe-/Rückgabe erleuchten können. 
 \begin{figure}[h!]
@@ -473,7 +473,8 @@ function session_started(body) {
 	active_session_id = body.id
 	session_refresh_timer = setInterval(refresh_session_state, 1000)}
 \end{lstlisting}
-Mit $jQuery.ajax( url [, settings ] )$ wird eine asynchrone HTTP-Anforderung (Ajax) ausgeführt. 
+Die Entwicklung mit einfachen Javascript-APIs ist umständlich und fehleranfällig. Um die Codebasis zu vereinfachen und später zu machen Unterstützung und Änderungen einfacher, eine Reihe von Frameworks wurden erstellt. Ziel eines solchen Frameworks ist es, Entwickler von zu isolieren
+interne Komplexität von reinen JS-APIs und bieten browserübergreifende Kompatibilität, wenn verschiedene Browser implementiert werden bestimmte API auf andere Weise. Dieses Projekt wurde mit einer plattformübergreifenden Javascript-Bibliothek namens jQuery erstellt. In Quellcode unten wird mit $jQuery.ajax( url [, settings ] )$ eine asynchrone HTTP-Anforderung (Ajax) ausgeführt. 
 \begin{lstlisting}[caption={Function refresh\_session\_state()},captionpos=b]
 function refresh_session_state() {
 	$.ajax({url: "api/sessions/"+active_session_id, method: "GET"})
@@ -543,9 +544,6 @@ def loan_board(raspi_tag):
 	Board.objects.filter(raspi_tag=raspi_tag).update(board_status=BoardStatus.LOANED)
 \end{lstlisting}
 Die endliche Zustandsmaschine in einen Zustand $loaned$ gewechselt. Dann wird es mit der nächsten regelmäßigen Abrufen von Sitzungsaktualisierungen wieder den Status der DOM angepasst, um eine erfolgreiche finale Zustand zu stylen. So werden mittels JavaScript die Tasten "Loan Board" und "Cancel" Tasten verborgen und die neue Taste "Finish" angezeigt, beim deren Drucken wird FSM in einem Endzustand gewechselt. Somit wird der Benutzersitzung beendet, da der Zustand "finished" ein von mehreren Endzustände ist, mit denen FSM beenden darf und somit die neue Sitzung angefangen werden darf.   
-
-\subsection{jQuery}
-\label{sec:display_client:jquery}
 
 \section{Automatisierten Tests}
 \label{sec:testing}
