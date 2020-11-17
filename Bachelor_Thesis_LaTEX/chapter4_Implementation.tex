@@ -406,9 +406,29 @@ Nach jeder Änderung des Zustands wird über HTTP-Protokoll vom Server die Nachr
 
 \section{Display-Client}
 \label{sec:display_client}
+Display-Client ist der dritte Bestandsteil und wird implementiert als interaktive Webseite, die einem Benutzer im in das Vollbildmodus geöffneten Webbrowser angezeigt wird. Die Client-Anwendung besteht aus zwei Teilen: 
+\begin{itemize}
+	\item Visuelle Darstellung eines Status einer Benutzersitzung mit in HTML beschriebenen Strukturelementen der Benutzeroberfläche mit der Verwendung eines visuelles Styling durch hinzugefügten CSS.
+	\item Javascript-Code, der von einem Browser geladen und ausgeführt wird, um eine dynamische Interaktion mit dem System zu ermöglichen
+\end{itemize}
+Ein solcher Ansatz ermöglicht die Nutzung moderner visueller Rendering-Engines und trägt zur Erreichung der Plattformunabhängigkeit bei. 
+
+
+subsection{Die Funktionsweise}
+\label{sec:display_client:funkt}
+Bevor der Client verwendet werden kann, muss eine spezielle URL geöffnet werden. Diese URL wird vom acaLoan-Server bereitgestellt, der liefert dem Browser sowohl eine HTML-Seite und CSS-Stylesheets zur Anzeige visueller Elemente als auch Javascript-Code zur Ausführung. Wenn der Browser die HTML-Seite lädt, werden eingehende Daten analysiert und zusammen mit dem Rendern für einen Benutzer wird eine interne Darstellung aller auf einer Seite vorhandenen Elemente in eine baumartige Struktur namens Document Object Model.
 
 \subsection{Clientseitiges JavaScript}
 \label{sec:display_client:js}
+Konzeptionell lässt der Client den Javascript-Code bestimmte Inhalte der angezeigten Webseite ändern
+Ereignisse wie:
+1. Benutzerinteraktion mit HTML-Seitenelementen, d. H. Klicken auf ein beliebiges Element oder eine Schaltfläche.
+2. Ereignisaktualisierungen, die über das Netzwerk vom Anwendungsserver empfangen wurden.
+
+Bei dieser Implementierung wird davon ausgegangen, dass der Chrome-Browser als Rendering-Frontend verwendet wird, dies ist jedoch nicht streng
+Anforderung und der Client sollte nahtlos mit anderen modernen Browsern arbeiten.
+
+
 
 
 \section{Automatisierten Tests}
