@@ -427,6 +427,41 @@ Die Kombination dieser Funktionen dient als Grundlage für die Erstellung eines 
 	\item Da HTTP-Anforderungen für einen Benutzer transparent sind und Änderungen am DOM sofort sichtbar sind, entsteht eine echte interaktive Erfahrung.
 \end{enumerate}
 
+\subsection{Start Webseite des acaLoan-Projekts}
+\label{sec:display_client:start}
+\begin{figure}[h!]
+	\centering
+	\fbox{\includegraphics[width=1\textwidth]{gfx/start.png}}
+	\caption{Start Webseite des acaLoan-Projekts}
+	\label{fig:start_page}
+\end{figure}
+Zunächst wird dem Benutzer eine Zielseite angezeigt. Diese Seite verfügt über eine HTML-Taste (siehe Abbildung \ref{fig:start_page}), die der Studierende drucken muss, um eine neue Benutzersitzung anzufangen. Durch Klicken auf diese Taste "Loan / Return Board" wird eine synchrone HTTP-POST-Anforderung an einen Server gesendet, der die Erstellung einer neuen interaktive Benutzersitzung anfordert. Im Fehlerfall antwortet der Server mit einem Fehler-HTTP-Statuscode und der Browser zeigt eine Fehlermeldung an.
+\begin{lstlisting}[caption={[Fehler-HTTP-Statuscode] },captionpos=b]
+Forbidden: /loan/api/sessions
+"POST /loan/api/sessions HTTP/1.1" 403 47
+\end{lstlisting}
+Wenn keine aktive Sitzung vorhanden ist, treten folgende Ereignisse auf:
+\begin{enumerate}
+	\item Der Server erstellt eine neue Benutzersitzung
+	\begin{lstlisting}[caption={[HTTP-Statuscodes für die neue Sitzung] },captionpos=b]
+	"GET /loan/start HTTP/1.1" 200 5423
+	"POST /loan/api/sessions HTTP/1.1" 201 120
+	"GET /loan/api/sessions/17 HTTP/1.1" 201 216
+	\end{lstlisting}
+\item Der Server antwortet mit dem HTTP-Statuscode 201 und liefert dem Browser das grundlegende Layout der Sitzungsinteraktionsseite. In der Code oben wurden die neue Benutzersitzung mit der Nummer 17 erstellt.
+\item Der Browser verarbeitet die HTML-Seite und lädt zusätzliche statische Elemente wie CSS-Stylesheets und JavaScript-Code vom Server.
+\item Die HTML-Seite wird generiert, JS-Code wird ausgeführt. Die interaktive Sitzung hat begonnen. Die ist auf der Abbildung \ref{fig:web01} angezeigt. In dem Zustand der FSM $session\_started$ wird zuerst keine Information gegeben, wer der Studierende ist und mit welchem Board gearbeitet ist. Die Webseite zeigt dem Studierende nur die Hinweise, die ihn das Prozess der Ausleihe-/Rückgabe erleuchten können. 
+\begin{figure}[h!]
+	\centering
+	\fbox{\includegraphics[width=1\textwidth]{gfx/web01.png}}
+	\caption{Webseite für eine neue Benutzersitzung mit dem Console-Log}
+	\label{fig:web01}
+\end{figure}
+\end{enumerate}
+
+\subsection{Interaktive Benutzersitzung}
+\label{sec:display_client:session}
+
 \subsection{Clientseitiges JavaScript}
 \label{sec:display_client:js}
 Konzeptionell lässt der Client den Javascript-Code bestimmte Inhalte der angezeigten Webseite ändern
