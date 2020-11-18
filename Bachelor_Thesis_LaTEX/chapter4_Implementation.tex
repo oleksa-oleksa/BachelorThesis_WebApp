@@ -554,7 +554,64 @@ def loan_board(raspi_tag):
 
 Die endliche Zustandsmaschine in einen Zustand $loaned$ gewechselt. Dann wird es mit der nächsten regelmäßigen Abrufen von Sitzungsaktualisierungen wieder den Status der DOM angepasst, um eine erfolgreiche finale Zustand zu stylen. So werden mittels JavaScript die Tasten "Loan Board" und "Cancel" Tasten verborgen und die neue Taste "Finish" angezeigt, beim deren Drucken wird FSM in einem Endzustand gewechselt. Somit wird der Benutzersitzung beendet, da der Zustand "finished" ein von mehreren Endzustände ist, mit denen FSM beenden darf und somit die neue Sitzung angefangen werden darf. Den Display-Client mit einer Webseite nach dem erfolgreichen Ausleihe eines Boards ist auf der Abbildung \ref{fig:fsmend} gezeigt.
 
-
-
 \section{Automatisierten Tests}
 \label{sec:testing}
+Django bietet ein Testframework mit einer kleinen Hierarchie von Klassen, die auf der unittest-Python-Standardbibliothek aufbauen. Trotz des Namens eignet sich dieses Testframework sowohl für Unit- als auch für Integrationstests. Das Django-Framework fügt API-Methoden und -Tools hinzu, mit denen das Web- und Django-spezifische Verhalten getestet werden kann. Mit diesen können Sie Anforderungen simulieren, Testdaten einfügen und die Ausgabe Ihrer Anwendung überprüfen \cite{website:djangoTest}.
+
+Für Testing muss eine Datenbank mit Datensätzen gefühlt werden. In dem Fall des acaLoan-Project bedeuted es, sowohl notwendige UIDs der Studentenkarten als auch die Namen, Vornamen und sogar Matrikelnummern sollen bei jedem Testen erzeugt werden. Das gilt auch für die UIDs des Boards mit den verschiedenen Status und Typen. Alle Zustände die endliche Zustandsmaschine sollen auch getestet werden, dafür muss nicht nur FSM in einem Zustand gesetzt wird sondern auch die notwendigen Datensätze in der Tabelle "Aktion" und "Session" vorbereiter werden. Jedes Mal es manuell wiederholen wäre zu aufwändig. Deshalb wirden die $factory\_boy-Bibliothek$ (nach dem Vorbild von Factory Girl in Rails) benutzt, um die Daten für Tests zu generieren. In Django wurden Daten für Tests als Fixtures bezeichnet, die aus Dateien im Code geladen wurden. Beispielweise in dem Quellcode wird so viel wie notwendig "korrekten" UID generiert (sie sind nur aus der Datensicht korrekt, da sie nicht von offiziellen Herstellen gegeben wurden und sind somit nicht einzigartig)
+
+\begin{lstlisting}[caption={Factory für UIDs},captionpos=b]
+class FuzzyUid(factory.fuzzy.BaseFuzzyAttribute):
+	def __init__(self, length):
+		self.length = length
+		super().__init__()
+		
+	def _segment(self):
+		x = randgen.randint(0, 255)
+		return "{:02X}".format(x)
+	
+	def fuzz(self):
+		return ' '.join([self._segment() for _ in range(self.length)])
+\end{lstlisting}
+
+Da eine Studentenkarte muss aus 7 Segmenten bestehen und ein RFID-Tag aus nur 4 Segmenten, ist der Rest der Struktur gleich und die FuzzyUid-Klass kann für die Generierung sowohl UIDs der Studentenkarten als auch RFID-Tags verwendet werden: es wird nur den Parameter $lenght$ angepasst.
+
+\begin{lstlisting}[caption={StudentCardFactory},captionpos=b]
+class StudentCardFactory(DjangoModelFactory):
+	class Meta:
+		model = StudentCard
+	atr_hex = ATRCardType.STUDENT_CARD_ATR
+	uid = FuzzyUid(length=7)  
+\end{lstlisting}
+$Factory\_boy$ verwendet $Fake\-Factory (Faker)$, um zufällige Werte zu generieren. Das ist besonders nützlich für die Generierung von Namen, Vornamen, Adressen, IP4-Adressen und andren Sätzen, die in realen Datenbanken verwendet werden können. Benutzung der $Locale de\_DE$ zulässt die deutschen Namen und Städten zu generieren. Im Beispiel unten werden "die Studierende" generiert, für denen die Matrikelnummern und HRZ-Nummern werden als zufälligen Werten in Rahmen vordefinierten Bereich ausgewählt.   
+\begin{lstlisting}[caption={StudentFactory},captionpos=b]
+class StudentFactory(DjangoModelFactory):
+	class Meta:
+		model = Student
+	student_card = factory.SubFactory(StudentCardFactory)
+	first_name = factory.Faker('first_name')
+	second_name = factory.Faker('last_name')
+	matricul_no = factory.Faker('random_int', min=850000, max=950000)
+	hrz_no = factory.Faker('random_int', min=65000, max=69000)
+	group = StudentGroup.A_GROUP
+	is_home_loan_enabled = True
+\end{lstlisting}
+
+Während der mehreren Ausführungen der Tests es hat sich ein paar Mal Fehler aufgetreten: von Factory mehr als ein Student mit der gleichen Matrikelnummer generiert wurde. In Django Model "Student" ist das Feld $matricul\_no$ mit $unique=True$ markiert. Die Tests müssen einfach erneut geladen werden, dann tritt höchstwahrscheinlich der Fehler nicht wieder auf. 
+
+Der Django-Test ist eine Funktion, die mit einem vorbereiteten Inhalt die Änderungen in der Datenbank macht und dann vergleicht das Ergebnis mit einem erwarteten Zustand. Sodass prüft folgende Funktion, ob einem Studierende, der von Factory erzeugt wurde und dem den Flag $home\_loan\_enabled$ nicht gesetzt wurde, eine Home-Ausleihe gelingen kann: 
+\begin{lstlisting}[caption={Test für einen Student},captionpos=b]
+def test_home_loan_disabled(self):
+	session = Session.objects.create(state='rfid_state_active', student_card=self.student_home_disabled.student_card,
+	raspi_tag=self.home_board_active.raspi_tag)
+	self.assertEqual(session.board_loaned(), 'home_loan_disabled')
+\end{lstlisting}
+
+\begin{figure}[h!]
+	\centering
+	\fbox{\includegraphics[width=0.8\textwidth]{gfx/test.png}}
+	\caption{Terminal nach der Ausführung aller Tests}
+	\label{fig:test}
+\end{figure}
+
+Sodass wurde die REST API, die endliche Zustandsmaschine und alle Anwendungsfälle des acaLoan-Systems fehlerfrei getestet. Insgesamt 98 Testfunktionen wurden geschrieben und ausgeführt. 
