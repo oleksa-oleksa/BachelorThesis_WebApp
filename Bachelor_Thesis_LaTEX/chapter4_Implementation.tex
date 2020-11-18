@@ -279,36 +279,14 @@ def index(request):
 	context = {"loans": loans}
 	return render(request, template_name, context)
 \end{lstlisting}
-Hier will ich besonders zeigen, dass in intelligente HTML-Seite die die Variablen anstelle bestimmter Werte verwendet werden kann, um in $index.html$ die verfügbare zur Home-Ausleihe Boards dem Studierende anzuzeigen zu können. Hier werden die verfügbare im Labor Home-Boards und die Boards, deren Rückgabefrist ist immer noch nicht versäumt, aus der Datenbank zugreifen und als Python-Wörterbuch mit Variablennamen der HTML-Vorlage zum rendern übergeben (Abbildung \ref{fig:loaned}). In der Vorlage namens "start" wird den Zustand der Sitzung angezeigt, den wird vom Server über die REST API Kommunikationsschnittstelle dem Display-Client geschickt, die regelmäß abgerufen werden muss. Die Sitzungsaktualisierungen werden in der events-Ansicht behandelt. Zuerst wird es überprüft, ob angekommenen JSON-Datei eine erwartete von dem Server Nachricht erhält. 
+Hier ist er zu erwähnen, dass in intelligente HTML-Seite die die Variablen anstelle bestimmter Werte verwendet werden kann, um in $index.html$ die verfügbare zur Home-Ausleihe Boards dem Studierende anzuzeigen zu können. Hier werden die verfügbare im Labor Home-Boards und die Boards, deren Rückgabefrist ist immer noch nicht versäumt, aus der Datenbank zugreifen und als Python-Wörterbuch mit Variablennamen der HTML-Vorlage zum rendern übergeben (Abbildung \ref{fig:loaned}). In der Vorlage namens "start" wird den Zustand der Sitzung angezeigt, den wird vom Server über die REST API Kommunikationsschnittstelle dem Display-Client geschickt, die regelmäß abgerufen werden muss. Die Sitzungsaktualisierungen werden in der events-Ansicht behandelt. 
 
-\begin{lstlisting}[caption={Events-Ansicht in Django, JSON-Parsing},captionpos=b]
-    if request.method != "POST":
-		return HttpResponseNotFound()
-	...
-	try:
-		body = json.loads(request.body)
-		input_type = body['type']
-	except (KeyError, json.JSONDecodeError):
-		return HttpResponseBadRequest()	
-	if input_type not in ["card", "tag", "cancel_button", "terminate_button", "get_rfid_status",
-	"return_scanned_board_button", "loan_scanned_board_button", "finish_button"]:
-		return HttpResponseBadRequest()
-\end{lstlisting}
-Falls die JSON-Datei korrekt ist, wird ihre Inhalt für die Übergang der endlichen Zustandsmaschine verwendet. Es wird detaillierter im Kapitel "Endliche Zustandsmaschine mit Django FSM" erklärt.
-\begin{lstlisting}[caption={Events-Ansicht in Django, Aufur von FSM Transitions},captionpos=b]
-if input_type == "card":
-try:
-	uid = body['uid']
-	session.student_card_inserted(uid)
-except StudentCard.DoesNotExist:
-	pass
-elif input_type == "tag":
-	uid = body['uid']
-	session.rfid_inserted(uid)
-elif input_type == "cancel_button":
-	session.session_canceled()
-...
-\end{lstlisting}
+\begin{figure}[hb!]
+	\centering
+	\fbox{\includegraphics[width=1\textwidth]{gfx/loaned.png}}
+	\caption{Teil der Index-Seite: dynamische generierte Tabelle mit verfügbaren im Labor Home-Loan Boards}
+	\label{fig:loaned}
+\end{figure}
 
 \subsubsection{Django HTML-Vorlage}
 \label{sec:server:design:templates}
@@ -330,13 +308,6 @@ Als es im Kapitel oben schon erwähnt wurde, wird von einer Django-Ansicht ein K
 		{% endif %}
 ...
 \end{lstlisting}
-
-\begin{figure}
-	\centering
-	\fbox{\includegraphics[width=1\textwidth]{gfx/loaned.png}}
-	\caption{Teil der Index-Seite: dynamische generierte Tabelle mit verfügbaren im Labor Home-Loan Boards}
-	\label{fig:loaned}
-\end{figure}
 
 \subsection{Implementierung des Anwendungsfällen}
 \label{sec:server:fsm}
@@ -360,7 +331,7 @@ Ein Sequenzdiagramm beschreibt, wie und in welcher Reihenfolge die Objekte in ei
 	\caption{Django FSM mit Zustände und Übergänge}
 	\label{fig:django_fsm_trans}
 \end{figure}
-Die endliche Zustandsmaschine wird mit Django FSM realisiert (auf der Abbildung \ref{fig:django_fsm_trans}). FSMField des Session Modells wird für eine automatisierte Verwaltung des Zustands der FSM verwendet. Modellmethoden werden mit dem Übergangsdekorateur markiert, sodass wird die Änderung des Zustands gemacht. Der FSM wird auf dem Zustand $session\_started"$ gestartet. Vor der Erstellung einer neuen Sitzung, wird zuerst die Felder des Modells mit der Ausführen der Funktion "clean" validiert. Falls die eine aktive Sitzung schon existiert, wird ein ValidationError ausgelöst:
+Die endliche Zustandsmaschine wird mit Django FSM realisiert (auf der Abbildung \ref{fig:django_fsm_trans}). FSMField des Session Modells wird für eine automatisierte Verwaltung des Zustands der FSM verwendet. Modellmethoden werden mit dem Übergangsdekorateur markiert, um die Änderung des Zustands zu ermöglichen. Der FSM wird im Zustand $session\_started"$ gestartet. Vor der Erstellung einer neuen Sitzung, wird zuerst die Felder des Modells mit der Ausführen der Funktion "clean" validiert. Falls die eine aktive Sitzung schon existiert, wird ein ValidationError ausgelöst:
 
 \begin{lstlisting}[caption={Session clean() für die Validation des Modells},captionpos=b]
 def clean(self):
@@ -369,6 +340,39 @@ def clean(self):
 		raise ValidationError('Active session already exists!')
 	super().clean()
 \end{lstlisting}
+
+Der nächsten erwarteten Schritt ist das Ablesen der Studentenkarte am Register-Client mit angeschlossenen RFID-Leser. Von Register-Clien am Endpunkte der REST API wird auf eine JSON-Datei erwartet, die zuerst von FSM überprüft wird, ob sie eine erwartete von dem Server Nachricht erhält. 
+
+\begin{lstlisting}[caption={Events-Ansicht in Django, JSON-Parsing},captionpos=b]
+if request.method != "POST":
+	return HttpResponseNotFound()
+...
+try:
+	body = json.loads(request.body)
+	input_type = body['type']
+except (KeyError, json.JSONDecodeError):
+	return HttpResponseBadRequest()	
+if input_type not in ["card", "tag", "cancel_button", "terminate_button", "get_rfid_status",
+"return_scanned_board_button", "loan_scanned_board_button", "finish_button"]:
+	return HttpResponseBadRequest()
+\end{lstlisting}
+Falls die JSON-Datei korrekt ist, wird ihre Inhalt für die Übergang der endlichen Zustandsmaschine verwendet.
+\begin{lstlisting}[caption={Events-Ansicht in Django, Aufur von FSM Transitions},captionpos=b]
+if input_type == "card":
+	try:
+		uid = body['uid']
+		session.student_card_inserted(uid)
+	except StudentCard.DoesNotExist:
+		pass
+elif input_type == "tag":
+	uid = body['uid']
+	session.rfid_inserted(uid)
+elif input_type == "cancel_button":
+	session.session_canceled()
+...
+\end{lstlisting}
+
+
 
 Die nächsten erlaubten bei der FSM Zustände sind: $canceled$, $timeout$, $valid\_student\_card$ und $unknown\_student\_card$. Ein Übergang in den Zustand $canceled$ is immer erlaubt und wird mit dem Drücken der "Cancel"-Taste auf einem Bildschirm des Display-Client ausgelöst. $timeout$ wird von Server behandelt und dient dazu, um zu lang gedauerte Sitzungen zwangsweise zu beenden und Display-Client für einen nächsten Versuch wieder freizumachen. Um in einem von beiden Zielzustände zu getreten, muss die Existenz der Studentenkarte in der Datenbank überprüft werden. 
 \begin{lstlisting}[caption={FSM Übergang beim Ablesen der Studentenkarte},captionpos=b]
@@ -385,7 +389,7 @@ def student_card_inserted(self, card_uid):
 		return 'unknown_student_card'
 \end{lstlisting}
 
-Die ähnlichen Vorgänge werden bei jedem Übergang der FSM verwenden. So beispielsweise wird den Status der angelesene Board überprüft und dann wird es von FSM festgestellt, ob ein Studierende einen Board ausleihen oder zurückgeben möchte. Es wird vom Studierende nicht erfordert, die Operation zu bestimmen. 
+Die ähnlichen Vorgänge werden bei jedem Übergang der FSM verwenden. So beispielsweise wird den Status der angelesene Board überprüft und dann wird es von FSM festgestellt, ob ein Studierende einen Board ausleihen oder zurückgeben möchte. Es wird vom dem Studierende nicht erfordert, die Operation zu bestimmen. 
 
 \begin{lstlisting}[caption={FSM Übergang beim Ablesen der Board RFID-Tag},captionpos=b]
 @transition(field=state, source='valid_rfid',
