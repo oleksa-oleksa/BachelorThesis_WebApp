@@ -418,7 +418,7 @@ Display-Client ist der dritte Bestandsteil und wird implementiert als interaktiv
 Ein solcher Ansatz ermöglicht die Nutzung moderner visueller Rendering-Engines und trägt zur Erreichung der Plattformunabhängigkeit bei. 
 
 
-subsection{Die Funktionsweise}
+\subsection{Die Funktionsweise}
 \label{sec:display_client:funkt}
 Bevor der Client verwendet werden kann, muss eine spezielle URL geöffnet werden. Diese URL wird vom acaLoan-Server bereitgestellt, der liefert dem Browser sowohl eine HTML-Seite und CSS-Stylesheets zur Anzeige visueller Elemente als auch Javascript-Code zur Ausführung. Wenn der Browser die HTML-Seite lädt, werden eingehende Daten abgelesen und zusammen mit dem Rendern für einen Benutzer wird eine interne Darstellung aller auf einer Seite vorhandenen Elemente in eine baumartige Struktur namens Document Object Model. Mithilfe einer Reihe von Programmierschnittstellen, die von einem Browser bereitgestellt werden, können Attribute von DOM-Objekten oder die Struktur von DOM geändert werden. Jede Änderung am DOM, sowohl das Hinzufügen, Entfernen oder Reorganisieren von Elementen als auch das Ändern des Inhalts oder des Attributwerts des Tags, kommt sofort zur Wirkung.
 
@@ -525,8 +525,7 @@ elif input_type == "loan_scanned_board_button":
 elif input_type == "terminate_button":
 	session.session_terminated()
 \end{lstlisting}
-Einem Client bekannten Status der endliche Zustandsmaschine wird dem im Kapitel \ref{sec:design:fsm} und \ref{sec:server:fsm:fsm} beschriebenen Sitzungsstatus zugeordnet. Beispielweise in dem Anwendungsfall "Ausleihe des Home-Loan Boards" (Kapitel \ref{sec:design:use_cases:home_loan}) gibt es einen Übergang aus dem Zustand $rfid\_state\_active$ nach entweder erfolgreichem Zustand $loaned$ oder enem von mehreren vordefinierten fehlerhaften Zustände. 
-
+Einem Client bekannten Status der endliche Zustandsmaschine wird dem im Kapitel \ref{sec:design:fsm} und \ref{sec:server:fsm:fsm} beschriebenen Sitzungsstatus zugeordnet. Beispielweise in dem Anwendungsfall "Ausleihe des Home-Loan Boards" (Kapitel \ref{sec:design:use_cases:home_loan}) gibt es einen Übergang aus dem Zustand $rfid\_state\_active$ nach entweder erfolgreichem Zustand $loaned$ oder enem von mehreren vordefinierten fehlerhaften Zustände. Der Auslöser des Übergangs ist der Druck der Taste "Loan Board".
 \begin{lstlisting}[caption={Übergang aus dem Zustand rfid\_state\_active},captionpos=b]
 @transition(field=state, source='rfid_state_active', target=RETURN_VALUE('loaned', 'home_loan_disabled', 'error', 'maximum_boards_reached', 'same_bord_type'))
 def loan_active_board(self):
@@ -536,12 +535,9 @@ def loan_active_board(self):
 return result
 \end{lstlisting}
 
-Während des Beispielübergangs der FSM mithilfe der Funktion $board\_loaned$ wird der aktive Studierende aus der Sitzung mit dem Aufruf der Funktion $get\_active\_student$ abgerufen, um seine Rechte zum Home-Ausleihe zu überprüfen und eine Liste der zugewiesenen ihm Boards zu bekommen. Nachdem wird es festgestellt, dass der Studierende den Board ausleihen darf, wird die neue Aktion in Datenbank erstellt.
-
-\begin{lstlisting}[caption={Neue Aktion in der Datenbank während des FSM Übergangs},captionpos=b]
-def loan_board_action(student, board, operation, timestamp=datetime.datetime.now):
-	loaned_board_action = Action(student=student, board=board, operation=operation)
-	loaned_board_action.save()
+Während des Beispielübergangs der FSM mithilfe der Funktion $board\_loaned$ wird der aktive Studierende aus der Sitzung mit dem Aufruf der Funktion $get\_active\_student$ abgerufen, um seine Rechte zum Home-Ausleihe zu überprüfen und eine Liste der zugewiesenen ihm Boards zu bekommen. Nachdem wird es festgestellt, dass der Studierende den Board ausleihen darf, wird die neue Aktion in Datenbank erstellt. Operation wird während des Ausführen der Funktion abhängig vom dem Typ des Boards bestimmt und kann entweder $Operation.HOME\_LOAN$ für den Board $BoardType.HOME\_LOAN$ oder $Operation.HOME\_LOAN$ für den Board $BoardType.HOME\_LOAN$ sein. Endlich wird der Status des Boards auf "Loaned" gesetzt. 
+\begin{lstlisting}[caption={[Änderung des Statuses von active zu loaned] },captionpos=b]
+Board.objects.filter(raspi_tag=raspi_tag).update(board_status=BoardStatus.LOANED)
 \end{lstlisting}
 \begin{figure}[hb!]
 	\centering
@@ -549,13 +545,6 @@ def loan_board_action(student, board, operation, timestamp=datetime.datetime.now
 	\caption{Webseite für einen Endzustand nach der Ausleihe des Boards}
 	\label{fig:fsmend}
 \end{figure} 
-Operation wird während des Ausführen der Funktion abhängig vom dem Typ des Boards bestimmt und kann entweder $Operation.HOME\_LOAN$ für den Board $BoardType.HOME\_LOAN$ oder $Operation.HOME\_LOAN$ für den Board $BoardType.HOME\_LOAN$ sein. Endlich wird der Status des Boards auf "Loaned" gesetzt. 
-\begin{lstlisting}[caption={Wechseln des Statuses des Boards von active zu loaned},captionpos=b]
-def loan_board(raspi_tag):
-	# Update the status of the board with raspi_tag
-	Board.objects.filter(raspi_tag=raspi_tag).update(board_status=BoardStatus.LOANED)
-\end{lstlisting}
-
 Die endliche Zustandsmaschine in einen Zustand $loaned$ gewechselt. Dann wird es mit der nächsten regelmäßigen Abrufen von Sitzungsaktualisierungen wieder den Status der DOM angepasst, um eine erfolgreiche finale Zustand zu stylen. So werden mittels JavaScript die Tasten "Loan Board" und "Cancel" Tasten verborgen und die neue Taste "Finish" angezeigt, beim deren Drucken wird FSM in einem Endzustand gewechselt. Somit wird der Benutzersitzung beendet, da der Zustand "finished" ein von mehreren Endzustände ist, mit denen FSM beenden darf und somit die neue Sitzung angefangen werden darf. Den Display-Client mit einer Webseite nach dem erfolgreichen Ausleihe eines Boards ist auf der Abbildung \ref{fig:fsmend} gezeigt.
 
 \section{Automatisierten Tests}
