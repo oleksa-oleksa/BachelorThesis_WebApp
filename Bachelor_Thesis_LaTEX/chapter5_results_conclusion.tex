@@ -1,9 +1,15 @@
-% !TeX spellcheck = en_GB 
-\chapter{Results and conclusion}
+% !TeX spellcheck = de_DE
+\chapter{Zusammenfassung und Analyse}
 
-\section{Results}
+\section{Zusammenfassung}
 \label{sec:results}
+In der zu realisierenden Abschlussarbeit ist auch notwendig einen weiteren Teil namens Register-Client zu entwickeln, an dem ein RFID-Leser angeschlossen wird. Der Register-Client verfügt selbst über keinen Datenbank und darf nur die abgelesene Daten dem Server schicken. Es geht um eine Simplex-Verbindung, da ein Nachrichtenverkehr asymmetrisch ist, weil der Register-Client keine Daten vom Server zurückbekommen darf und über den erfolgreiche oder gescheiterte Leihvorgang nicht wissen muss. Für die Implementierung des Register-Clients wird uComputer Raspberry Pi benutzt, der möglicherweise nicht der einzige Single-Board-Computer (SBC) auf dem Markt ist, aber bei weitem der beliebteste und schon zur Verfügung im PSE-Labor steht und ergänzend nicht geliefert werden muss. 
 
+Die Webanwendung könnte theoretisch nur aus dem Client-Teil bestehen, wenn Benutzerdaten nicht länger als eine Sitzung gespeichert werden müssen. Dies aber ist nicht der Fall der Abschlussarbeit, da die Studentenkarten und der Verlauf des Verleihablaufs mindestens für ein laufenden Semester gespeichert werden muss, damit die Mitarbeiter des PSE-Labor immer eine Zugang zu allen gespeicherten vorherigen Leihvorgangs von der Ausleihe bis zur Rückgabe eines Boards. Es ist vorgesehen, dass am Ende des Semester nach dem letzte Rückgabe eines Boards die Datensätzen des zu Ende gegangen Semesters gelöscht wird. 
 
-\section{Conclusion}
-\label{sec:conc}
+Daraus lässt sich die Schlussfolgerung ziehen, dass eine Webanwendung für einen Endnutzer wie eine Website aussieht, auf der  die Webseiten mit teilweise oder vollständig nicht formatiertem Inhalt sich befinden. Die Endfertigung des Inhalts findet nur dann statt, nachdem ein Website-Besucher die Seite vom Webserver angefordert hat. 
+
+Im diesen Kapitel wird die Bedeutung der RESTful-API erklärt, das ein Paradigma für die Softwarearchitektur von verteilten Systemen ist und von dessen die Kommunikation zwischen zwei Bestandteilen des acaLoan-System erledigt wird. Client-Server Kommunikation geschieht über HTTP-Protokoll, das für Hypertext Transfer Protokoll steht und dient zum Verwaltung der Übermittlung eines Dokuments durch einen Webserver an einen Webbrowser. HTTP wird auch zum Übertragen von XML-Dateien, VoiceXML, WML, Streaming von Video und Audio verwendet. Es verwendet normalerweise Port 80 und as Transportschichtprotokoll - TCP. Das in RFC 1945 (HTTP 1.0 \cite{website:httprfc1945}), 2068 \cite{website:httprfc2068} und 2616 (HTTP 1.1) definierte WWW-Protokoll, mit dem HTML-Dokumente über das Internet von Knoten zu Knoten gesendet werden können. HTTP unterstützt die dauerhafte Übertragung (Übertragung mehrerer Objekte). Nicht persistente Verbindungen (Übertragung eines Webdokumentobjekts pro Sitzung zwischen Client und Server) sowie zwei Methoden zur Benutzeridentifizierung: Autorisierungs- und Cookie-Objekte (Dateien). Dies ist ein zustandsloses Protokoll, in dem keine Benutzersitzungsinformationen gespeichert werden. Jede Datenübertragung wird als neue Sitzung für die Kommunikation zwischen verteilten Informationssystemen betrachtet \cite[p.62]{shklar:webapplication}.
+
+\section{Analyse}
+\label{sec:analyse}
