@@ -142,14 +142,14 @@ Als er wurde im Kapitel \ref{sec:register_client:smart} erwähnt, während der I
 
 \subsection{Erstellung acaLoan Django-Projekts}
 \label{sec:server:install}
-Glücklicherweise ist der Installationsprozess für Django unkompliziert, sodass das Einrichten Ihrer Entwicklungsumgebung schnell und entspannt ist. Django ist vollständig in Python geschrieben, daher muss zuerst Python installiert werden, um Django zu installieren. Weil die Autorin für die Implementierung des Servers ihren eignen Mac OS Rechner verwendet, ist Python bereits Computer installiert. Wenn "Python" in die Befehlszeile eingegeben (mithilfe der Terminal.app auf meinem Mac), wurde folgendes angezeigt werden:
+Glücklicherweise ist der Installationsprozess für Django unkompliziert, sodass das Einrichten Ihrer Entwicklungsumgebung schnell und entspannt ist. Django ist vollständig in Python geschrieben, daher muss zuerst Python installiert werden, um Django zu installieren. Weil die Autorin für die Implementierung des Servers ihren eignen Mac OS Rechner verwendet, ist Python bereits am Laptop installiert. Wenn "Python" in die Befehlszeile eingegeben (mithilfe der Terminal.app auf meinem Mac), wurde folgendes angezeigt werden:
 \begin{lstlisting}[caption={[Python Version überprüfen ] },captionpos=b]
 $ python
 Python 3.8.1 (default, Feb 17 2020, 23:55:16) 
 [Clang 11.0.0 (clang-1100.0.33.17)] on darwin
 \end{lstlisting}
 
-Sobald Python auf Computer installiert ist, kann Django auch installiert werden. Es gibt drei Möglichkeiten: Installation der offizielle Django-Version, Verwendung eines verteilungsspezifisches Installationsprogramm oder Herunterladen der Version, die derzeit immer noch entwickelt wird. In der Abschlussarbeit wird nur die Installation der offiziellen Version verwendet. Der Installation wird mit "Pipenv"-Tool geschieht, das isolierte Python-Umgebungen bietet, die somit praktischer sind als die systemweite Installation von Paketen. Pipenv verwaltet Projektpakete automatisch über die Pipfile-Datei, während die Pakete installiert oder deinstalliert werden. Pipenv generiert auch die Datei Pipfile.lock, mit der deterministische Builds erstellt und eine Momentaufnahme Ihrer Arbeitsumgebung erstellt werden. Zusätzlich für die Aufgabeimplementierung wird django-fsm installiert, das mit der Django Installation nicht geliefert wird und erlaubt eine einfache deklarative Zustandsverwaltung für Django-Modelle. 
+Sobald Python auf Computer installiert ist, kann Django auch installiert werden. Es gibt drei Möglichkeiten: Installation der offizielle Django-Version, Verwendung eines verteilungsspezifisches Installationsprogramm oder Herunterladen der Version, die derzeit immer noch entwickelt wird. In der Abschlussarbeit wird nur die Installation der offiziellen Version verwendet. Der Installation wird mit "Pipenv"-Tool geschieht, das isolierte Python-Umgebungen bietet, die somit praktischer sind als die systemweite Installation von Paketen. Pipenv verwaltet Projektpakete automatisch über die Pipfile-Datei, während die Pakete installiert oder deinstalliert werden. Pipenv generiert auch die Datei Pipfile.lock, mit der deterministische Builds und eine Momentaufnahme einer Arbeitsumgebung erstellt werden können. Zusätzlich für die Aufgabeimplementierung wird django-fsm installiert, das mit der Django Installation nicht geliefert wird und eine einfache deklarative Zustandsverwaltung für Django-Modelle erlaubt. 
 
 Der ganzen Quellcode für das acaLoan-Server wird als Django Projekt dargestellt. Django hat einen Befehl zum einfachen Erstellen einer anfänglichen Projektstruktur. Es wird mit der Ausführung des folgenden Befehls vom Terminal erledigt:
 \begin{lstlisting}[caption={[Erstellung acaLoan Django-Projekts] },captionpos=b]
@@ -163,7 +163,7 @@ Der ganzen Quellcode für das acaLoan-Server wird als Django Projekt dargestellt
 	\label{fig:django_start}
 \end{figure}
 
-Die Datei settings.py enthält eine Grundkonfiguration für die Verwendung einer SQLite-Datenbank und eine Liste von Django-Anwendungen und wurde als während der Implementierung geändert, um das üblichste deutsche Zeitformat anstatt des amerikanischen zu verwenden.
+Die Datei settings.py enthält eine Grundkonfiguration für die Verwendung einer SQLite-Datenbank und eine Liste von Django-Anwendungen. Sie wurde während der Implementierung aktualisiert, um das üblichste deutsche Zeitformat anstatt des amerikanischen zu verwenden.
 \begin{lstlisting}[caption={Deutsches Zeitformat in Django},captionpos=b]
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Europe/Berlin'
@@ -186,9 +186,9 @@ Nach dem Befehl ausgeführt wurde und im Browser zu http://127.0.0.1:8000/ navig
  
 \subsection{Datenbankeinrichtung}
 \label{sec:server:database}
-Nach dem Erstellung des Projekts und dem ersten Starten des acaLoan-Server ist es die Zeit, sich mit der Einrichtung von Datenbank zu beschäftigen. Theoretisch kann ein Django-basierte Projekt ohne Datenbank ausgeführt werden. Für die hier vorliegenden Abschlussarbeit was jedoch es ein Zweck, eine Datenbank einzurichten, um alle Ausleihe-/Rückgabevorgänge zu verwalten, so dass in einem echten Projekt kann man nicht auf Datenbankeinrichtung verzichten. Für die Implementierung wird für Verwendung von SQLite3 entschieden. Die Datenbank selbst wird in einer Datei auf der Festplatte gespeichert. Um die Datenbank mit dem Django-Projekt zu verbinden, muss den DATABASES-Block in der Datei $mysite/settings.py$ bearbeitet. Um sqlite zu verwenden, muss nur $django.db.backends.sqlite3$ als ENGINE angegeben und den Namen der Datei, in der die Datenbank gespeichert wird, in den Parameter NAME geschrieben werden \cite{website:15}.
+Nach dem Erstellung des Projekts und dem ersten Starten des acaLoan-Server ist es die Zeit, sich mit der Einrichtung von Datenbank zu beschäftigen. Theoretisch kann ein Django-basierte Projekt ohne Datenbank ausgeführt werden. Für die hier vorliegenden Abschlussarbeit was jedoch es ein Zweck, eine Datenbank einzurichten, um alle Ausleihe-/Rückgabevorgänge zu verwalten, so dass in einem echten Projekt kann man nicht auf Datenbankeinrichtung verzichten. Für die Implementierung wird für Verwendung von SQLite3 entschieden. Die Datenbank selbst wird in einer Datei auf der Festplatte gespeichert. Um die Datenbank mit dem Django-Projekt zu verbinden, muss den DATABASES-Block in der Datei $mysite/settings.py$ bearbeitet. Um sqlite zu verwenden, muss nur $django.db.backends.sqlite3$ als ENGINE angegeben werden und den Name der Datei für die Speicherung einer Datenbank in den Parameter NAME geschrieben werden \cite{website:15}.
 
-Als nächsten müssen die Modelle in Django erzeugt werden, die die Daten definieren, mit denen während der Entwicklung gearbeitet werden. Die Modelle in Django werden entsprechend des Klassendiagramm aus dem Kapitel \ref{sec:design:uml:class} und des Entity Relationship Diagramm realisiert, das im Kapitel \ref{sec:design:db} gezeigt wurde. Die wichtigste Modelle sind unten zu sehen:
+Als nächsten müssen die Modelle in Django erzeugt werden, die die Daten definieren, mit denen es während der Entwicklung gearbeitet wird. Die Modelle in Django werden entsprechend des Klassendiagramm aus dem Kapitel \ref{sec:design:uml:class} und des Entity Relationship Diagramm realisiert, das im Kapitel \ref{sec:design:db} gezeigt wurde. Die wichtigste Modelle sind unten zu sehen:
 
 \begin{lstlisting}[caption={Student Modell},captionpos=b]
 class Student(models.Model):
@@ -218,7 +218,7 @@ class Action(models.Model):
 	timestamp = models.DateTimeField(auto_now=True)
 	operation = enum.EnumField(Operation, default=Operation.UNKNOWN_OPERATION)
 \end{lstlisting}
-Mit $DateTimeField(auto_now=True)$ wird die Zeit der Ausleihe-/Rückgabeaktion genau entsprechend der Zeit des Servers gespeichert. 
+Mit $DateTimeField(auto\_now=True)$ wird die Zeit der Ausleihe-/Rückgabeaktion genau entsprechend der Zeit des Servers gespeichert. 
 \begin{lstlisting}[caption={Session Modell},captionpos=b]
 class Session(models.Model):
 	# Holds the information about the interaction between user (student) and system
@@ -243,7 +243,7 @@ Der Befehl migrate überprüft die Einstellung $INSTALLED\_APPS$ und erstellt al
 	\caption{Screenshot von Django Admin Site mit Board Tabelle.}
 	\label{fig:django_admin}
 \end{figure}
-Einer der mächtigsten Teile von Django ist die automatische Administrationsoberfläche. Es liest Metadaten aus erstellten Modellen, um eine schnelle, modellzentrierte Oberfläche bereitzustellen, über die vertrauenswürdige Benutzer Inhalte auf der Website verwalten können \cite{website:djangoAdmin}. Die Admin-Site verwendet werden kann, indem die URL aufgerufen wird, mit der Die Admin-Site verbunden wurde (im AcaLoan-Projekt ist es $/admin/$). Wenn einen Benutzer zum Anmelden erstellt werden muss, wird es mit dem Befehl createuperuser gemacht. Für die Anmeldung beim Administrator muss der Benutzer standardmäßig das Attribut $is\_superuser$ oder $is\_staff$ auf True gesetzt haben. Mithilfe der Django-Admin Site können die Mitarbeiter nicht benutzerorientierten Inhalt verwalten. Z.B. so werden am Anfang jedes Semesters die neuen Datensätzen für die registrierten für das Modul Studierende erstellt. 
+Einer der mächtigsten Teile von Django ist die automatische Administrationsoberfläche. Es liest Metadaten aus erstellten Modellen, um eine schnelle, modellzentrierte Oberfläche bereitzustellen, über die vertrauenswürdige Benutzer Inhalte auf der Website verwalten können \cite{website:djangoAdmin}. Im AcaLoan-Projekt kann die Admin-Site mit dem Aufruf der URL $/admin/$ verwendet werden. Um einen "Admin" zu erstellen, wird den Befehl $createsuperuser$ ausgeführt. Für die Anmeldung als Administrator muss dem Benutzer standardmäßig das Attribut $is\_superuser$ oder $is\_staff$ auf True gesetzt haben. Mithilfe der Django-Admin Site können die Mitarbeiter nicht benutzerorientierten Inhalt verwalten. Z.B. so werden am Anfang jedes Semesters die neuen Datensätzen für die registrierten für das Modul Studierende erstellt. 
 \begin{wrapfigure}{l}{0.45\textwidth}
 	\fbox{\includegraphics[width=0.42\textwidth]{gfx/upload_csv.png}}
 	\caption{Admin spezifische Site für CSV-Hochladen}
