@@ -71,6 +71,5 @@ Although the disadvantages of the RFID tags were mentioned above, it can be summ
 
 In this thesis it was proved that the rental procedure for the Raspi boards (Lab and Home) was successfully automated with the selected means for use in the PSE laboratory. 
 
-================================================================================
 
 
