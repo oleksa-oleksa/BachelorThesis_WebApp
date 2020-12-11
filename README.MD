@@ -1,7 +1,8 @@
-<h2>Oleksandra Baga
-**Bachelor Thesis and Programming Project
+<h3>Oleksandra Baga
+
+**Bachelor Thesis and Programming Project**
 Obtaining Bachelor of Engineering (B.Eng)
-Bachelor of Computer Engineering</h2>
+Bachelor of Computer Engineering</h3>
 
 ================================================================================
 
@@ -31,8 +32,10 @@ End: Winter 2020
 
 ** During Coronavirus Pandemie and spring + autumn quarantine with a two years old child at home. 
 
+![acaLoan Logo](/Bachelor_Thesis_LaTEX/gfx/csm_acaLoan-Raspi.jpg)
+
 ================================================================================
-ABSTRACT
+<h2>ABSTRACT</h2>
 
 The work was written as part of the project "acaLoan-Raspi" of the PSE laboratory. In addition to the initial acaBot robot project, the acaLab projects mainly cover topics from the field of practical and technical computer science. During the development of the "acaLoan-Raspi" project, a distributed system is being developed. The server is implemented with the Python Web Framework Django. Programming is done in Python programming language. With the use of open source libraries, the step-by-step process for integrating the hardware is done with a low-level link for the C library and thus an RFID reader is connected to the Raspberry Pi board. A user-oriented client that is displayed to a user in a web browser in full screen mode has been implemented as an interactive web page in HTML and styling through CSS has been added.
 
@@ -44,7 +47,7 @@ There are three components to be developed: Register-Client with connected RFID 
 
 ================================================================================
 
-CONCLUSION
+<h2>CONCLUSION</h2>
 
 The goal of developing software for PSE laboratories set at the beginning of the work was successfully achieved. The implementation of all components and an interaction using the development server was successfully presented to the employees of the PSE laboratory. The acaLoan system enables students to independently borrow a Raspi board for the exercises in the PSE laboratory and to return it later. This reduces the amount of working time required to manage the on-board location and the employees can concentrate on further new spiritual and scientific challenges and thus contribute to the further development of the acaLab projects. The functionality of the acaLoan system allows students to borrow the Raspberry Board either for exercise in the laboratory or for independent work at home.
 
@@ -54,7 +57,7 @@ For the implementation of the acaLoan system, extensive software engineering in 
 
 ================================================================================
 
-ANALYZE:
+<h2>ANALYZE</h2>
 
 When developing custom acaLoan web application, Python was preferred to another programming language to take advantage of its simple and expressive syntax. Since Django is written in the Python programming language, it also makes more sense to write the thesis in Python code, since all components use Python syntax rules. Django provides the resources that were immediately needed during the implementation of the analyzed software: general processes such as database manipulation, HTML templates, URL routing, session management and security. With the MVC principle (Model-View-Controller), the user interface (UI) and the business logic levels of the acaLoan system are separated. Django supports various operating systems such as Windows, Linux and MacOS, so that there should not be strict software dependencies on acaLoan-System during the deployment of the Django with ASGI as well as in the future.
 
