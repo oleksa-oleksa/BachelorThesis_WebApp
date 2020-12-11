@@ -1,8 +1,8 @@
 <h3>Oleksandra Baga
 
-**Bachelor Thesis and Programming Project**
+Bachelor Thesis and Programming Project
 
-<h3>Obtaining Bachelor of Engineering (B.Eng)</h3>
+<h2>Obtaining Bachelor of Engineering (B.Eng)</h2>
 
 Bachelor of Computer Engineering</h3>
 
