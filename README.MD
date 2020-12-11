@@ -1,14 +1,14 @@
-Oleksandra Baga
-Bachelor Thesis
+<h2>Oleksandra Baga
+**Bachelor Thesis and Programming Project
 Obtaining Bachelor of Engineering (B.Eng)
-Bachelor of Computer Engineering
+Bachelor of Computer Engineering</h2>
 
-===========================================================================================
+================================================================================
 
 
-Development of a database application for "Aca-Loan-Raspi"-project of PSE-Labaratory
+<h1>Development of a database application for "Aca-Loan-Raspi"-project of PSE-Labaratory</h1>
 
-===========================================================================================
+================================================================================
 
 * Software Arhictecture and Design
 * User Stories
@@ -31,18 +31,18 @@ End: Winter 2020
 
 ** During Coronavirus Pandemie and spring + autumn quarantine with a two years old child at home. 
 
-===========================================================================================
+================================================================================
 ABSTRACT
 
 The work was written as part of the project "acaLoan-Raspi" of the PSE laboratory. In addition to the initial acaBot robot project, the acaLab projects mainly cover topics from the field of practical and technical computer science. During the development of the "acaLoan-Raspi" project, a distributed system is being developed. The server is implemented with the Python Web Framework Django. Programming is done in Python programming language. With the use of open source libraries, the step-by-step process for integrating the hardware is done with a low-level link for the C library and thus an RFID reader is connected to the Raspberry Pi board. A user-oriented client that is displayed to a user in a web browser in full screen mode has been implemented as an interactive web page in HTML and styling through CSS has been added.
 
-===========================================================================================
+================================================================================
 
 The aim of this thesis is the development of a database application to manage the process of lending and returning the hardware to the students of the Beuth University of Applied Sciences in Berlin. For years, all tasks linked to loan management have been managed in a handy way, which leads to a large consumption of working time. The software developed should make it possible, after delivery, to operate an automated loan management system for training courses in the technical informatics course in the PSE laboratory.
 
 There are three components to be developed: Register-Client with connected RFID reader, which sends the read UIDs of the student cards to the Server, which is implemented with the Python Web Framework Django and keeps all data records for administration busy verifying student cards and boards to borrow. The last component is Display-Client, which deals with the display of the information received from the server and an interface is available for the interaction between an end user and the server.
 
-===========================================================================================
+================================================================================
 
 CONCLUSION
 
@@ -52,7 +52,7 @@ In addition, communication between students and the acaLoan system is reduced to
 
 For the implementation of the acaLoan system, extensive software engineering in the form of object-oriented analysis and the design of the finite state machine was carried out. The acaLoan system could not be implemented without a server, as user data must be stored for longer than one session: the student cards and the records of all loan transactions must be stored for at least one current semester, so that the employees of the PSE laboratory always have access to all stored ones prior loan process (from loan to return of a board). The server has been successfully implemented with Django web framework. It is also planned that at the end of the semester after the last return of a board, the records of the semester that has ended can be deleted. Access from the server to the display client is made possible by appropriate interfaces using RESTful communication. In the completed thesis, a necessary part called the register client was developed, to which an RFID reader was connected. The register client itself does not have a database and is only allowed to send the read data to the server. It is about a simplex connection, since message traffic is asymmetrical because the register client is not allowed to get any data back from the server and does not need to know about the successful or failed loan process. For the implementation of the register client uComputer Raspberry Pi was used, which was already available in the PSE laboratory and does not have to be delivered.
 
-===========================================================================================
+================================================================================
 
 ANALYZE:
 
@@ -66,6 +66,6 @@ Although the disadvantages of the RFID tags were mentioned above, it can be summ
 
 In this thesis it was proved that the rental procedure for the Raspi boards (Lab and Home) was successfully automated with the selected means for use in the PSE laboratory. 
 
-===========================================================================================
+================================================================================
 
 
