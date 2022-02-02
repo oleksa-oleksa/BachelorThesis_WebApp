@@ -61,10 +61,14 @@ In addition, communication between students and the acaLoan system is reduced to
 
 For the implementation of the acaLoan system, extensive software engineering in the form of object-oriented analysis and the design of the finite state machine was carried out. The acaLoan system could not be implemented without a server, as user data must be stored for longer than one session: the student cards and the records of all loan transactions must be stored for at least one current semester, so that the employees of the PSE laboratory always have access to all stored ones prior loan process (from loan to return of a board). The server has been successfully implemented with Django web framework. It is also planned that at the end of the semester after the last return of a board, the records of the semester that has ended can be deleted. Access from the server to the display client is made possible by appropriate interfaces using RESTful communication. In the completed thesis, a necessary part called the register client was developed, to which an RFID reader was connected. The register client itself does not have a database and is only allowed to send the read data to the server. It is about a simplex connection, since message traffic is asymmetrical because the register client is not allowed to get any data back from the server and does not need to know about the successful or failed loan process. For the implementation of the register client uComputer Raspberry Pi was used, which was already available in the PSE laboratory and does not have to be delivered.
 
-
+Class Diagramm
 ![Class Diagramm](/docs/diag_database.png)
 
+Finite State Machine Design
+![FSM Design](/docs/diag_fsm.png)
 
+
+FSM Transitions from Django FSM
 ![FSM Transitions](/docs/diag_fsm_transitions.png)
 
 ================================================================================
