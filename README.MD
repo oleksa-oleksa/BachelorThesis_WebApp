@@ -34,9 +34,13 @@ End: Winter 2020
 
 ** During Coronavirus Pandemie and spring + autumn quarantine with a two years old child at home. 
 
+Real Application (Server + Display) is presented on tablet and gets interactively requests from RFID reader connected to MacBook. Tha page shows the successful operation.
+
 ![Real App](/docs/fsm_success_end.jpg)
 
-![Component Diagramm](/docs/diag_component.png)
+Component Diagram
+
+![acaLoan Presentation Screenshot](/docs/screenshots/01.png)
 
 
 
@@ -89,8 +93,6 @@ In this thesis it was proved that the rental procedure for the Raspi boards (Lab
 Here you can find some important screenshots from my bachelor defence in German language.
 
 I succedded the bachelor defence on 12 February 2022. I have obtained Bachelor Degree in Computer Engineering in Berliner Hochschule für Technik (ehemalige Beuth Hochschule für Technik Berlin) with a avarage score 1.71
-
-![acaLoan Presentation Screenshot](/docs/screenshots/01.png)
 
 -------
 
