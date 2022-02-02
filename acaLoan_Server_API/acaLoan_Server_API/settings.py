@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'acaLoanRaspiBoard.urls'
+ROOT_URLCONF = 'acaLoan_Server_API.urls'
 
 TEMPLATES = [
     {
@@ -70,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-ASGI_APPLICATION = 'acaLoanRaspiBoard.asgi.application'
+ASGI_APPLICATION = 'acaLoan_Server_API.asgi.application'
 
 
 # Database

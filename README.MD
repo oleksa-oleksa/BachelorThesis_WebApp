@@ -88,9 +88,15 @@ I succedded the bachelor defence on 12 February 2022. I have obtained Bachelor D
 
 ![acaLoan Presentation Screenshot](/docs/screenshots/01.png)
 
+-------
+
 ![acaLoan Presentation Screenshot](/docs/screenshots/02.png)
 
+-------
+
 ![acaLoan Presentation Screenshot](/docs/screenshots/03.png)
+
+-------
 
 ![acaLoan Presentation Screenshot](/docs/screenshots/04.png)
 
