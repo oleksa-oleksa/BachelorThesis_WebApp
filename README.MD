@@ -34,7 +34,7 @@ End: Winter 2020
 
 ** During Coronavirus Pandemie and spring + autumn quarantine with a two years old child at home. 
 
-![acaLoan Logo](/Bachelor_Thesis_LaTEX/gfx/csm_acaLoan-Raspi.jpg)
+![acaLoan Logo](/docs/00_system_global.png)
 
 ================================================================================
 <h2>ABSTRACT</h2>
@@ -57,6 +57,9 @@ In addition, communication between students and the acaLoan system is reduced to
 
 For the implementation of the acaLoan system, extensive software engineering in the form of object-oriented analysis and the design of the finite state machine was carried out. The acaLoan system could not be implemented without a server, as user data must be stored for longer than one session: the student cards and the records of all loan transactions must be stored for at least one current semester, so that the employees of the PSE laboratory always have access to all stored ones prior loan process (from loan to return of a board). The server has been successfully implemented with Django web framework. It is also planned that at the end of the semester after the last return of a board, the records of the semester that has ended can be deleted. Access from the server to the display client is made possible by appropriate interfaces using RESTful communication. In the completed thesis, a necessary part called the register client was developed, to which an RFID reader was connected. The register client itself does not have a database and is only allowed to send the read data to the server. It is about a simplex connection, since message traffic is asymmetrical because the register client is not allowed to get any data back from the server and does not need to know about the successful or failed loan process. For the implementation of the register client uComputer Raspberry Pi was used, which was already available in the PSE laboratory and does not have to be delivered.
 
+
+![acaLoan Logo](/docs/Class_Diagram.png)
+
 ================================================================================
 
 <h2>ANALYZE</h2>
@@ -72,4 +75,15 @@ Although the disadvantages of the RFID tags were mentioned above, it can be summ
 In this thesis it was proved that the rental procedure for the Raspi boards (Lab and Home) was successfully automated with the selected means for use in the PSE laboratory. 
 
 
+Here you can find some important screenshots from my bachelor defence in German language.
+
+I succedded the bachelor defence on 12 February 2022. I have obtained Bachelor Degree in Computer Engineering in Berliner Hochschule für Technik (ehemalige Beuth Hochschule für Technik Berlin) with a avarage score 1.71
+
+![acaLoan Logo](/docs/01.png)
+
+![acaLoan Logo](/docs/02.png)
+
+![acaLoan Logo](/docs/03.png)
+
+![acaLoan Logo](/docs/04.png)
 
