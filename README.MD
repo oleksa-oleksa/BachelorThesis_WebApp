@@ -34,7 +34,9 @@ End: Winter 2020
 
 ** During Coronavirus Pandemie and spring + autumn quarantine with a two years old child at home. 
 
-Real Application (Server + Display) is presented on tablet and gets interactively requests from RFID reader connected to MacBook. Tha page shows the successful operation.
+---------
+
+Real Application (Server + Display) is presented on tablet and gets interactively requests from RFID reader connected to MacBook. The page shows the successful operation.
 
 ![Real App](/docs/fsm_success_end.jpg)
 
