@@ -35,7 +35,7 @@ Start: Spring 2020
 
 End: Winter 2020**
 
-** I did my bachelor thesis (development + paper) during CoVid19 Lockdowns (closed kindergarten) with a two years old child at home. It took thus longer than supposed to be.
+** I did my bachelor thesis (development + paper) during CoVid19 Lockdowns (closed kindergarten) with a two years old child at home. It took thus longer than it supposed to be.
 
 I succedded the bachelor defence on 12 February 2022. I have obtained Bachelor Degree in Computer Engineering in Berliner Hochschule für Technik (ehemalige Beuth Hochschule für Technik Berlin) with an avarage score 1.71
 
