@@ -30,9 +30,11 @@ Bachelor of Computer Engineering</h3>
 * jQuery
 
 Start: Spring 2020
-End: Winter 2020
+End: Winter 2020**
 
-** During Coronavirus Pandemie and spring + autumn quarantine with a two years old child at home. 
+** Took longer than supposed because was written during CoVid19 Lockdowns (closed kindergarten) with a two years old child at home. 
+
+I succedded the bachelor defence on 12 February 2022. I have obtained Bachelor Degree in Computer Engineering in Berliner Hochschule für Technik (ehemalige Beuth Hochschule für Technik Berlin) with an avarage score 1.71
 
 ---------
 
@@ -93,8 +95,6 @@ In this thesis it was proved that the rental procedure for the Raspi boards (Lab
 
 
 Here you can find some important screenshots from my bachelor defence in German language.
-
-I succedded the bachelor defence on 12 February 2022. I have obtained Bachelor Degree in Computer Engineering in Berliner Hochschule für Technik (ehemalige Beuth Hochschule für Technik Berlin) with a avarage score 1.71
 
 -------
 
