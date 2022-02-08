@@ -29,7 +29,10 @@ Bachelor of Computer Engineering</h3>
 * Client side Javascript
 * jQuery
 
+----------
+
 Start: Spring 2020
+
 End: Winter 2020**
 
 ** Took longer than supposed because was written during CoVid19 Lockdowns (closed kindergarten) with a two years old child at home. 
