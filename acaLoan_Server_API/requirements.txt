@@ -25,7 +25,7 @@ Jinja2==3.1.6
 joblib==1.2.0
 json5==0.8.5
 jsonschema==3.0.2
-mistune==0.8.4
+mistune==3.2.1
 nbconvert==7.17.1
 nbformat==4.4.0
 prometheus-client==0.7.1
