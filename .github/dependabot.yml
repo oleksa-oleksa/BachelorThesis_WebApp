@@ -1,0 +1,97 @@
+# .github/dependabot.yml
+#
+# Dependabot configuration for RFID-Inventory-Service.
+#
+# This is an old bachelor thesis / archive-style project.
+# Goal:
+# - Do not create constant dependency noise.
+# - Check dependencies only once per quarter.
+# - Group updates into as few PRs as possible.
+#
+# Current repo structure:
+# - Python / Django API under /acaLoan_Server_API
+# - Python register client under /acaLoan_RegisterClient
+# - No Terraform detected
+# - No clear npm frontend package.json shown in the screenshots
+#
+# Important:
+# - Keep only ecosystems that really have manifest files.
+# - pip requires requirements.txt, pyproject.toml, Pipfile, or setup.py.
+# - npm requires package.json.
+# - If there is no package.json, do not add npm.
+#
+# Security alerts:
+# - Dependabot alerts are created from GitHub Dependency Graph.
+# - This file controls Dependabot PR behavior, not whether GitHub shows alerts.
+# - To stop seeing alerts completely, disable Dependabot alerts in repo settings.
+#
+# Security grouping:
+# - groups + applies-to: security-updates groups security fixes into fewer PRs.
+# - applies-to: version-updates groups normal scheduled updates.
+# - Quarterly schedule reduces normal update PRs.
+
+version: 2
+
+updates:
+  # 1. GitHub Actions workflows, if this repo has .github/workflows/*.yml
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "quarterly"
+      time: "06:00"
+      timezone: "Europe/Berlin"
+    groups:
+      github-actions-security:
+        applies-to: security-updates
+        patterns: ["*"]
+      github-actions-quarterly:
+        applies-to: version-updates
+        patterns: ["*"]
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "dependabot(actions)"
+      include: "scope"
+    open-pull-requests-limit: 1
+
+  # 2. Django / Python backend
+  - package-ecosystem: "pip"
+    directory: "/acaLoan_Server_API"
+    schedule:
+      interval: "quarterly"
+      time: "06:30"
+      timezone: "Europe/Berlin"
+    groups:
+      pip-security:
+        applies-to: security-updates
+        patterns: ["*"]
+      pip-quarterly:
+        applies-to: version-updates
+        patterns: ["*"]
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "dependabot(pip)"
+      include: "scope"
+    open-pull-requests-limit: 1
+
+  # 3. Python register client
+  - package-ecosystem: "pip"
+    directory: "/acaLoan_RegisterClient"
+    schedule:
+      interval: "quarterly"
+      time: "07:00"
+      timezone: "Europe/Berlin"
+    groups:
+      pip-security:
+        applies-to: security-updates
+        patterns: ["*"]
+      pip-quarterly:
+        applies-to: version-updates
+        patterns: ["*"]
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "dependabot(pip)"
+      include: "scope"
+    open-pull-requests-limit: 1
